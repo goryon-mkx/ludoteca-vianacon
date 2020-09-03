@@ -1,18 +1,27 @@
 import Vue from 'vue'
 import App from '@/App.vue'
-
 import store from '@/store' 
 import router from '@/router'
 
-import { BootstrapVue } from 'bootstrap-vue'
+import Toast, { POSITION } from "vue-toastification";
+
+import { BootstrapVue, BootstrapVueIcons  } from 'bootstrap-vue'
 
 import "../public/theme/css/theme.min.css"
+import "vue-toastification/dist/index.css";
 
 Vue.config.productionTip = false
 
-//Vue.use(VueRouter)
-
 Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+
+Vue.use(Toast, {
+  position: POSITION.TOP_CENTER,
+  transition: "Vue-Toastification__slideBlurred",
+  maxToasts: 20,
+  newestOnTop: true,
+  hideProgressBar: true
+});
 
 const vue = new Vue({
   router,

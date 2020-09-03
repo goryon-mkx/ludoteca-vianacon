@@ -8,9 +8,9 @@ import pandas as pd
 from boardgamegeek import BGGClient
 from django.core.management.base import BaseCommand
 
-from api import utils
-from api.models import BggGame, LibraryGame, Player
-from api.utils import BggGameUtils
+from backend.api import utils
+from backend.api.models import BggGame, LibraryGame, Player
+from backend.api.utils import BggGameUtils
 
 bgg = BGGClient()
 
@@ -22,7 +22,7 @@ class Command(BaseCommand):
 
     def find(self, query):
         max_count = 10
-        print(' -- Fetching game with id: '+str(query))
+        print(' -- Fetching game with id: ' + str(query))
         while max_count:
             try:
                 rs = bgg.search(query)
@@ -30,9 +30,9 @@ class Command(BaseCommand):
                 if rs:
                     return bgg.game(game_id=rs[0].id)
 
-            except boardgamegeek.exceptions.BGGValueError as err:
+            except boardgamegeek.exceptions.BGGValueError:
                 print('[ERROR] Invalid parameters')
-                max_count = 0
+                raise
 
             except boardgamegeek.exceptions.BGGApiRetryError:
                 print('[ERROR] Retry after delay')
@@ -41,7 +41,7 @@ class Command(BaseCommand):
 
             except boardgamegeek.exceptions.BGGApiError:
                 print('[ERROR] API response invalid or not parsed')
-                max_count = 0
+                raise
 
             except boardgamegeek.exceptions.BGGApiTimeoutError:
                 print('[ERROR] Timeout')
@@ -53,21 +53,9 @@ class Command(BaseCommand):
                 max_count -= 1
                 time.sleep(10)
 
-        return None
+        raise Exception
 
     def create_bgg(self, game):
-        # bgggame = BggGame(bggid=game.id)
-        # bgggame.name = game.name
-        # bgggame.thumbnail = game.thumbnail or ""
-        # bgggame.image = game.image or ""
-        # bgggame.min_players = game.min_players
-        # bgggame.max_players = game.max_players
-        # bgggame.min_playtime = game.minplaytime
-        # bgggame.max_playtime = game.maxplaytime
-        # bgggame.rank = game.boardgame_rank
-        # bgggame.other_names = str(game.alternative_names)
-        # bgggame.save()
-        # return bgggame
         return BggGameUtils.create(game.id)
 
     def create_player(self, username):
@@ -87,7 +75,9 @@ class Command(BaseCommand):
         if search.count():
             bgggame = search.first()
         else:
+
             response = self.find(bggid)
+
             bgggame = self.create_bgg(response)
 
         if bgggame:
@@ -107,12 +97,20 @@ class Command(BaseCommand):
             print('game not found (' + str(bggid) + ')')
 
     def handle(self, *args, **options):
+        skipped = []
         self.stdout.write(options['file'])
         table = pd.read_csv(options['file'], header=0, delimiter=';')
         for _, row in table.iterrows():
             owners = row['owners'].split(",")
             bggid = row['bggid']
             if bggid:
-                self.add_game(bggid, owners)
+                try:
+                    self.add_game(bggid, owners)
+                except Exception as err:
+                    # add to skip file
+                    skipped.append(str(bggid) + ';' + row['owners'])
+
             else:
                 print('game without id')
+
+        print(skipped)

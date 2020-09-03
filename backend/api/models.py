@@ -1,9 +1,7 @@
 from django.db import models
 from datetime import timedelta, datetime
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models import Count
-from django.contrib.postgres import fields
 from django.utils.safestring import mark_safe
 
 
@@ -41,9 +39,6 @@ class BggGame(models.Model):
     max_playtime = models.IntegerField(null=True)
     thumbnail = models.CharField(blank=True, max_length=500, default='')
     image = models.CharField(blank=True, max_length=500)
-    other_names = ArrayField(
-        models.CharField(max_length=100, blank=True), default=list
-    )
 
     def get_badges(self):
         return self.badges.all()

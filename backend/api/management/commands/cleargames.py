@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from bglibrary.models import LibraryGame
+from backend.api.models import LibraryGame
 
 
 class Command(BaseCommand):

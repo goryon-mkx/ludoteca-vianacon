@@ -9,14 +9,12 @@ from backend.api.models import LibraryGame
 from backend.api.serializers import LibraryGameSerializer
 from backend.api.utils import BggGameUtils
 
-index_view = never_cache(TemplateView.as_view(template_name='index.html'))
-
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 20
+    page_size = 50
 
 
-class LibraryGameView(viewsets.ModelViewSet):
+class LibraryGameViewSet(viewsets.ModelViewSet):
     queryset = LibraryGame.objects.order_by('game__name')
     serializer_class = LibraryGameSerializer
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)

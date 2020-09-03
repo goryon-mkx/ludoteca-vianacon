@@ -1,6 +1,6 @@
 from boardgamegeek import BGGClient
 
-from api.models import BggGame
+from backend.api.models import BggGame
 
 
 class BggGameUtils:
@@ -18,7 +18,6 @@ class BggGameUtils:
         bgggame.min_playtime = game.minplaytime
         bgggame.max_playtime = game.maxplaytime
         bgggame.rank = game.boardgame_rank
-        # bgggame.other_names = list(game.alternative_names)
         bgggame.save()
         return bgggame
 

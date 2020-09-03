@@ -1,5 +1,7 @@
 import axios from "axios";
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
+import localStorageService from '@/services/localStorage.service'
+import authorizationService from '@/services/localStorage.service'
 
 export { unauthApi, authApi };
 

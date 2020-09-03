@@ -12,6 +12,7 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 boardgamegeek2 = "*"
 pandas = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 pylint = "*"

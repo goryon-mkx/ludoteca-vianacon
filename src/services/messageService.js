@@ -1,16 +1,16 @@
-import api from '@/services/api'
+import {unauthApi} from '@/services/api'
 
 export default {
   fetchMessages() {
-    return api.get(`messages/`)
+    return unauthApi.get(`messages/`)
               .then(response => response.data)
   },
   postMessage(payload) {
-    return api.post(`messages/`, payload)
+    return unauthApi.post(`messages/`, payload)
               .then(response => response.data)
   },
   deleteMessage(msgId) {
-    return api.delete(`messages/${msgId}`)
+    return unauthApi.delete(`messages/${msgId}`)
               .then(response => response.data)
   }
 }
