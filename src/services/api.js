@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import localStorageService from '@/services/localStorage.service'
-import authorizationService from '@/services/localStorage.service'
+import authorizationService from '@/services/authorization.service'
 
 export { unauthApi, authApi };
 
@@ -11,7 +11,7 @@ const HEADERS = {
     'X-CSRFToken': Cookies.get('csrftoken')
   };
 
-const API_URL = '/api';
+const API_URL = '';
 
 const TIMEOUT = 7000;
 

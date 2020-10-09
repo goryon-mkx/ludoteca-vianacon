@@ -4,22 +4,25 @@ import StoreHome from '@/pages/store/Home'
 import LibraryHome from '@/pages/library/Home'
 import Home from '@/pages/Home'
 import Login from "./pages/Login";
-import authorizationService from "@/services/authorization.service";
+
 import EndTemplate from "@/pages/templates/EndTemplate";
 import HomeTemplate from "@/pages/templates/HomeTemplate";
+import WithdrawGame from "@/pages/library/WithdrawGame";
+import AddGame from "@/pages/library/AddGame";
+
+import authorizationService from "@/services/authorization.service";
 
 Vue.use(VueRouter)
 
 
-// Guardians
+//Guardians
 function guardAuthenticated(to, from, next) {
     if (authorizationService.isAuthenticated()) {
         next();
     } else {
-        next({name: "login"});
+        next({name: "Login"});
     }
 }
-
 
 const routes = [
 
@@ -29,12 +32,13 @@ const routes = [
         children: [
             {
                 path: "/",
-                name: "home",
-                component: Home
+                name: "Home",
+                component: Home,
+                props: {title: 'Library', pretitle: 'leiriacon 2021'}
             },
             {
                 path: "/library/",
-                name: "libraryHome",
+                name: "LibraryHome",
                 component: LibraryHome
             },
             {
@@ -50,8 +54,17 @@ const routes = [
         children: [
             {
                 path: "/library/new",
-                name: "LibraryGameNew",
-                props: {title: "New library game"}
+                name: "AddLibraryGame",
+                props: {title: "New library game"},
+                beforeEnter: guardAuthenticated,
+                component: AddGame
+            },
+            {
+                path: "/library/:id/withdraw",
+                name: "WithdrawGame",
+                props: {title: "Withdraw game", pretitle: "Library"},
+                beforeEnter: guardAuthenticated,
+                component: WithdrawGame
             },
         ]
     }, {
@@ -64,11 +77,9 @@ const routes = [
         name: 'store',
         component: StoreHome
     },
-
-
     {
         path: '/login',
-        name: 'login',
+        name: 'Login',
         component: Login
     },
 

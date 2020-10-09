@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import messages from './modules/messages'
 import library from './modules/library'
+import users from "@/store/modules/users";
 import router from "@/router";
 import authorizationService from "@/services/authorization.service"
 import localStorageService from "@/services/localStorage.service"
@@ -11,7 +12,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     modules: {
         messages,
-        library
+        library,
+        users
     },
     actions: {
         /**
@@ -25,7 +27,7 @@ export default new Vuex.Store({
         login({commit}, {username, password}) {
             return authorizationService.doLogin(username, password).then(response => {
                 commit("AUTH_SUCCESS", response.data);
-                router.push({name: "home"});
+                router.push({name: "Home"});
             });
         },
     },

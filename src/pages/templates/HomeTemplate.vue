@@ -1,18 +1,27 @@
 <template>
     <div>
-        <b-nav>
-            <b-nav-item :to="{ name: 'library' }">Ludoteca</b-nav-item>
-            <b-nav-item :to="{ name: 'store' }">Loja</b-nav-item>
-        </b-nav>
+        <TopNav></TopNav>
         <div class="container">
+
             <router-view/>
         </div>
     </div>
+
 </template>
 
 <script>
+    import TopNav from "@/components/TopNav";
+
     export default {
-        name: "HomeTemplate"
+        name: "HomeTemplate",
+        props: {
+            title: {
+                default: 'Empty title'
+            }
+        },
+        components: {
+            TopNav
+        }
     }
 </script>
 

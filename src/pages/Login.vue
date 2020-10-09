@@ -95,7 +95,7 @@
 <script>
     import {ValidationProvider, ValidationObserver, extend} from 'vee-validate';
     import * as rules from "vee-validate/dist/rules";
-    import axiosUtils from "@/utils/axios.utils"
+    import axiosUtils from "@/mixins/axios.utils"
 
     // install rules
     Object.keys(rules).forEach(rule => {

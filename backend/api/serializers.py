@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
@@ -23,12 +24,6 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class WithdrawSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Withdraw
-        fields = ('id', 'requisitor', 'game', 'date_withdrawn', 'date_returned')
-
-
 class BggGameSerializer(serializers.ModelSerializer):
     badges = BadgeSerializer(many=True)
 
@@ -48,14 +43,23 @@ class BggGameSerializer(serializers.ModelSerializer):
         )
 
 
+class WithdrawBaseSerializer(serializers.ModelSerializer):
+    requisitor = PlayerSerializer(read_only=True)
+
+    class Meta:
+        model = Withdraw
+        fields = ('id', 'requisitor')
+
+
 class LibraryGameSerializer(serializers.ModelSerializer):
     game = BggGameSerializer(read_only=True)
     owner = PlayerSerializer(read_only=True)
 
     game_id = serializers.IntegerField(write_only=True, required=True)
-    owner_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), source="owner", required=True, write_only=True)
+    owner_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), source="owner", required=True,
+                                                  write_only=True)
 
-    currentwithdraw = SerializerMethodField()
+    currentwithdraw = WithdrawBaseSerializer(read_only=True)
 
     class Meta:
         model = LibraryGame
@@ -69,12 +73,29 @@ class LibraryGameSerializer(serializers.ModelSerializer):
             'location',
             'checkedin',
             'available',
-            'currentwithdraw'
+            'currentwithdraw',
+            'status'
         )
 
-    def get_currentwithdraw(self, obj):
-        if not obj.available():
-            # return WithdrawSerializer(data=obj.currentwithdraw())
-            return None
-        else:
-            return None
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ('password',)
+
+
+class WithdrawSerializer(serializers.ModelSerializer):
+    game_id = serializers.PrimaryKeyRelatedField(queryset=LibraryGame.objects.all(),
+                                                 source='game',
+                                                 write_only=True,
+                                                 required=True)
+    requisitor_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(),
+                                                       source="requisitor",
+                                                       required=True,
+                                                       write_only=True)
+    requisitor = PlayerSerializer(read_only=True)
+    game = LibraryGameSerializer(read_only=True)
+
+    class Meta:
+        model = Withdraw
+        fields = ('id', 'requisitor', 'requisitor_id', 'game', 'game_id', 'date_withdrawn', 'date_returned')

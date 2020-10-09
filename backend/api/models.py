@@ -70,12 +70,19 @@ class Game(models.Model):
     def __unicode__(self):
         return u"%s" % self.name
 
-    def __str__(self):
-        return "%s" % self.name
-
 
 class LibraryGame(Game):
     location = models.CharField(max_length=50, blank=True)
+
+    def status(self):
+        if not self.location:
+            return 'not-checked-in'
+        elif self.date_checkout is not None:
+            return 'checked-out'
+        elif self.withdraw_set.filter(date_returned=None).count() == 0:
+            return 'available'
+        else:
+            return 'not-available'
 
     def checkedin(self):
         if self.date_checkin is not None and self.date_checkout is None and self.location != '':
@@ -90,7 +97,7 @@ class LibraryGame(Game):
             return False
 
     def currentwithdraw(self):
-        if not self.available():
+        if self.status() == "not-available":
             return self.withdraw_set.filter(date_returned=None).first()
         else:
             return None

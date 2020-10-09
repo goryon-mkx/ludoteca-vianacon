@@ -12,7 +12,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from backend.api import views
 
 router = routers.DefaultRouter()
-router.register(r'library', views.LibraryGameViewSet)
+router.register(r'library-games', views.LibraryGameViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'players', views.PlayerViewSet)
+router.register(r'withdraw', views.WithdrawViewSet)
 
 urlpatterns = [
     # http://localhost:8000/api/<router-viewsets>
