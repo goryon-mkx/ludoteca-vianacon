@@ -1,6 +1,6 @@
 from django_filters import rest_framework as filters
 
-from backend.api.models import LibraryGame
+from backend.api.models import LibraryGame, Player
 
 
 class LibraryGameFilter(filters.FilterSet):

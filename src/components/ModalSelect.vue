@@ -5,9 +5,9 @@
       <slot name="header"></slot>
     </template>
     <template v-slot:default>
-      <!--      <div class="modal-card card">-->
+      <div style="height: 400px">
       <slot name="content"></slot>
-      <!--      </div>-->
+      </div>
     </template>
   </b-modal>
 </template>

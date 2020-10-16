@@ -9,6 +9,7 @@ import EndTemplate from "@/pages/templates/EndTemplate";
 import HomeTemplate from "@/pages/templates/HomeTemplate";
 import WithdrawGame from "@/pages/library/WithdrawGame";
 import AddGame from "@/pages/library/AddGame";
+import LibraryDashboard from "@/pages/library/Dashboard"
 
 import authorizationService from "@/services/authorization.service";
 
@@ -40,6 +41,12 @@ const routes = [
                 path: "/library/",
                 name: "LibraryHome",
                 component: LibraryHome
+            },
+            {
+                path: "/library/dashboard/",
+                name: "LibraryDashboard",
+                beforeEnter: guardAuthenticated,
+                component: LibraryDashboard
             },
             {
                 path: "/store/",

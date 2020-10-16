@@ -8179,10 +8179,10 @@ vary@~1.1.2:
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
-vee-validate@^3.3.9:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-3.4.0.tgz#dcdefcd45d43823c8b26aceee55f067ef56ca800"
-  integrity sha512-qxcqrGYr2gchZOjyhBKu7G4NOyOTmH6vk8APGdxAiL/0Iy2QZP/vcOYNbx7+zMhg7P3q418AseHR1sbckB5I+A==
+vee-validate@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-3.4.1.tgz#27d8792de16c731f812961b7c53fedafddde437d"
+  integrity sha512-anWhI3EMF+EWLWtAIcQ9Kj/jyNUA/Bu5GAHE2jEO7D4TRCrO+8S0ZqDw3ydlJSEJPv6dwvkHvqp3WgL6P2Mrew==
 
 vendors@^1.0.0:
   version "1.0.4"
@@ -8209,6 +8209,11 @@ vue-clickaway@^2.2.2:
   integrity sha512-25SpjXKetL06GLYoLoC8pqAV6Cur9cQ//2g35GRFBV4FgoljbZZjTINR8g2NuVXXDMLSUXaKx5dutgO4PaDE7A==
   dependencies:
     loose-envify "^1.2.0"
+
+vue-cool-select@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/vue-cool-select/-/vue-cool-select-3.5.2.tgz#d1ad160e6807365d351a2e5d505caefa329dba35"
+  integrity sha512-+a5dzyp0RmfiMbW1bnhHFvK2R2nTND6cAO61WkUDCGE29pJ8GbUknBHxJHsA1uZXtGNN/xLEmUQD6wA8aVbKwQ==
 
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
@@ -8251,6 +8256,11 @@ vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-multiselect@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.6.tgz#5be5d811a224804a15c43a4edbb7485028a89c7f"
+  integrity sha512-s7jmZPlm9FeueJg1RwJtnE9KNPtME/7C8uRWSfp9/yEN4M8XcS/d+bddoyVwVnvFyRh9msFo0HWeW0vTL8Qv+w==
 
 vue-router@^3.4.3:
   version "3.4.3"

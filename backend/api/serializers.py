@@ -59,7 +59,7 @@ class LibraryGameSerializer(serializers.ModelSerializer):
     owner_id = serializers.PrimaryKeyRelatedField(queryset=Player.objects.all(), source="owner", required=True,
                                                   write_only=True)
 
-    currentwithdraw = WithdrawBaseSerializer(read_only=True)
+    current_withdraw = WithdrawBaseSerializer(read_only=True)
 
     class Meta:
         model = LibraryGame
@@ -71,10 +71,10 @@ class LibraryGameSerializer(serializers.ModelSerializer):
             'owner_id',
             'notes',
             'location',
-            'checkedin',
-            'available',
-            'currentwithdraw',
-            'status'
+            'date_checkin',
+            'date_checkout',
+            'current_withdraw',
+            'status',
         )
 
 

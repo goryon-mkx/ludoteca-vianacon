@@ -25,20 +25,16 @@
         </form>
 
       </div>
-
       <div class="col-auto">
-
-
         <!-- Toggle -->
-        <b-button v-b-toggle.filters-collapse size="lg" :pressed.sync="filtersOpen" class="btn-white" data-toggle="dropdown" aria-haspopup="true"
+        <b-button v-b-toggle.filters-collapse size="lg" :pressed.sync="filtersOpen" class="btn-white"
+                  data-toggle="dropdown" aria-haspopup="true"
                   aria-expanded="false">
           <b-icon-filter></b-icon-filter>
           Filters
-          <b-badge class="ml-1" v-show="countFilters>0">{{countFilters}}</b-badge>
+          <b-badge class="ml-1" v-show="countFilters>0">{{ countFilters }}</b-badge>
         </b-button>
-
       </div>
-
 
     </div>
     <b-row>
@@ -48,28 +44,19 @@
             <b-row>
               <b-col sm="12" lg="6">
                 <b-form-group label="Location">
-                  <b-select :options="shelves" v-model="filters.location"/>
-                  <!--                  <div class="d-flex flex-column">-->
-                  <!--                    <b-form-checkbox-group-->
-                  <!--                        v-model="filters.location.letter"-->
-                  <!--                        :options="shelves.letters"-->
-                  <!--                        name="buttons-1"-->
-                  <!--                        button-variant="info"-->
-                  <!--                        buttons-->
-                  <!--                    />-->
-                  <!--                    <b-form-checkbox-group-->
-                  <!--                        :options="shelves.numbers"-->
-                  <!--                        v-model="filters.location.number"-->
-                  <!--                        name="buttons-2"-->
-                  <!--                        buttons class="mt-1"-->
-                  <!--                        button-variant="info"-->
-                  <!--                    />-->
-                  <!--                  </div>-->
+                  <multiselect v-model="filters.location"
+                               :options="shelves"></multiselect>
                 </b-form-group>
               </b-col>
               <b-col sm="12" lg="6">
-
-
+                <b-form-group label="Owner">
+<!--                  <b-button variant="outline-secondary">-->
+<!--                    <b-icon-plus class="mr-1" v-b-modal:filter-players-modal></b-icon-plus>-->
+<!--                    Add-->
+<!--                  </b-button>-->
+                                    <multiselect v-model="filters.owner" @search-change="searchPlayers"
+                               :options="players" label="name"></multiselect>
+                </b-form-group>
               </b-col>
 
               <div class="d-flex w-100 flex-row justify-content-end">
@@ -90,31 +77,7 @@
       <div class="col-12 col-lg-6" v-for="(game,index) in games" :key="index">
         <GameCard :game="game.game">
           <template v-slot:top-right>
-            <div></div>
-
-            <div v-if="game.status  === 'not-available'">
-              <span class="fe fe-alert-circle text-warning"></span>
-
-              <span class="text-warning">Being played ({{ game.currentwithdraw.requisitor.name }})</span>
-            </div>
-
-            <div class="dropdown ml-1">
-              <a class="" type="button"
-                 id="dropdownMenuButton"
-                 data-toggle="dropdown"
-                 aria-haspopup="true"
-                 aria-expanded="false">
-                <span class="fe fe-more-vertical"></span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right"
-                   aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Edit</a>
-                <a class="dropdown-item" href="#">Delete</a>
-              </div>
-            </div>
-          </template>
-          <template v-slot:bottom-right>
-            <div>
+            <div class="d-flex align-items-center">
 
               <b-link :to=" {name: 'WithdrawGame', params: {id: game.id}}"
                       v-show="game.status === 'available'"
@@ -122,16 +85,47 @@
                 <b-icon-upload class="mr-1"></b-icon-upload>
                 <span> Withdraw</span>
               </b-link>
+              <b-link v-b-modal.checkin-modal
+                      v-show="game.status === 'not-checked-in'"
+                      class="text-uppercase small text-gray-800">
+                <b-icon-bag-plus class="mr-1"></b-icon-bag-plus>
+                <span> Check-in</span>
+              </b-link>
               <b-link href="#" v-show="game.status === 'not-available'"
                       class="text-uppercase small text-gray-800"
                       @click="returnGame(game)">
                 <b-icon-download class="mr-2"></b-icon-download>
                 <span class="small">return ({{ game.location }})</span></b-link>
             </div>
+            <b-dropdown size="sm" variant="link" toggle-class="text-muted text-decoration-none" no-caret>
+              <template v-slot:button-content>
+                <b-icon-three-dots-vertical></b-icon-three-dots-vertical>
+              </template>
+              <b-dropdown-item>Edit</b-dropdown-item>
+              <b-dropdown-item>Delete</b-dropdown-item>
+            </b-dropdown>
+
+
+          </template>
+          <template v-slot:bottom-right>
+
+            <div v-if="game.status  === 'not-available'">
+              <span class="text-warning">With {{ game.current_withdraw.requisitor.name }}</span>
+            </div>
+            <div v-if="game.status === 'available'">
+              <span class="text-success">Available</span>
+            </div>
+
           </template>
         </GameCard>
       </div>
+      <b-modal id="checkin-modal">
+        <b-form-group label="Shelf">
+          <multiselect v-model="filters.location" :options="shelves"></multiselect>
+        </b-form-group>
+      </b-modal>
     </div>
+    <ModalPlayerSelect id="filter-players-modal"></ModalPlayerSelect>
   </div>
 </template>
 
@@ -141,6 +135,8 @@ import withdrawService from '@/services/withdraw.service'
 import libraryService from "@/services/library.service"
 import Header from "@/components/Header";
 import GameCard from "@/components/GameCard";
+import ModalPlayerSelect from "@/components/ModalPlayerSelect";
+import playerService from "@/services/player.service"
 
 export default {
   name: "Home",
@@ -150,12 +146,13 @@ export default {
       search: '',
       games: [],
       allGamesBackup: [],
+      players: [],
       filters: this.initFilters(),
       filtersOpen: false,
       shelves: ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 'C5']
     }
   },
-  components: {GameCard, Header},
+  components: {ModalPlayerSelect, GameCard, Header},
   mixins: [gamesMixin],
   mounted() {
     this.loadGames()
@@ -167,7 +164,7 @@ export default {
       }
     },
     returnGame(game) {
-      withdrawService.returnGame(game.currentwithdraw.id).then(() => {
+      withdrawService.returnGame(game.current_withdraw.id).then(() => {
         this.loadGames()
         this.$toast.success('Successfuly withdrawn, please return to ' + game.location)
       })
@@ -177,13 +174,18 @@ export default {
         this.games = response
       })
     },
+    searchPlayers(query) {
+      playerService.searchPlayers(query).then(response => {
+        this.players = response
+      })
+    }
   },
   computed: {
     countFilters() {
       return this.filters.location ? 1 : 0
     }
-  }
-  , watch: {
+  },
+  watch: {
     search() {
       let params = {}
 
@@ -210,7 +212,10 @@ export default {
 
 }
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
-<style scoped>
-
+<style>
+span.multiselect__tags {
+  font-size: 14px;
+}
 </style>

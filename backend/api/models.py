@@ -2,6 +2,7 @@ from django.db import models
 from datetime import timedelta, datetime
 from django.db import models
 from django.db.models import Count
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 
@@ -61,7 +62,7 @@ class Game(models.Model):
     game = models.ForeignKey(BggGame, null=True, blank=True, on_delete=models.CASCADE)
 
     notes = models.TextField(blank=True)
-    date_checkin = models.DateTimeField(auto_now_add=True, null=True)
+    date_checkin = models.DateTimeField(default=None, blank=True, null=True)
     date_checkout = models.DateTimeField(default=None, blank=True, null=True)
 
     class Meta:
@@ -75,7 +76,7 @@ class LibraryGame(Game):
     location = models.CharField(max_length=50, blank=True)
 
     def status(self):
-        if not self.location:
+        if not self.location or self.date_checkin is None:
             return 'not-checked-in'
         elif self.date_checkout is not None:
             return 'checked-out'
@@ -84,37 +85,17 @@ class LibraryGame(Game):
         else:
             return 'not-available'
 
-    def checkedin(self):
-        if self.date_checkin is not None and self.date_checkout is None and self.location != '':
-            return True
-        else:
-            return False
-
-    def available(self):
-        if self.checkedin():
-            return self.withdraw_set.filter(date_returned=None).count() == 0
-        else:
-            return False
-
-    def currentwithdraw(self):
+    def current_withdraw(self):
         if self.status() == "not-available":
             return self.withdraw_set.filter(date_returned=None).first()
         else:
             return None
 
-    def requisitor(self):
-        if self.checkedin() and not self.available():
-            w = self.withdraw_set.filter(date_returned=None).first()
-            return w.requisitor.name
-        else:
-            return ""
+    def save(self, *args, **kwargs):
+        if self.location:
+            self.date_checkin = timezone.now()
 
-    def where(self):
-        if self.date_checkout is not None:
-            return "Checked out"
-        if not self.available():
-            return "With %s (%s)" % (self.requisitor(), self.location)
-        return self.location
+        super(LibraryGame, self).save()
 
 
 class UsedGame(Game):

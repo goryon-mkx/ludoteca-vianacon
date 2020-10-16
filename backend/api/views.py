@@ -5,6 +5,8 @@ from django_filters import rest_framework as django_filters
 
 # Serve Vue Application
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
 from backend.api.filters import LibraryGameFilter
@@ -20,7 +22,9 @@ class StandardResultsSetPagination(PageNumberPagination):
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.order_by('name')
     serializer_class = PlayerSerializer
-    authentication_classes = [authentication.JWTAuthentication]
+    authentication_classes = (authentication.JWTAuthentication,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['name', 'email']
     permission_classes = (permissions.IsAdminUser,)
 
 
@@ -65,3 +69,13 @@ class WithdrawViewSet(viewsets.ModelViewSet):
     serializer_class = WithdrawSerializer
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = (permissions.IsAdminUser,)
+
+
+class StatisticsViewSet(APIView):
+    def get(self, request, format=None):
+        library_games = {
+            "total": LibraryGame.objects.all().count(),
+            "being_played": LibraryGame.objects.filter(withdraw__date_returned__isnull=True)
+        }
+
+        return Response({"library_games": library_games})

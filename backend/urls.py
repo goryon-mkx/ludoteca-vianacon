@@ -18,11 +18,14 @@ router.register(r'players', views.PlayerViewSet)
 router.register(r'withdraw', views.WithdrawViewSet)
 
 urlpatterns = [
+    path('auth/', include('rest_framework.urls')),
+
+    # http://localhost:8000/api/admin/
+    path('admin/', admin.site.urls),
+
     # http://localhost:8000/api/<router-viewsets>
     path('api/', include(router.urls)),
 
-    # http://localhost:8000/api/admin/
-    path('api/admin/', admin.site.urls),
 
     # Authentication endpoints
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

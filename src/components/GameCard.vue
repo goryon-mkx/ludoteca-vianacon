@@ -1,9 +1,7 @@
 <template>
   <ItemCard>
     <template v-slot:image>
-      <img :src="game.thumbnail" class="rounded"
-           style="width: 50px; height: 50px"
-           alt="game image">
+      <b-avatar :src="game.thumbnail" size="lg" rounded></b-avatar>
     </template>
     <template v-slot:title><span class="text-truncate">{{ game.name }}</span></template>
     <template v-slot:badges>
