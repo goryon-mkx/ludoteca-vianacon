@@ -1,4 +1,3 @@
-import libraryService from '@/services/library.service'
 
 const state = {
     games: []
@@ -11,23 +10,7 @@ const getters = {
 }
 
 const actions = {
-    getGames({commit}) {
-        libraryService.fetchGames()
-            .then(games => {
-                commit('setGames', games)
-            })
-    },
-    addGame({commit}, game) {
-        libraryService.postGame(game)
-            .then(() => {
-                commit('addGame', game)
-            })
-    },
-    deleteGame({commit}, gameId) {
-        libraryService.deleteGame(gameId).then(
-            commit('deleteGame', gameId)
-        )
-    }
+
 }
 
 const mutations = {

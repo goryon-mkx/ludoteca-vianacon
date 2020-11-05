@@ -24,9 +24,7 @@
           <span class="text-muted">No player selected</span>
           <b-button variant="secondary" v-b-modal.player-select-modal>Search players</b-button>
         </div>
-        <ItemCard v-else>
-          <template v-slot:title>{{ player.name }}</template>
-        </ItemCard>
+        <PersonCard :person="player" v-else/>
       </b-form-group>
       <ModalPlayerSelect id="player-select-modal" @player-selected="assignPlayer"></ModalPlayerSelect>
       <b-form-group label="Shelf">
@@ -53,15 +51,16 @@
 import ModalGameSelect from "@/components/ModalGameSelect";
 import bggService from '@/services/bgg.service';
 import libraryService from '@/services/library.service';
-import ItemCard from "@/components/ItemCard";
+import PersonCard from "@/components/PersonCard";
 import gamesMixin from "@/mixins/games.mixin";
 import ModalPlayerSelect from "@/components/ModalPlayerSelect";
 import GameCard from "@/components/GameCard";
 import EndTemplateHeader from "@/components/EndTemplateHeader";
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   name: "AddGame",
-  components: {ModalPlayerSelect, ItemCard, ModalGameSelect, EndTemplateHeader, GameCard},
+  components: {ModalPlayerSelect, PersonCard, ModalGameSelect, EndTemplateHeader, GameCard},
   mixins: [gamesMixin],
   data() {
     return {
@@ -111,6 +110,13 @@ export default {
       }).catch(response => console.log(response))
     },
   },
+  validations: {
+    library_game: {
+        location: {
+          required
+        }
+    }
+  }
 
 }
 </script>

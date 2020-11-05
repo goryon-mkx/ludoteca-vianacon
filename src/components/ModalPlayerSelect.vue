@@ -8,7 +8,6 @@
 
           <div v-show="!isNewPlayer">
             <div class="card-header">
-
               <div class="input-group input-group-flush input-group-merge">
 
                 <!-- Input -->

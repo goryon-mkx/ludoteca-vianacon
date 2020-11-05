@@ -1,5 +1,8 @@
-# Django Vue Template ✌️ 🐍
-
+# ludoteca  🎲 🧑‍💼
+#### A board game library management app for public conventions
+ 
+ 
+ 
 ![Vue Logo](/src/assets/logo-vue.png "Vue Logo")
 ![Django Logo](/src/assets/logo-django.png "Django Logo")
 

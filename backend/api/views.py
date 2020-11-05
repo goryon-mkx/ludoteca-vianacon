@@ -1,15 +1,17 @@
 from django.contrib.auth.models import User
-from rest_framework import viewsets, permissions
+from django.db.models import Count
+from rest_framework import viewsets, permissions, generics
 from rest_framework import filters
 from django_filters import rest_framework as django_filters
 
 # Serve Vue Application
+from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
-from backend.api.filters import LibraryGameFilter
+from backend.api.filters import LibraryGameFilter, PlayerFilter
 from backend.api.models import LibraryGame, Player, Withdraw
 from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer
 from backend.api.utils import BggGameUtils
@@ -19,13 +21,23 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size = 50
 
 
+# class OwnerViewSet(viewsets.ModelViewSet):
+#     queryset = Player.objects.annotate(num_games=Count('librarygame')).filter(num_games__gt=0)
+#     serializer_class = PlayerSerializer
+#     authentication_classes = (authentication.JWTAuthentication,)
+#     filter_backends = (filters.SearchFilter,)
+#     search_fields = ['name', 'email']
+#     permission_classes = (permissions.IsAdminUser,)
+#
+
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.order_by('name')
     serializer_class = PlayerSerializer
     authentication_classes = (authentication.JWTAuthentication,)
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
+    filterset_class = PlayerFilter
     search_fields = ['name', 'email']
-    permission_classes = (permissions.IsAdminUser,)
+    # permission_classes = (permissions.IsAdminUser,)
 
 
 class LibraryGameViewSet(viewsets.ModelViewSet):
@@ -79,3 +91,4 @@ class StatisticsViewSet(APIView):
         }
 
         return Response({"library_games": library_games})
+

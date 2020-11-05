@@ -84,7 +84,7 @@
             },
             getList() {
                 libraryService.fetchGames().then(response => {
-                        this.itemList = response
+                        this.itemList = response.results
                         this.apiLoaded = true
                     }
                 )

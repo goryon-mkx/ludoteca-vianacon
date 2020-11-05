@@ -7,36 +7,43 @@ import Toast, {POSITION} from "vue-toastification";
 
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 
-import {CoolSelectPlugin} from 'vue-cool-select'
-
 import Multiselect from 'vue-multiselect'
+import vSelect from 'vue-select'
+
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import 'vue-cool-select/dist/themes/bootstrap.css'
 import "../public/theme/css/theme.min.css"
 import "vue-toastification/dist/index.css";
 
-import '@/../public/static/main.css'
+import 'vue-select/dist/vue-select.css';
 
+
+import '@/../public/static/main.css'
+import Vuelidate from 'vuelidate'
+
+import vueDebounce from 'vue-debounce'
+
+Vue.component('v-select', vSelect)
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 
-Vue.use(CoolSelectPlugin)
+Vue.use(Vuelidate)
+
+Vue.use(vueDebounce)
 
 Vue.use(Toast, {
     position: POSITION.TOP_CENTER,
-    transition: "Vue-Toastification__slideBlurred",
+    transition: "Vue-Toastification__fade",
     maxToasts: 10,
     newestOnTop: true,
     hideProgressBar: true
 });
 
 Vue.component('multiselect', Multiselect)
-
 
 
 const vue = new Vue({

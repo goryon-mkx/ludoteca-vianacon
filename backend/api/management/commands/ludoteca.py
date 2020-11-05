@@ -1,14 +1,10 @@
-import calendar
-import logging
 import time
-from datetime import datetime
 
 import boardgamegeek
 import pandas as pd
 from boardgamegeek import BGGClient
 from django.core.management.base import BaseCommand
 
-from backend.api import utils
 from backend.api.models import BggGame, LibraryGame, Player
 from backend.api.utils import BggGameUtils
 
@@ -22,12 +18,12 @@ class Command(BaseCommand):
 
     def find(self, query):
         max_count = 10
-        print(' -- Fetching game with id: ' + str(query))
         while max_count:
             try:
                 rs = bgg.search(query)
 
                 if rs:
+                    print('Successfully fetch game: ' + rs[0].name + str())
                     return bgg.game(game_id=rs[0].id)
 
             except boardgamegeek.exceptions.BGGValueError:
@@ -35,13 +31,14 @@ class Command(BaseCommand):
                 raise
 
             except boardgamegeek.exceptions.BGGApiRetryError:
-                print('[ERROR] Retry after delay')
+                print('[ERROR] Retry after delay, retrying...')
                 max_count -= 1
                 time.sleep(10)
 
             except boardgamegeek.exceptions.BGGApiError:
                 print('[ERROR] API response invalid or not parsed')
-                raise
+                max_count -= 1
+                time.sleep(10)
 
             except boardgamegeek.exceptions.BGGApiTimeoutError:
                 print('[ERROR] Timeout')

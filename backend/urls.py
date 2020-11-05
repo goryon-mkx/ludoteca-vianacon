@@ -15,6 +15,7 @@ router = routers.DefaultRouter()
 router.register(r'library-games', views.LibraryGameViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'players', views.PlayerViewSet)
+# router.register(r'owners', views.OwnerViewSet)
 router.register(r'withdraw', views.WithdrawViewSet)
 
 urlpatterns = [

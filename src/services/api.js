@@ -1,15 +1,17 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
+import router from 'vue-router';
+import toast from 'vue-toastification';
 import localStorageService from '@/services/localStorage.service'
 import authorizationService from '@/services/authorization.service'
 
-export { unauthApi, authApi };
+export {unauthApi, authApi};
 
 
 const HEADERS = {
     'Content-Type': 'application/json',
     'X-CSRFToken': Cookies.get('csrftoken')
-  };
+};
 
 const API_URL = '';
 
@@ -20,9 +22,9 @@ const TIMEOUT = 7000;
  * @type {AxiosInstance}
  */
 const unauthApi = axios.create({
-  baseURL: API_URL,
-  headers: HEADERS,
-  timeout: TIMEOUT
+    baseURL: API_URL,
+    headers: HEADERS,
+    timeout: TIMEOUT
 });
 
 /**
@@ -30,20 +32,20 @@ const unauthApi = axios.create({
  * @type {AxiosInstance}
  */
 const authApi = axios.create({
-  baseURL: API_URL,
-  headers: HEADERS,
-  timeout: TIMEOUT
+    baseURL: API_URL,
+    headers: HEADERS,
+    timeout: TIMEOUT
 });
 
 /**
  * Add access token to request
  */
 authApi.interceptors.request.use(config => {
-  const token = localStorageService.getAccessToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+    const token = localStorageService.getAccessToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
 /**
@@ -52,27 +54,35 @@ authApi.interceptors.request.use(config => {
  * If any other error or if refresh request returns error, redirect to login
  */
 authApi.interceptors.response.use(
-  response => {
-    return response;
-  },
-  function(error) {
-    const originalRequest = error.config;
+    response => {
+        return response;
+    },
+    function (error) {
+        const originalRequest = error.config;
 
-    // catch 401 response when the token expired
-    if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
+        // catch 401 response when the token expired
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
 
-      // call API to get a new token
-      return authorizationService.refreshToken().then(token => {
-        // update original request authorization header
-        authApi.defaults.headers.common["Authorization"] = "Bearer " + token;
+            if (!localStorageService.getRefreshToken()) {
+                //toast.e('Oups! Missing credentials')
+                router.push({name: 'Login'})
+            }
 
-        // return originalRequest
-        return authApi(originalRequest);
-      });
-    } else {
-      // return any other error
-      return Promise.reject(error);
+            // call API to get a new token
+            return authorizationService.refreshToken().then(token => {
+                // update original request authorization header
+                authApi.defaults.headers.common["Authorization"] = "Bearer " + token;
+
+                // return originalRequest
+                return authApi(originalRequest);
+            }).catch(() => {
+                toast.info('Oups! Missing credentials')
+                router.push({name: 'Login'})
+            });
+        } else {
+            // return any other error
+            return Promise.reject(error);
+        }
     }
-  }
 );

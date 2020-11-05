@@ -4,23 +4,11 @@
         <div class="row mb-4" v-cloak>
             <div class="col-12 ">
                 <h3>Game</h3>
-                <ItemCard>
-                    <template v-slot:image>
-                        <img :src="game.game.thumbnail" class="rounded"
-                             style="width: 50px; height: 50px"
-                             alt="game image">
-                    </template>
-                    <template v-slot:title>{{ game.game.name }}</template>
-                    <template v-slot:metadata>
-                        <b-icon-person-fill class="text-muted fe fe-users mr-2"></b-icon-person-fill>
-                        <span class=" text-muted">{{ num_players(game.game.min_players, game.game.max_players) }}</span>
-                        <b-icon-clock-fill font-scale="0.8" class="ml-4 mr-2 text-muted fe fe-clock"></b-icon-clock-fill>
-                        <span class=" text-muted" >{{ playtime(game.game.min_playtime, game.game.max_playtime) }} </span>
-                    </template>
+                <GameCard :game="game.game">
                     <template v-slot:right>
                         <h1 class="mb-0 text-muted">{{ game.location }}</h1>
                     </template>
-                </ItemCard>
+                </GameCard>
             </div>
         </div>
 
@@ -42,19 +30,7 @@
             </b-link>
         <div class="row" v-if="!!requisitor.id" >
             <div class="col">
-                <ItemCard v-cloak>
-                    <template v-slot:image>
-                        <div class="avatar">
-                                <span class="avatar-title rounded-circle"
-                                      v-text="initials(requisitor.name)"></span>
-                        </div>
-                    </template>
-                    <template v-slot:title>{{ requisitor.name }}</template>
-                    <template v-slot:metadata><p class="text-muted mb-0">
-                        <b-icon-envelope-fill class="mr-2"></b-icon-envelope-fill>
-                        <span v-text="requisitor.email"></span>
-                    </p></template>
-                </ItemCard>
+                <PersonCard :person="requisitor"></PersonCard>
             </div>
 
             <div class="col-auto pb-4">
@@ -88,13 +64,14 @@
     import axiosMixin from '@/mixins/axios.mixin'
     import withdrawService from '@/services/withdraw.service'
     import libraryService from "@/services/library.service";
-    import ItemCard from "@/components/ItemCard";
+    import GameCard from "@/components/GameCard";
     import ModalPlayerSelect from "@/components/ModalPlayerSelect";
     import EndTemplateHeader from "@/components/EndTemplateHeader";
+    import PersonCard from "@/components/PersonCard";
 
     export default {
         name: "WithdrawGame",
-        components: {EndTemplateHeader, ModalPlayerSelect, ItemCard},
+        components: {EndTemplateHeader, ModalPlayerSelect, GameCard, PersonCard},
         mixins: [usersMixin, axiosMixin, gamesMixin],
         props: ['title', 'pretitle'],
         data() {
@@ -140,6 +117,9 @@
             libraryService.fetchGame(this.id)
                 .then(response => (this.game = response));
         },
+      validations: {
+
+      }
     }
 </script>
 

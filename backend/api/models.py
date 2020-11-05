@@ -26,6 +26,9 @@ class Player(models.Model):
         return Withdraw.objects.all().values('requisitor__name').annotate(total=Count('requisitor')).order_by('-total')[
                :number]
 
+    def num_games_owned(self):
+        return self.librarygame_set.count()
+
 
 class BggGame(models.Model):
     bggid = models.CharField(max_length=300, primary_key=True)

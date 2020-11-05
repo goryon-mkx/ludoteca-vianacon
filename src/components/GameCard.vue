@@ -1,16 +1,15 @@
 <template>
-  <ItemCard>
+  <ItemCard :title="game.name" :loading="loading" :bulk="bulk">
     <template v-slot:image>
-      <b-avatar :src="game.thumbnail" size="lg" rounded></b-avatar>
+      <slot name="image"></slot>
     </template>
-    <template v-slot:title><span class="text-truncate">{{ game.name }}</span></template>
-    <template v-slot:badges>
-      <span v-for="(badge, index) in game.badges" v-bind:key="index" class="ml-2 badge" v-bind:class="{
-      'badge-soft-primary': badge.label === 'Recomendado',
-      'badge-soft-success': badge.label === 'Jogo do Ano'
-      }"
-      >{{ badge.label }}</span>
-    </template>
+    <!--    <template v-slot:badges>-->
+    <!--      <span v-for="(badge, index) in game.badges" v-bind:key="index" class="ml-2 badge" v-bind:class="{-->
+    <!--      'badge-soft-primary': badge.label === 'Recomendado',-->
+    <!--      'badge-soft-success': badge.label === 'Jogo do Ano'-->
+    <!--      }"-->
+    <!--      >{{ badge.label }}</span>-->
+    <!--    </template>-->
     <template v-slot:metadata>
       <b-icon-person-fill class="text-muted fe fe-users mr-2"></b-icon-person-fill>
 
@@ -36,10 +35,29 @@ import gamesMixin from "@/mixins/games.mixin"
 
 export default {
   name: "GameCard",
-  props: ['game'],
+  props: {
+    game: {
+      required: true,
+      type: Object,
+    },
+    loading: {
+      default: false,
+      type: Boolean
+    },
+    bulk: {
+      default: false,
+      type: Boolean
+    },
+  },
+
   mixins: [gamesMixin],
   components: {
     ItemCard
+  },
+  data() {
+    return {
+      selected: []
+    }
   }
 }
 </script>
