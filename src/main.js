@@ -7,6 +7,7 @@ import Toast, {POSITION} from "vue-toastification";
 
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
 
+
 import Multiselect from 'vue-multiselect'
 import vSelect from 'vue-select'
 

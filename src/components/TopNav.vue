@@ -23,14 +23,19 @@
                     </div>
 
                     <div v-if="isAuthenticated()">
-                      <b-dropdown variant="link" right no-caret>
+
+                      <b-dropdown toggle-class="p-0" variant="link" right no-caret>
+
                         <template #button-content>
+                        <div class="d-flex flex-row">
                             <b-avatar/>
+
+                        </div>
                         </template>
                         <template #default>
-                          <b-dropdown-item-button><b-icon-person class="mr-3"></b-icon-person>Profile</b-dropdown-item-button>
-                          <b-dropdown-divider></b-dropdown-divider>
-                          <b-dropdown-item-button>Logout</b-dropdown-item-button>
+<!--                          <b-dropdown-item-button><b-icon-person class="mr-3"></b-icon-person>Profile</b-dropdown-item-button>-->
+<!--                          <b-dropdown-divider></b-dropdown-divider>-->
+                          <b-dropdown-item-button><b-icon-box-arrow-right class="mr-3"/>Logout</b-dropdown-item-button>
                         </template>
                       </b-dropdown>
                         <b-link
