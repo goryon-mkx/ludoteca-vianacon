@@ -53,6 +53,7 @@ function refreshToken() {
  */
 function isAuthenticated() {
     //TODO: Call api to check tokens
+
   return (
     !!localStorageService.getAccessToken() &&
     !!localStorageService.getRefreshToken()

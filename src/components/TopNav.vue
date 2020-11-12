@@ -15,35 +15,31 @@
 
             <!-- User -->
             <div class="navbar-user">
-
-
                 <!-- Toggle -->
 
                 <div class="d-flex flex-row align-items-center">
                     <div class="d-flex flex-column align-items-end mr-3">
-                        <a v-if="!isAuthenticated" class="btn btn-outline-primary" href="/login/">Login</a>
+                        <a v-if="!isAuthenticated()" class="btn btn-outline-primary" href="/login/">Login</a>
                     </div>
 
-
-                    <div v-if="isAuthenticated" class="dropdown-toggle" data-toggle="dropdown"
-                         aria-haspopup="true" aria-expanded="false">
-                        <a href="#" class="avatar avatar-sm avatar-online" role="button"
+                    <div v-if="isAuthenticated()">
+                      <b-dropdown variant="link" right no-caret>
+                        <template #button-content>
+                            <b-avatar/>
+                        </template>
+                        <template #default>
+                          <b-dropdown-item-button><b-icon-person class="mr-3"></b-icon-person>Profile</b-dropdown-item-button>
+                          <b-dropdown-divider></b-dropdown-divider>
+                          <b-dropdown-item-button>Logout</b-dropdown-item-button>
+                        </template>
+                      </b-dropdown>
+                        <b-link
                         >
-                            <b-icon-person-circle font-scale="3"></b-icon-person-circle>
 <!--                            <img src="https://randomuser.me/api/portraits/lego/2.jpg" alt="..."-->
 <!--                                 class="avatar-img rounded-circle">-->
 
-                        </a>
+                        </b-link>
                     </div>
-                    <!-- Menu -->
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a href="profile-posts.html" class="dropdown-item">Profile</a>
-                        <a href="settings.html" class="dropdown-item">Settings</a>
-                        <hr class="dropdown-divider">
-                        <!--                        <a href="{% url "bglibrary:logout" %}" class="dropdown-item">Logout</a>-->
-                    </div>
-
-
                 </div>
             </div>
 

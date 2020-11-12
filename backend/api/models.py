@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 
 
 class Badge(models.Model):
-    label = models.CharField(max_length=20)
+    label = models.CharField(max_length=50)
 
     def __str__(self):
         return self.label
@@ -44,9 +44,6 @@ class BggGame(models.Model):
     thumbnail = models.CharField(blank=True, max_length=500, default='')
     image = models.CharField(blank=True, max_length=500)
 
-    def get_badges(self):
-        return self.badges.all()
-
     def __unicode__(self):
         return self.name
 
@@ -57,6 +54,9 @@ class BggGame(models.Model):
 
     def natural_key(self):
         return self.name, self.image
+
+    def __str__(self):
+        return self.name
 
 
 class Game(models.Model):

@@ -10,8 +10,8 @@
         <!-- body -->
         <div class="media-body align-self-stretch d-flex flex-column">
           <div class="d-flex flex-row flex-grow-1 align-items-center justify-content-between">
-            <h4 v-if="!loading" class="mb-0">{{ title }}</h4>
-            <b-skeleton v-else width="85%"/>
+            <h4 v-show="title" class="mb-0">{{ title }}</h4>
+            <b-skeleton v-show="!title" width="50%"></b-skeleton>
             <slot name="top-right"/>
           </div>
           <div class="d-flex flex-row flex-grow-1 align-items-center justify-content-between">
@@ -40,7 +40,6 @@ export default {
     },
     title: {
       type: String,
-      default: '-- missing title--'
     },
     loading: {
       default: false,

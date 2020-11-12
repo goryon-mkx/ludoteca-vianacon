@@ -1,18 +1,20 @@
 <template>
-  <b-modal :id="id" :title="game.game.name" hide-header>
+  <b-modal :id="id" title="Checkin">
+    <template #modal-title>
+      <h4 class="mb-0">{{game.game.name}}</h4>
+    </template>
     <template #default>
       <b-row>
         <b-col>
           <b-form-group label="Shelf">
-            <multiselect v-model="game.location" :options="shelves"></multiselect>
-
+            <v-select v-model="game.location" :options="shelves"></v-select>
           </b-form-group>
         </b-col>
       </b-row>
     </template>
 
     <template #modal-footer>
-      <b-button variant="secondary">
+      <b-button variant="secondary" @click="$bvModal.hide(id)">
         Cancel
       </b-button>
       <b-button variant="primary" @click="checkin">
@@ -27,7 +29,6 @@ import libraryService from "@/services/library.service";
 
 export default {
   name: "CheckinModal",
-  components: {},
   props: ['id', 'game', 'shelves'],
   methods: {
     checkin() {

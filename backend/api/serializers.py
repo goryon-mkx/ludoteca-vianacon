@@ -8,9 +8,7 @@ from .models import LibraryGame, BggGame, Withdraw, Player, Badge
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Badge
-        fields = (
-            'label',
-        )
+        fields = '__all__'
 
 
 class PlayerSerializer(serializers.HyperlinkedModelSerializer):

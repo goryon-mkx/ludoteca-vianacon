@@ -2,22 +2,24 @@
   <div>
     <Header :title="title" :pretitle="pretitle">
       <template v-slot:content-right>
-        <b-dropdown variant="white" class="mr-3" no-caret>
-          <template #button-content>
-            <b-icon-gear/>
-          </template>
-          <b-dropdown-item-button v-if="!bulk" @click="bulk=true">
-            Enable God mode
-          </b-dropdown-item-button>
-          <b-dropdown-item-button v-else @click="bulk=false">
-            Disable God mode
-          </b-dropdown-item-button>
-        </b-dropdown>
+        <div v-if="isAuthenticated()">
+          <b-dropdown variant="white"  class="mr-3" no-caret>
+            <template #button-content>
+              <b-icon-gear/>
+            </template>
+            <b-dropdown-item-button v-show="!bulk" @click="bulk=true">
+              Enable God mode
+            </b-dropdown-item-button>
+            <b-dropdown-item-button v-show="bulk" @click="bulk=false">
+              Disable God mode
+            </b-dropdown-item-button>
+          </b-dropdown>
 
-        <b-button variant="primary" :to="{name: 'AddLibraryGame'}">
-          <b-icon-plus class="mr-2"></b-icon-plus>
-          Add game
-        </b-button>
+          <b-button variant="primary" :to="{name: 'AddLibraryGame'}">
+            <b-icon-plus class="mr-2"></b-icon-plus>
+            Add game
+          </b-button>
+        </div>
       </template>
     </Header>
 
@@ -28,7 +30,7 @@
       <div class="col">
         <form>
           <div class="input-group input-group-lg input-group-merge">
-            <b-form-input v-model="search" type="search" debounce="500" class="form-control-prepended"
+            <b-form-input v-model="search" type="search" debounce="300" class="form-control-prepended"
                           placeholder="Search"></b-form-input>
             <div class="input-group-prepend">
               <div class="input-group-text">
@@ -40,7 +42,7 @@
       </div>
 
       <!-- Filters trigger -->
-      <div class="col-auto">
+      <div class="col-auto" v-if="isAuthenticated()">
         <b-button v-b-toggle.filters-collapse size="lg" :pressed.sync="filtersOpen" class="btn-white"
                   data-toggle="dropdown" aria-haspopup="true"
                   aria-expanded="false">
@@ -53,7 +55,7 @@
     </div>
 
     <!-- Filters -->
-    <b-row>
+    <b-row v-if="isAuthenticated()">
       <b-col>
         <b-collapse id="filters-collapse" class="">
           <div class="bg-light rounded p-4">
@@ -105,13 +107,30 @@
     </b-row>
 
     <!-- Content -->
-    <div class="row mt-4">
-
-      <!-- Games list -->
-      <div class="col-12 col-lg-6" v-for="(game,index) in games" :key="index">
-        <LibraryGameCard :game="game" :bulk="bulk" v-model="selected" :value="game.id"/>
-      </div>
-
+    <div class="mt-4">
+      <b-row v-show="!loading">
+        <!-- Games list -->
+        <div class="col-12 col-lg-6" v-for="(game,index) in games" :key="index">
+          <LibraryGameCard :game="game" :bulk="bulk" v-model="selected" :value="game.id"
+                           v-on:checkin="checkinGame(game)"/>
+        </div>
+      </b-row>
+      <!-- Skeleton -->
+      <b-row v-show="loading">
+        <b-col lg="6" sm="12" v-for="(index) in new Array(50)" v-bind:key="index">
+          <ItemCard>
+            <template #image>
+              <b-skeleton type="avatar" width="3.5rem" height="3.5rem"></b-skeleton>
+            </template>
+            <template #metadata>
+              <b-skeleton class="text-muted" width="100px"/>
+            </template>
+            <template #top-right>
+              <b-skeleton type="button" size="sm" width="75px"></b-skeleton>
+            </template>
+          </ItemCard>
+        </b-col>
+      </b-row>
       <CheckinModal id="checkin-modal" :shelves="shelves_options" :game="selectedGame"
                     v-on:checkin="checkinGame"></CheckinModal>
     </div>
@@ -162,23 +181,28 @@
 
         </div>
         <div class="col-auto mr-n3">
-
           <!-- Button -->
           <b-button size="sm" v-if="games.length > selected.length" @click="selectAll" class="btn-white-20">
             Select all
           </b-button>
-          <b-button size="sm" v-else @click="unselectAll" class="btn-white-20">
+          <b-button size="sm" v-else @click="unselectAll" class="btn-outline-white">
             Unselect all
           </b-button>
-          <b-button size="sm" class="btn-white-20" @click="checkoutGames">
-            Check-out
-          </b-button>
+          <b-dropdown variant="white-20" :disabled="selected.length === 0" no-caret dropup class="ml-3" size="sm">
+            <template #button-content>
+              <div class="d-flex flex-row align-items-center">
+                Actions
+                <b-icon-caret-up-fill font-scale="0.8" class="ml-2"></b-icon-caret-up-fill>
+              </div>
+            </template>
+            <b-dropdown-item-button @click="checkoutGames">Check-out</b-dropdown-item-button>
+          </b-dropdown>
 
         </div>
       </div> <!-- / .row -->
 
       <!-- Close -->
-      <button type="button" class="list-alert-close close" aria-label="Close">
+      <button type="button" @click="bulk=false" class="list-alert-close close" aria-label="Close">
         <span aria-hidden="true">×</span>
       </button>
 
@@ -191,11 +215,13 @@
 <script>
 import gamesMixin from "@/mixins/games.mixin"
 import libraryService from "@/services/library.service"
-import Header from "@/components/Header";
-import LibraryGameCard from "@/components/LibraryGameCard";
-import ModalPlayerSelect from "@/components/ModalPlayerSelect";
+import Header from "@/components/Header"
+import LibraryGameCard from "@/components/LibraryGameCard"
+import ModalPlayerSelect from "@/components/ModalPlayerSelect"
 import playerService from "@/services/player.service"
-import CheckinModal from "@/components/CheckinModal";
+import CheckinModal from "@/components/CheckinModal"
+import ItemCard from "@/components/ItemCard"
+import usersMixin from "@/mixins/users.mixin"
 
 export default {
   name: "Home",
@@ -230,9 +256,10 @@ export default {
       ],
     }
   },
-  components: {CheckinModal, ModalPlayerSelect, LibraryGameCard, Header},
-  mixins: [gamesMixin],
+  components: {CheckinModal, ModalPlayerSelect, LibraryGameCard, Header, ItemCard},
+  mixins: [gamesMixin, usersMixin],
   mounted() {
+    this.pagination = this.paginationReset()
     this.refreshGames()
   },
   methods: {
@@ -280,19 +307,15 @@ export default {
       this.refreshGames()
     },
     refreshGames() {
-      this.pagination = this.paginationReset()
+      this.loading = true
 
-      let params = {}
-      Object.keys(this.filters)
-          .forEach(key => params[key] = Array.isArray(this.filters[key]) ? this.filters[key].toString() : this.filters[key])
-
-      if (this.search)
-        params['search'] = this.search
+      let params = this.getParams()
 
       libraryService.filterGames(params).then(response => {
         this.games = response.results
         this.pagination.count = response.count
         this.updatePages()
+        this.loading = false
       })
     },
     searchPlayers(query) {
@@ -301,11 +324,8 @@ export default {
       })
     },
     checkinGame(game) {
-      this.games.map(item => {
-            console.log(game)
-            return item.id === game.id ? game : item
-          }
-      )
+      this.selectedGame = game
+      this.$bvModal.show('checkin-modal')
     },
     checkoutGames() {
 
@@ -328,6 +348,9 @@ export default {
     },
     getParams() {
       let params = {}
+
+      params['page'] = this.pagination.active_page
+
       if (this.search) {
         params['search'] = this.search
       }
@@ -335,8 +358,10 @@ export default {
       Object.keys(this.filters)
           .forEach(key => params[key] = this.filters[key])
 
+      return params
     }
   },
+
   watch: {
     search() {
       this.refreshGames()
@@ -352,10 +377,11 @@ export default {
 
 }
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-
 <style>
 
+.vs__dropdown-toggle:has(.vs__search:focus) {
+  border-color: #2c7be5 !important;
+}
 
 .vs__dropdown-toggle {
   border: 1px solid #d2ddec !important;
