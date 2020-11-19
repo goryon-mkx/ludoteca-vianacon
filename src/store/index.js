@@ -24,10 +24,10 @@ export default new Vuex.Store({
          * @param password
          * @returns {Promise<AxiosResponse<any>>}
          */
-        login({commit}, {username, password}) {
+        login({commit, dispatch}, {username, password}) {
             return authorizationService.doLogin(username, password).then(response => {
                 commit("AUTH_SUCCESS", response.data);
-                router.push({name: "Home"});
+                dispatch("users/loadCurrent").then(() => router.push({name: "Home"}))
             });
         },
     },

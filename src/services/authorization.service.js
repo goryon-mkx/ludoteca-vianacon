@@ -1,11 +1,13 @@
 import localStorageService from "@/services/localStorage.service";
 import { unauthApi } from "@/services/api";
+import router from "@/router"
 
 const URL = '/api/token/'
 
 export default {
   refreshToken,
   doLogin,
+    logout,
   isAuthenticated
 };
 
@@ -20,6 +22,10 @@ function doLogin(username, password) {
     username: username,
     password: password
   });
+}
+
+function logout(){
+    localStorageService.clearTokens()
 }
 
 /**
@@ -40,8 +46,8 @@ function refreshToken() {
       })
       // In case refresh token call returns an error, clear tokens and redirect to login
       .catch(() => {
-        localStorageService.clearTokens();
-        this.$route.push({ name: "login" });
+        //localStorageService.clearTokens();
+        router.push({ name: "Login" });
       })
   );
 }

@@ -5,16 +5,15 @@ import LibraryHome from '@/pages/library/Home'
 import Home from '@/pages/Home'
 import Login from "./pages/Login";
 
-import EndTemplate from "@/pages/templates/EndTemplate";
 import HomeTemplate from "@/pages/templates/HomeTemplate";
 import WithdrawGame from "@/pages/library/WithdrawGame";
 import AddGame from "@/pages/library/AddGame";
 import LibraryDashboard from "@/pages/library/Dashboard"
 
 import authorizationService from "@/services/authorization.service";
+import PageNotFound from "@/pages/PageNotFound";
 
 Vue.use(VueRouter)
-
 
 //Guardians
 function guardAuthenticated(to, from, next) {
@@ -26,7 +25,6 @@ function guardAuthenticated(to, from, next) {
 }
 
 const routes = [
-
     {
         path: "",
         component: HomeTemplate,
@@ -55,26 +53,22 @@ const routes = [
             },
         ]
     },
+
     {
-        path: "",
-        component: EndTemplate,
-        children: [
-            {
-                path: "/library/new",
-                name: "AddLibraryGame",
-                props: {title: "New library game"},
-                beforeEnter: guardAuthenticated,
-                component: AddGame
-            },
-            {
-                path: "/library/:id/withdraw",
-                name: "WithdrawGame",
-                props: {title: "Withdraw game", pretitle: "Library"},
-                beforeEnter: guardAuthenticated,
-                component: WithdrawGame
-            },
-        ]
-    }, {
+        path: "/library/new",
+        name: "AddLibraryGame",
+        props: {title: "New library game"},
+        beforeEnter: guardAuthenticated,
+        component: AddGame
+    },
+    {
+        path: "/library/:id/withdraw",
+        name: "WithdrawGame",
+        props: {title: "Withdraw game", pretitle: "Library"},
+        beforeEnter: guardAuthenticated,
+        component: WithdrawGame
+    },
+    {
         path: '/library',
         name: 'library',
         component: LibraryHome
@@ -89,8 +83,8 @@ const routes = [
         name: 'Login',
         component: Login
     },
-
-
+    {
+        name: 'NotFound', path: "*", component: PageNotFound}
 ];
 
 const router = new VueRouter({

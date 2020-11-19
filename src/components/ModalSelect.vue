@@ -1,6 +1,6 @@
 <template>
   <!-- Modal -->
-  <b-modal :id="id" :title="title" body-class="p-0" hide-footer scrollable>
+  <b-modal :id="id" :title="title" body-class="p-0" scrollable>
     <template v-slot:modal-header>
       <slot name="header"></slot>
     </template>
@@ -8,6 +8,9 @@
       <div style="height: 400px">
       <slot name="content"></slot>
       </div>
+    </template>
+    <template #modal-footer>
+      <slot name="footer"></slot>
     </template>
   </b-modal>
 </template>

@@ -1,7 +1,6 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
 import router from 'vue-router';
-import toast from 'vue-toastification';
 import localStorageService from '@/services/localStorage.service'
 import authorizationService from '@/services/authorization.service'
 
@@ -76,9 +75,6 @@ authApi.interceptors.response.use(
 
                 // return originalRequest
                 return authApi(originalRequest);
-            }).catch(() => {
-                toast.info('Oups! Missing credentials')
-                router.push({name: 'Login'})
             });
         } else {
             // return any other error

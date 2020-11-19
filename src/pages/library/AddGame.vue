@@ -1,49 +1,49 @@
 <template>
-  <div>
-    <EndTemplateHeader title="New game" pretitle="library">
-      <template v-slot:content-right>
-        <b-button variant="white">
-          <b-icon-gear-fill></b-icon-gear-fill>
-        </b-button>
+  <InputScreen pre-title="library" title="New game">
+    <template #header-actions>
+      <b-button variant="white">
+        <b-icon-gear-fill></b-icon-gear-fill>
+      </b-button>
+    </template>
+    <template #content>
 
-      </template>
-    </EndTemplateHeader>
-    <ModalGameSelect @game-selected="assignGame"
-                     id="game-select-modal"></ModalGameSelect>
-    <form>
-      <b-form-group label="Game">
-        <div v-if="!game.id" class="d-flex flex-row align-items-center justify-content-between">
-          <span class="text-muted">No game selected</span>
-          <b-button variant="secondary" v-b-modal.game-select-modal>Search games</b-button>
+      <ModalGameSelect @game-selected="assignGame"
+                       id="game-select-modal"></ModalGameSelect>
+      <form>
+        <b-form-group label="Game">
+          <div v-if="!game.id" class="d-flex flex-row align-items-center justify-content-between">
+            <span class="text-muted">No game selected</span>
+            <b-button variant="outline-secondary" v-b-modal.game-select-modal>Search games</b-button>
+          </div>
+
+          <GameCard :game="game" v-if="!!game.id"/>
+        </b-form-group>
+        <b-form-group label="Owner">
+          <div v-if="!player.id" class="d-flex flex-row align-items-center justify-content-between">
+            <span class="text-muted">No player selected</span>
+            <b-button variant="outline-secondary" v-b-modal.player-select-modal>Search players</b-button>
+          </div>
+          <PersonCard :person="player" v-else/>
+        </b-form-group>
+        <ModalPlayerSelect id="player-select-modal" @player-selected="assignPlayer"></ModalPlayerSelect>
+        <b-form-group label="Shelf">
+          <b-form-input v-model="library_game.location"></b-form-input>
+        </b-form-group>
+        <b-form-group label="Notes">
+          <b-form-textarea v-model="library_game.notes"></b-form-textarea>
+        </b-form-group>
+
+        <hr class="my-5"/>
+        <div class="d-flex flex-row justify-content-between mb-5">
+          <b-button variant="white" size="lg" @click="createGame">Cancel</b-button>
+          <b-button variant="primary" size="lg" @click="createGame">Create</b-button>
+
         </div>
 
-        <GameCard :game="game" v-if="!!game.id"/>
-      </b-form-group>
-      <b-form-group label="Owner">
-        <div v-if="!player.id" class="d-flex flex-row align-items-center justify-content-between">
-          <span class="text-muted">No player selected</span>
-          <b-button variant="secondary" v-b-modal.player-select-modal>Search players</b-button>
-        </div>
-        <PersonCard :person="player" v-else/>
-      </b-form-group>
-      <ModalPlayerSelect id="player-select-modal" @player-selected="assignPlayer"></ModalPlayerSelect>
-      <b-form-group label="Shelf">
-        <b-form-input v-model="library_game.location"></b-form-input>
-      </b-form-group>
-      <b-form-group label="Notes">
-        <b-form-textarea v-model="library_game.notes"></b-form-textarea>
-      </b-form-group>
+      </form>
 
-      <b-row class="mt-5">
-        <b-col sm="12" lg="12">
-          <b-button variant="primary" size="lg" @click="createGame" block>Save</b-button>
-        </b-col>
-      </b-row>
-
-    </form>
-
-
-  </div>
+    </template>
+  </InputScreen>
 
 </template>
 
@@ -55,12 +55,12 @@ import PersonCard from "@/components/PersonCard";
 import gamesMixin from "@/mixins/games.mixin";
 import ModalPlayerSelect from "@/components/ModalPlayerSelect";
 import GameCard from "@/components/GameCard";
-import EndTemplateHeader from "@/components/EndTemplateHeader";
-import { required } from 'vuelidate/lib/validators'
+import {required} from 'vuelidate/lib/validators'
+import InputScreen from "@/components/templates/InputScreen";
 
 export default {
   name: "AddGame",
-  components: {ModalPlayerSelect, PersonCard, ModalGameSelect, EndTemplateHeader, GameCard},
+  components: {InputScreen, ModalPlayerSelect, PersonCard, ModalGameSelect, GameCard},
   mixins: [gamesMixin],
   data() {
     return {
@@ -96,7 +96,6 @@ export default {
       })
     },
     assignPlayer(player) {
-      console.log(player)
       this.player = player
       this.$bvModal.hide('player-select-modal')
     },
@@ -112,9 +111,9 @@ export default {
   },
   validations: {
     library_game: {
-        location: {
-          required
-        }
+      location: {
+        required
+      }
     }
   }
 

@@ -13,6 +13,10 @@ class Badge(models.Model):
         return self.label
 
 
+class Location(models.Model):
+    name = models.CharField(max_length=50)
+
+
 class Player(models.Model):
     name = models.CharField(max_length=100, default=None)
     email = models.EmailField(default=None, unique=True)
@@ -44,16 +48,13 @@ class BggGame(models.Model):
     thumbnail = models.CharField(blank=True, max_length=500, default='')
     image = models.CharField(blank=True, max_length=500)
 
-    def __unicode__(self):
-        return self.name
-
     @staticmethod
     def most_withdraws(number):
         return Withdraw.objects.all().values('game__game__name', 'game__game__image').annotate(
             total=Count('game')).order_by('-total')[:number]
 
-    def natural_key(self):
-        return self.name, self.image
+    def __unicode__(self):
+        return self.name
 
     def __str__(self):
         return self.name

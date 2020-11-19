@@ -77,9 +77,14 @@ class LibraryGameSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        exclude = ('password',)
+        exclude = ('password', 'first_name', 'last_name')
+
+    def get_name(self, data):
+        return f"{data.first_name} {data.last_name}"
 
 
 class WithdrawSerializer(serializers.ModelSerializer):
