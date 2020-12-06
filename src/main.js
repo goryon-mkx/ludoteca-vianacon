@@ -71,12 +71,9 @@ Vue.use(Vuelidate)
 // -----------------------------------------------------------
 // Other configurations
 // -----------------------------------------------------------
-import vueDebounce from 'vue-debounce'
 
 
 Vue.config.productionTip = false
-
-Vue.use(vueDebounce)
 
 const vue = new Vue({
     router,
