@@ -3,7 +3,7 @@
 module.exports = {
     outputDir: 'dist',
     assetsDir: 'static',
-     baseUrl: IS_PRODUCTION
+     publicPath: IS_PRODUCTION
      ? 'http://leiriacon.herokuapp.com'
      : '/',
     // For Production, replace set baseUrl to CDN
