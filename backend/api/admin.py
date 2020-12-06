@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from backend.api.models import BggGame, Badge
+from backend.api.models import BggGame, Badge, Location
 
 
 @admin.register(BggGame)
@@ -12,3 +12,9 @@ class BggGameAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Badge)
+
+
+@admin.register(Location)
+class LocationAdmin(admin.ModelAdmin):
+    ordering = ('name',)
+

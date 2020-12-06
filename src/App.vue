@@ -11,6 +11,7 @@
         created(){
           if(authorizationService.isAuthenticated()){
             this.$store.dispatch("users/loadCurrent");
+            this.$store.dispatch("library/loadLocations")
             }
         }
     }

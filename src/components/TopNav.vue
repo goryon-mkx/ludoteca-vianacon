@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light" id="topnav">
-    <div class="container">
+    <b-container>
 
       <!-- Toggler -->
       <button class="navbar-toggler mr-auto" type="button" data-toggle="collapse" data-target="#navbar"
@@ -23,35 +23,8 @@
           </div>
 
           <div v-if="isAuthenticated()">
-
-            <b-dropdown toggle-class="py-1 px-2" variant="link" right no-caret>
-
-              <template #button-content>
-                <div class="d-flex flex-row text-gray-800 align-items-center">
-                  <!--                            <b-avatar size="sm"/>-->
-
-                  {{ $store.getters["users/current"].name }}
-                  <b-avatar size="sm" class="ml-2"></b-avatar>
-                </div>
-              </template>
-              <template #default>
-                <b-dropdown-item-button>
-                  <b-icon-person class="mr-3"></b-icon-person>
-                  Profile
-                </b-dropdown-item-button>
-                <b-dropdown-divider></b-dropdown-divider>
-                <b-dropdown-item-button @click="logout">
-                  <b-icon-box-arrow-right class="mr-3"/>
-                  Logout
-                </b-dropdown-item-button>
-              </template>
-            </b-dropdown>
-            <b-link
-            >
-              <!--                            <img src="https://randomuser.me/api/portraits/lego/2.jpg" alt="..."-->
-              <!--                                 class="avatar-img rounded-circle">-->
-
-            </b-link>
+            <UserInfo />
+            <!-- TODO: catch logout event -->
           </div>
         </div>
       </div>
@@ -70,16 +43,18 @@
         </ul>
       </div>
 
-    </div> <!-- / .container -->
+    </b-container> <!-- / .container -->
   </nav>
 </template>
 
 <script>
 import usersMixin from '@/mixins/users.mixin'
 import authorizationService from '@/services/authorization.service'
+import UserInfo from "@/components/UserInfo";
 
 export default {
   name: "TopNav",
+  components: {UserInfo},
   mixins: [usersMixin],
   methods: {
     logout() {
@@ -89,6 +64,3 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>

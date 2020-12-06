@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Header :title="title" :pretitle="pretitle">
+    <Header :pretitle="pretitle" :title="title">
       <template v-slot:content-right>
         <div v-if="isAuthenticated()">
-          <b-dropdown variant="white"  class="mr-3" no-caret>
+          <b-dropdown class="mr-3" no-caret variant="white">
             <template #button-content>
               <b-icon-gear/>
             </template>
@@ -15,7 +15,7 @@
             </b-dropdown-item-button>
           </b-dropdown>
 
-          <b-button variant="primary" :to="{name: 'AddLibraryGame'}">
+          <b-button :to="{name: 'AddLibraryGame'}" variant="primary">
             <b-icon-plus class="mr-2"></b-icon-plus>
             Add game
           </b-button>
@@ -24,14 +24,14 @@
     </Header>
 
     <!-- Search and filters trigger -->
-    <div class="row align-items-center mb-3">
+    <b-row class="align-items-center mb-3">
 
       <!-- Search -->
-      <div class="col">
+      <b-col>
         <form>
           <div class="input-group input-group-lg input-group-merge">
-            <b-form-input v-model="search" type="search" debounce="300" class="form-control-prepended"
-                          placeholder="Search"></b-form-input>
+            <b-form-input v-model="search" class="form-control-prepended" debounce="300" placeholder="Search"
+                          type="search"></b-form-input>
             <div class="input-group-prepend">
               <div class="input-group-text">
                 <b-icon-search font-scale="0.8"></b-icon-search>
@@ -39,20 +39,20 @@
             </div>
           </div>
         </form>
-      </div>
+      </b-col>
 
       <!-- Filters trigger -->
-      <div class="col-auto" v-if="isAuthenticated()">
-        <b-button v-b-toggle.filters-collapse size="lg" :pressed.sync="filtersOpen" class="btn-white"
-                  data-toggle="dropdown" aria-haspopup="true"
-                  aria-expanded="false">
+      <b-col v-if="isAuthenticated()" cols="auto">
+        <b-button v-b-toggle.filters-collapse :pressed.sync="filtersOpen" aria-expanded="false" aria-haspopup="true"
+                  class="btn-white" data-toggle="dropdown"
+                  size="lg">
           <b-icon-filter></b-icon-filter>
           Filters
-          <b-badge class="ml-1" v-show="Object.keys(filters).length>0">{{ Object.keys(filters).length }}</b-badge>
+          <b-badge v-show="Object.keys(filters).length>0" class="ml-1">{{ Object.keys(filters).length }}</b-badge>
         </b-button>
-      </div>
+      </b-col>
 
-    </div>
+    </b-row>
 
     <!-- Filters -->
     <b-row v-if="isAuthenticated()">
@@ -62,19 +62,28 @@
             <b-row>
 
               <!-- Location -->
-              <b-col sm="12" lg="6">
+              <b-col lg="6" sm="12">
                 <b-form-group label="Location">
-                  <v-select placeholder="Select an option" :options="shelves_options"
-                            v-model="filters['location']"></v-select>
+                  <v-select v-model="filters['location']"
+                            :options="$store.getters['library/locations']"
+                            :reduce="player => player.id"
+                            label="name"
+                            placeholder="Select an option"
+                            value-prop="id"
+                  >
+                  </v-select>
                 </b-form-group>
               </b-col>
 
               <!-- Owner -->
-              <b-col sm="12" lg="6">
+              <b-col lg="6" sm="12">
                 <b-form-group label="Owner">
-                  <v-select v-model="filters['owner']" value-prop="id"
-                            :reduce="player => player.id" :filterable="false" label="name"
-                            :options="players" @search="searchPlayers">
+                  <v-select v-model="filters['owner']"
+                            :filterable="false"
+                            :options="players"
+                            :reduce="player => player.id"
+                            label="name"
+                            value-prop="id" @search="searchPlayers">
                   </v-select>
                 </b-form-group>
               </b-col>
@@ -108,30 +117,39 @@
 
     <!-- Content -->
     <div class="mt-4">
-      <b-row v-show="!loading">
-        <!-- Games list -->
-        <div class="col-12 col-lg-6" v-for="(game,index) in games" :key="index">
-          <LibraryGameCard :game="game" :bulk="bulk" v-model="selected" :value="game.id"
-                           v-on:checkin="checkinGame(game)"/>
-        </div>
-      </b-row>
+      <b-form-checkbox-group stacked v-model="selectedGames">
+        <b-row v-show="!loading">
+          <!-- Games list -->
+
+          <b-col v-for="(game,index) in games" :key="index" cols="12" lg="6">
+            <b-form-checkbox :value="game.id" :id="game.id" class="d-none">
+              </b-form-checkbox>
+            <label class="w-100" :for="game.id">
+              <LibraryGameCard :bg-variant="selectedGames.includes(game.id) ? 'light' : ''" v-model="selected" :bulk="bulk" :game="game" :value="game.id"
+                               v-on:checkin="checkinGame(game)"/>
+              </label>
+
+          </b-col>
+
+        </b-row>
+      </b-form-checkbox-group>
       <!-- Skeleton -->
       <b-row v-show="loading">
-        <b-col lg="6" sm="12" v-for="(index) in new Array(50)" v-bind:key="index">
+        <b-col v-for="(index) in new Array(50)" v-bind:key="index" lg="6" sm="12">
           <ItemCard>
             <template #image>
-              <b-skeleton type="avatar" width="3.5rem" height="3.5rem"></b-skeleton>
+              <b-skeleton height="3.5rem" type="avatar" width="3.5rem"></b-skeleton>
             </template>
             <template #metadata>
               <b-skeleton class="text-muted" width="100px"/>
             </template>
             <template #top-right>
-              <b-skeleton type="button" size="sm" width="75px"></b-skeleton>
+              <b-skeleton size="sm" type="button" width="75px"></b-skeleton>
             </template>
           </ItemCard>
         </b-col>
       </b-row>
-      <CheckinModal id="checkin-modal" :shelves="shelves_options" :game="selectedGame"
+      <CheckinModal id="checkin-modal" :game="selectedGame" :shelves="shelves_options"
                     v-on:checkin="checkinGame"></CheckinModal>
     </div>
 
@@ -152,7 +170,7 @@
         <li v-for="(page, index) in pagination.pages" v-bind:key="index"
             v-bind:class="{ active: pagination.active_page === page }">
           <b-link v-if="Number.isInteger(page)" class="page" @click="setPage(page)">{{ page }}</b-link>
-          <span class="page" v-else>{{ page }}</span>
+          <span v-else class="page">{{ page }}</span>
         </li>
       </ul>
 
@@ -166,7 +184,7 @@
       </ul>
     </b-row>
 
-    <div class="list-alert alert alert-dark alert-dismissible border fade" v-bind:class="{show: bulk}" role="alert">
+    <div class="list-alert alert alert-dark alert-dismissible border fade" role="alert" v-bind:class="{show: bulk}">
 
       <!-- Content -->
       <div class="row align-items-center">
@@ -174,7 +192,7 @@
 
           <!-- Checkbox -->
           <div class="custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="listAlertCheckbox" checked="" disabled="">
+            <input id="listAlertCheckbox" checked="" class="custom-control-input" disabled="" type="checkbox">
             <label class="custom-control-label text-white" for="listAlertCheckbox"><span
                 class="list-alert-count">{{ selected.length }}</span> game(s)</label>
           </div>
@@ -182,17 +200,17 @@
         </div>
         <div class="col-auto mr-n3">
           <!-- Button -->
-          <b-button size="sm" v-if="games.length > selected.length" @click="selectAll" class="btn-white-20">
+          <b-button v-if="games.length > selected.length" class="btn-white-20" size="sm" @click="selectAll">
             Select all
           </b-button>
-          <b-button size="sm" v-else @click="unselectAll" class="btn-outline-white">
+          <b-button v-else class="btn-outline-white" size="sm" @click="unselectAll">
             Unselect all
           </b-button>
-          <b-dropdown variant="white-20" :disabled="selected.length === 0" no-caret dropup class="ml-3" size="sm">
+          <b-dropdown :disabled="selected.length === 0" class="ml-3" dropup no-caret size="sm" variant="white-20">
             <template #button-content>
               <div class="d-flex flex-row align-items-center">
                 Actions
-                <b-icon-caret-up-fill font-scale="0.8" class="ml-2"></b-icon-caret-up-fill>
+                <b-icon-caret-up-fill class="ml-2" font-scale="0.8"></b-icon-caret-up-fill>
               </div>
             </template>
             <b-dropdown-item-button @click="checkoutGames">Check-out</b-dropdown-item-button>
@@ -202,7 +220,7 @@
       </div> <!-- / .row -->
 
       <!-- Close -->
-      <button type="button" @click="bulk=false" class="list-alert-close close" aria-label="Close">
+      <button aria-label="Close" class="list-alert-close close" type="button" @click="bulk=false">
         <span aria-hidden="true">×</span>
       </button>
 
@@ -243,6 +261,7 @@ export default {
       selectedGame: {
         game: {}
       },
+      selectedGames: [],
       players: [],
       filters: this.initFilters(),
       filtersOpen: false,
@@ -387,7 +406,7 @@ export default {
   border: 1px solid #d2ddec !important;
   background-color: #ffffff !important;
   padding: .5rem .75rem .5rem .75rem !important;
-  border-radius: .375rem !important;
+  border-radius: .375rem;
 }
 
 .vs__selected, .vs__search {
@@ -397,5 +416,45 @@ export default {
 
 .vs__actions {
   padding: 0 !important;
+}
+
+
+.v-select input::-webkit-input-placeholder {
+  color: #b1c2d9 !important;
+  opacity: 1
+}
+
+.v-select input::-moz-placeholder {
+  color: #b1c2d9 !important;
+  opacity: 1
+}
+
+.v-select input::-ms-input-placeholder {
+  color: #b1c2d9 !important;
+  opacity: 1
+}
+
+.v-select input::placeholder {
+  color: #b1c2d9 !important;
+  opacity: 1
+}
+
+.vs--open .vs__dropdown-toggle {
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.vs__dropdown-menu {
+  border-top-width: 1px;
+  border-color: #d2ddec !important;
+  box-shadow: none !important;
+}
+
+.custom-control-label{
+  width:100%
+}
+
+.custom-control-input{
+  display: none;
 }
 </style>

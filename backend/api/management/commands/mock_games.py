@@ -6,7 +6,7 @@ from boardgamegeek import BGGClient
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
-from backend.api.models import LibraryGame, Withdraw, Player
+from backend.api.models import LibraryGame, Withdraw, Player, Location
 
 bgg = BGGClient()
 
@@ -14,8 +14,7 @@ bgg = BGGClient()
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        shelves = ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 'C5', 'D1', 'D2',
-                   'D3', 'D4', 'D5', 'E1', 'E2', 'E3', 'E4', 'E5']
+        shelves = Location.objects.all()
 
         statuses = ['not-checkedin', 'available', 'not-available', 'checkedout']
 
@@ -29,7 +28,7 @@ class Command(BaseCommand):
             # mode = random.choice(statuses)
 
             if 0 <= mode < 5:
-                game.location = ''
+                game.location = None
                 game.date_checkout = None
 
             elif 5 <= mode < 85:
@@ -49,7 +48,7 @@ class Command(BaseCommand):
                 withdraw.save()
 
             elif mode >= 7:
-                game.location = ''
+                game.location = None
                 game.date_checkout = timezone.now()
 
             game.save()

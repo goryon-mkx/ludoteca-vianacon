@@ -42,5 +42,5 @@ export default {
     deleteGame(gameId) {
         return authApi.delete(URL+ `${gameId}/`)
             .then(response => response.data)
-    }
+    },
 }

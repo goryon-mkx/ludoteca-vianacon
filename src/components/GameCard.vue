@@ -1,7 +1,9 @@
 <template>
-  <ItemCard :title="game.name" :loading="loading" :bulk="bulk">
+  <ItemCard :bulk="bulk" :loading="loading" :title="game.name" :variant="bgVariant">
     <template v-slot:image>
-      <slot name="image"></slot>
+      <slot name="image">
+        <b-avatar :src="game.thumbnail" rounded size="lg"></b-avatar>
+      </slot>
     </template>
     <!--    <template v-slot:badges>-->
     <!--      <span v-for="(badge, index) in game.badges" v-bind:key="index" class="ml-2 badge" v-bind:class="{-->
@@ -14,7 +16,7 @@
       <b-icon-person-fill class="text-muted fe fe-users mr-2"></b-icon-person-fill>
 
       <span class=" text-muted">{{ num_players(game.min_players, game.max_players) }}</span>
-      <b-icon-clock-fill font-scale="0.8" class="ml-4 mr-2 text-muted fe fe-clock"></b-icon-clock-fill>
+      <b-icon-clock-fill class="ml-4 mr-2 text-muted fe fe-clock" font-scale="0.8"></b-icon-clock-fill>
       <span class=" text-muted">{{ playtime(game.min_playtime, game.max_playtime) }} </span>
     </template>
     <template v-slot:top-right>
@@ -48,6 +50,9 @@ export default {
       default: false,
       type: Boolean
     },
+    bgVariant: {
+      type: String,
+    }
   },
 
   mixins: [gamesMixin],

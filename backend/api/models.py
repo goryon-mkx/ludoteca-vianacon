@@ -14,7 +14,10 @@ class Badge(models.Model):
 
 
 class Location(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=20, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Player(models.Model):
@@ -77,7 +80,7 @@ class Game(models.Model):
 
 
 class LibraryGame(Game):
-    location = models.CharField(max_length=50, blank=True)
+    location = models.ForeignKey(Location, null=True, blank=True, default=None, on_delete=models.CASCADE)
 
     def status(self):
         if not self.location or self.date_checkin is None:

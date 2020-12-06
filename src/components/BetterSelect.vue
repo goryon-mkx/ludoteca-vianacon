@@ -1,90 +1,80 @@
 <template>
-    <div>
-        <div>
-            <b-form-input
-                class='search-input'
-                type='search'
-                v-model='filterCriteria'
-                v-on:click='toggleDropDown()'
-                v-on:keyup.enter='selectItem()'
-                :placeholder='placeholder'>
-            </b-form-input>
-        </div>
-        <div>
-            <b-collapse id='drop-down'>
-                <b-table
-                    no-border-collapse
-                    ref='collapsibleTable'
-                    responsive='sm'
-                    selectable
-                    select-mode='single'
-                    sticky-header='200px'
-                    thead-class='d-none'
-                    v-model='filteredRows'
-                    :fields='fields'
-                    :filter='filterCriteria'
-                    :items='items'
-                    :sort-by.sync='sortBy'
-                    :sort-desc.sync='sortDesc'
-                    @row-selected='rowSelected'>
-                </b-table>
-            </b-collapse>
-        </div>
-    </div>
+  <div>
+    <b-dropdown block class="d-block" menu-class="mh-300-px overflow-auto w-100" no-caret no-flip toggle-class="p-0"
+                variant="link">
+      <template #button-content>
+
+
+        <b-form-select v-model="selected" :options="options" :state="state" :text-field="textField"
+                       :value-field="valueField"
+                       required>
+          <template #first>
+            <b-form-select-option disabled hidden selected value="">Select an option</b-form-select-option>
+
+          </template>
+        </b-form-select>
+
+      </template>
+      <template #default>
+
+        <b-dropdown-form>
+          <b-form-group class="mb-0 mt-2">
+            <b-form-input v-model="search" autofocus debounce="300" placeholder="Type here to start search"
+                          size="sm"></b-form-input>
+          </b-form-group>
+        </b-dropdown-form>
+        <b-dropdown-item-button v-for="(option, index) in options" v-bind:key="index"
+                                :active="option[valueField] === selected" @click="select(option)">
+          {{ option[textField] }}
+        </b-dropdown-item-button>
+      </template>
+    </b-dropdown>
+
+  </div>
 </template>
 
 <script>
 
 export default {
-    data() {
-        return {
-            filterCriteria: '',
-            filteredRows: []
-        }
-    },
-    methods: {
-        toggleDropDown() {
-            this.$root.$emit('bv::toggle::collapse', 'drop-down')
-        },
-        selectItem() {
-            if (this.filteredRows.length === 1) {
-                this.$refs.collapsibleTable.selectRow(0)
-            }
-        },
-        rowSelected(rowArray) {
-            // No rows or 1 row can be selected
-            if (rowArray.length === 1) {
-                this.$emit('item-selected', rowArray[0])
-                this.filterCriteria = rowArray[0][this.display]
-                this.toggleDropDown()
-            }
-        }
-    },
-    props: {
-        display: {
-            required: true,
-            type: String
-        },
-        fields: {
-            required: true,
-            type: Array
-        },
-        items: {
-            required: true,
-            type: Array
-        },
-        placeholder: {
-            required: false,
-            default: 'Select'
-        },
-        sortBy: {
-            required: true,
-            type: String
-        },
-        sortDec: {
-            default: false,
-            required: false
-        }
+  data() {
+    return {
+      search: '',
+      selected: "",
     }
+  },
+  methods: {
+    select(val) {
+      this.selected = val[this.valueField]
+      this.$emit('input', val[this.valueField])
+    }
+  },
+  props: {
+    value: {
+      required: true,
+      default: '',
+      type: String
+    },
+    options: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    valueField: {
+      default: 'value',
+      type: String,
+
+    },
+    textField: {
+      default: 'text',
+      type: String,
+    },
+    state: {}
+  },
+  watch: {
+    search: function (val) {
+      this.$emit('search', val)
+    }
+  }
 }
 </script>

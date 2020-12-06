@@ -12,9 +12,8 @@ class PlayerFilter(filters.FilterSet):
 
 
 class LibraryGameFilter(filters.FilterSet):
-    location = filters.CharFilter(lookup_expr='icontains')
     status = filters.CharFilter(field_name='status')
 
     class Meta:
         model = LibraryGame
-        fields = ['owner']
+        fields = ['owner', 'location']

@@ -1,51 +1,82 @@
 import Vue from 'vue'
 import App from '@/App.vue'
+
+// -----------------------------------------------------------
+// Vuex
+// -----------------------------------------------------------
+
 import store from '@/store'
+
+
+// -----------------------------------------------------------
+// Vue-router
+// -----------------------------------------------------------
+
 import router from '@/router'
 
+
+// -----------------------------------------------------------
+// Vue toastification
+// -----------------------------------------------------------
+
 import Toast, {POSITION} from "vue-toastification";
-
-import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
-
-
-import Multiselect from 'vue-multiselect'
-import vSelect from 'vue-select'
-
-
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
-import "../public/theme/css/theme.min.css"
 import "vue-toastification/dist/index.css";
-
-import 'vue-select/dist/vue-select.css';
-
-
-import '@/../public/static/main.css'
-import Vuelidate from 'vuelidate'
-
-import vueDebounce from 'vue-debounce'
-
-Vue.component('v-select', vSelect)
-
-Vue.config.productionTip = false
-
-Vue.use(BootstrapVue)
-Vue.use(BootstrapVueIcons)
-
-Vue.use(Vuelidate)
-
-Vue.use(vueDebounce)
 
 Vue.use(Toast, {
     position: POSITION.TOP_CENTER,
     transition: "Vue-Toastification__fade",
     maxToasts: 10,
     newestOnTop: true,
-    hideProgressBar: true
+    hideProgressBar: false,
+    icon: true,
+    closeButton: "button",
 });
 
-Vue.component('multiselect', Multiselect)
 
+// -----------------------------------------------------------
+// Vue Bootstrap
+// -----------------------------------------------------------
+
+import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+Vue.use(BootstrapVue)
+Vue.use(BootstrapVueIcons)
+
+
+// -----------------------------------------------------------
+// Vue Select
+// -----------------------------------------------------------
+
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+
+Vue.component('v-select', vSelect)
+
+
+// -----------------------------------------------------------
+// Theme and custom styles
+// -----------------------------------------------------------
+import "../public/theme/css/theme.min.css"
+import '@/../public/static/main.css'
+
+// -----------------------------------------------------------
+// Vuelidate
+// -----------------------------------------------------------
+import Vuelidate from 'vuelidate'
+Vue.use(Vuelidate)
+
+
+// -----------------------------------------------------------
+// Other configurations
+// -----------------------------------------------------------
+import vueDebounce from 'vue-debounce'
+
+
+Vue.config.productionTip = false
+
+Vue.use(vueDebounce)
 
 const vue = new Vue({
     router,

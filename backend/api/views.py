@@ -12,8 +12,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
 from backend.api.filters import LibraryGameFilter, PlayerFilter
-from backend.api.models import LibraryGame, Player, Withdraw
-from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer
+from backend.api.models import LibraryGame, Player, Withdraw, Location
+from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer, \
+    LocationSerializer
 from backend.api.utils import BggGameUtils
 
 
@@ -92,3 +93,7 @@ class StatisticsViewSet(APIView):
 
         return Response({"library_games": library_games})
 
+
+class LocationViewSet(viewsets.ModelViewSet):
+    queryset = Location.objects.order_by('name').all()
+    serializer_class = LocationSerializer

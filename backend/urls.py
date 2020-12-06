@@ -17,6 +17,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'players', views.PlayerViewSet)
 # router.register(r'owners', views.OwnerViewSet)
 router.register(r'withdraw', views.WithdrawViewSet)
+router.register(r'locations', views.LocationViewSet)
 
 urlpatterns = [
     path('auth/', include('rest_framework.urls')),

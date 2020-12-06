@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import LibraryGame, BggGame, Withdraw, Player, Badge
+from .models import LibraryGame, BggGame, Withdraw, Player, Badge, Location
 
 
 class BadgeSerializer(serializers.ModelSerializer):
@@ -102,3 +102,9 @@ class WithdrawSerializer(serializers.ModelSerializer):
     class Meta:
         model = Withdraw
         fields = ('id', 'requisitor', 'requisitor_id', 'game', 'game_id', 'date_withdrawn', 'date_returned')
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = '__all__'
