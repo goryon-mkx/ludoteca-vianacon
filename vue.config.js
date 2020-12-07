@@ -4,7 +4,7 @@ module.exports = {
     outputDir: 'dist',
     assetsDir: 'static',
      publicPath: IS_PRODUCTION
-     ? 'http://leiriacon.herokuapp.com'
+     ? 'https://d3i9hwjfzmc2xm.cloudfront.net'
      : '/',
     // For Production, replace set baseUrl to CDN
     // And set the CDN origin to `yourdomain.com/static`
