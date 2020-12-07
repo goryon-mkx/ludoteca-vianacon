@@ -7,7 +7,7 @@
       <b-row>
         <b-col>
           <b-form-group label="Shelf">
-            <v-select v-model="game.location" :options="shelves"></v-select>
+<!--            <v-select v-model="game.location" :options="shelves"></v-select>-->
           </b-form-group>
         </b-col>
       </b-row>
