@@ -60,7 +60,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # Add dist to
-        'DIRS': ['dist'],
+        'DIRS': [os.path.join(BASE_DIR, 'dist')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,12 +123,11 @@ MIDDLEWARE_CLASSES = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
-#STATIC_URL = '/static/'
-STATIC_URL = '/'
+STATIC_URL = '/static/'
+# STATIC_URL = '/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'dist', 'static')
-STATICFILES_DIRS = [
-]
+STATICFILES_DIRS = []
 
 ##########
 # STATIC #

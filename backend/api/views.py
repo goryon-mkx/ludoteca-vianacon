@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db.models import Count
+from django.views.decorators.cache import never_cache
+from django.views.generic import TemplateView
 from rest_framework import viewsets, permissions, generics
 from rest_framework import filters
 from django_filters import rest_framework as django_filters
@@ -17,6 +19,9 @@ from backend.api.serializers import LibraryGameSerializer, UserSerializer, Playe
     LocationSerializer
 from backend.api.utils import BggGameUtils
 
+
+# Serve Vue Application
+index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 50
