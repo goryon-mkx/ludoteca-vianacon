@@ -1,7 +1,7 @@
 {
     "name": "Leiriacon",
     "description": "",
-    "repository": "https://github.com/gtalarico/django-vue-template",
+    "repository": "https://github.com/fabiogasparferreira/ludoteca",
     "keywords": ["django", "vue", "vuejs", "template", "django rest framework"],
     "env": {
       "DJANGO_SETTINGS_MODULE": {
@@ -10,8 +10,8 @@
       }
      },
      "engines": {
-        "yarn": "1.4.0",
-        "npm": "6.2.0"
+        "yarn": "1.x",
+        "npm": "15.x"
      },
     "addons": [
 
