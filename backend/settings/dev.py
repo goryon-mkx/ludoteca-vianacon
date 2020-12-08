@@ -123,10 +123,12 @@ MIDDLEWARE_CLASSES = (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
+STATIC_URL = '/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, 'dist', 'static')
-STATICFILES_DIRS = []
+STATICFILES_DIRS = [
+]
 
 ##########
 # STATIC #
@@ -143,3 +145,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ################
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+WHITENOISE_INDEX_FILE = True
