@@ -5,7 +5,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from .api.views import index_view
 from rest_framework import routers
@@ -22,7 +22,7 @@ router.register(r'withdraw', views.WithdrawViewSet)
 router.register(r'locations', views.LocationViewSet)
 
 urlpatterns = [
-path('', index_view, name='index'),
+    path('', index_view, name='index'),
 
     path('auth/', include('rest_framework.urls')),
 
@@ -36,4 +36,5 @@ path('', index_view, name='index'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+
 ]

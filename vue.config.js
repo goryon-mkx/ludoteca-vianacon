@@ -10,6 +10,8 @@ module.exports = {
     // And set the CDN origin to `yourdomain.com/static`
     // Whitenoise will serve once to CDN which will then cache
     // and distribute
+    publicPath: '/',
+    //indexPath: "index.html",
     devServer: {
       proxy: {
         '/api*': {

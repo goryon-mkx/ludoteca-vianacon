@@ -19,6 +19,7 @@
     "bootstrap-vue": "^2.x",
     "eslint": "^7.x",
     "eslint-plugin-vue": "^7.x",
+    "express": "^4.17.1",
     "js-cookie": "^2.x",
     "popper.js": "^1.x",
     "vee-validate": "^3.x",
