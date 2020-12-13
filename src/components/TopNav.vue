@@ -19,7 +19,7 @@
 
         <div class="d-flex flex-row align-items-center">
           <div class="d-flex flex-column align-items-end mr-3">
-            <a v-if="!isAuthenticated()" class="btn btn-outline-primary" href="/login/">Login</a>
+            <b-link v-if="!isAuthenticated()" class="btn btn-outline-primary" :to="{name: 'Login'}">Login</b-link>
           </div>
 
           <div v-if="isAuthenticated()">
