@@ -1,28 +1,32 @@
 {
-    "name": "Leiriacon",
-    "description": "",
-    "repository": "https://github.com/fabiogasparferreira/ludoteca",
-    "keywords": ["django", "vue", "vuejs", "template", "django rest framework"],
-    "env": {
-      "DJANGO_SETTINGS_MODULE": {
-        "description": "Set Django Settings to Production",
-        "value": "backend.settings.prod"
-      }
-     },
-     "engines": {
-        "yarn": "1.x",
-        "npm": "15.x"
-     },
-    "addons": [
-
-     ],
-     "buildpacks": [
-
-       {
-         "url": "heroku/nodejs"
-        },
-       {
-         "url": "https://github.com/heroku/heroku-buildpack-static"
-       }
-    ]
-  }
+  "name": "Leiriacon",
+  "description": "",
+  "repository": "https://github.com/fabiogasparferreira/ludoteca",
+  "keywords": [
+    "django",
+    "vue",
+    "vuejs",
+    "template",
+    "django rest framework"
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": {
+      "description": "Set Django Settings to Production",
+      "value": "backend.settings.prod"
+    }
+  },
+  "engines": {
+    "yarn": "1.x",
+    "npm": "15.x"
+  },
+  "addons": [
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

@@ -9,7 +9,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node server.js"
   },
   "dependencies": {
     "axios": "^0.x",
@@ -22,6 +23,7 @@
     "express": "^4.17.1",
     "js-cookie": "^2.x",
     "popper.js": "^1.x",
+    "serve-static": "^1.14.1",
     "vee-validate": "^3.x",
     "vue": "^2.x",
     "vue-router": "^3.x",
