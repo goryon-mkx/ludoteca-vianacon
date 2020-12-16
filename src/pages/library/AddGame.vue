@@ -1,10 +1,11 @@
 <template>
-  <WizardScreen pre-title="library" title="New game" :back-to="{name: 'Home'}">
+  <WizardScreen :back-to="{name: 'Home'}" pre-title="library" title="New game">
     <template #content>
       <form novalidate @submit.stop.prevent="onSubmit">
 
+
         <!-- Game -->
-        <b-form-group label="Game" invalid-feedback="This field is required">
+        <b-form-group invalid-feedback="This field is required" label="Game">
           <div v-if="!game.id" class="d-flex flex-row align-items-center justify-content-between">
             <span class="text-muted">No game selected</span>
             <b-button v-b-modal.game-select-modal variant="outline-secondary">Search games</b-button>
@@ -19,7 +20,7 @@
         </b-form-group>
 
         <!-- Owner -->
-        <b-form-group label="Owner" invalid-feedback="This field is required">
+        <b-form-group invalid-feedback="This field is required" label="Owner">
           <div v-if="!player.id" class="d-flex flex-row align-items-center justify-content-between">
             <span class="text-muted">No player selected</span>
             <b-button v-b-modal.player-select-modal variant="outline-secondary">Search players</b-button>
@@ -33,10 +34,15 @@
         </b-form-group>
 
         <!-- Location -->
-        <b-form-group label="Location" invalid-feedback="This field is required">
-          <b-form-input v-model="form.location" hidden :state="validateState('location')"/>
-          <BetterSelect v-model="form.location" :options="$store.getters['library/locations']"
-                        :state="validateState('location')" text-field="name" value-field="id"/>
+        <b-form-group invalid-feedback="This field is required" label="Location">
+          <b-form-input v-model="selected" :state="validateState('location')" hidden/>
+          <FormSelect
+              v-model="form.location"
+              :options="$store.getters['library/locations']"
+              :state="validateState('location')"
+              option-text="name"
+              option-value="id"
+          />
         </b-form-group>
 
         <!-- Notes -->
@@ -68,8 +74,7 @@ import formMixin from "@/mixins/form.mixins"
 import ModalPlayerSelect from "@/components/ModalPlayerSelect"
 import GameCard from "@/components/GameCard"
 import WizardScreen from "@/components/templates/WizardScreen"
-import BetterSelect from "@/components/BetterSelect"
-
+import FormSelect from "@/components/FormSelect"
 
 import {required} from 'vuelidate/lib/validators'
 
@@ -81,7 +86,7 @@ export default {
     PersonCard,
     ModalGameSelect,
     GameCard,
-    BetterSelect
+    FormSelect
   },
   mixins: [gamesMixin, formMixin],
   data() {

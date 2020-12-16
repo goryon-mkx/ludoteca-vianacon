@@ -64,27 +64,26 @@
               <!-- Location -->
               <b-col lg="6" sm="12">
                 <b-form-group label="Location">
-                  <v-select v-model="filters['location']"
-                            :options="$store.getters['library/locations']"
-                            :reduce="player => player.id"
-                            label="name"
-                            placeholder="Select an option"
-                            value-prop="id"
-                  >
-                  </v-select>
+                  <FormSelect
+                      v-model="filters['location']"
+                      :options="$store.getters['library/locations']"
+                      option-text="name"
+                      option-value="id"
+                  />
                 </b-form-group>
               </b-col>
 
               <!-- Owner -->
               <b-col lg="6" sm="12">
                 <b-form-group label="Owner">
-                  <v-select v-model="filters['owner']"
-                            :filterable="false"
-                            :options="players"
-                            :reduce="player => player.id"
-                            label="name"
-                            value-prop="id" @search="searchPlayers">
-                  </v-select>
+
+                  <FormSelect
+                      v-model="filters['player']"
+                      :options="$store.getters['library/players']"
+                      option-text="name"
+                      option-value="id"
+                      @search="searchPlayers"
+                  />
                 </b-form-group>
               </b-col>
 
@@ -149,6 +148,7 @@
           </ItemCard>
         </b-col>
       </b-row>
+
       <CheckinModal id="checkin-modal" :game="selectedGame" :shelves="shelves_options"
                     v-on:checkin="checkinGame"></CheckinModal>
     </div>
@@ -240,6 +240,7 @@ import playerService from "@/services/player.service"
 import CheckinModal from "@/components/CheckinModal"
 import ItemCard from "@/components/ItemCard"
 import usersMixin from "@/mixins/users.mixin"
+import FormSelect from "@/components/FormSelect";
 
 export default {
   name: "Home",
@@ -275,7 +276,7 @@ export default {
       ],
     }
   },
-  components: {CheckinModal, ModalPlayerSelect, LibraryGameCard, Header, ItemCard},
+  components: {FormSelect, CheckinModal, ModalPlayerSelect, LibraryGameCard, Header, ItemCard},
   mixins: [gamesMixin, usersMixin],
   mounted() {
     this.pagination = this.paginationReset()
@@ -398,57 +399,6 @@ export default {
 </script>
 <style>
 
-.vs__dropdown-toggle:has(.vs__search:focus) {
-  border-color: #2c7be5 !important;
-}
-
-.vs__dropdown-toggle {
-  border: 1px solid #d2ddec !important;
-  background-color: #ffffff !important;
-  padding: .5rem .75rem .5rem .75rem !important;
-  border-radius: .375rem;
-}
-
-.vs__selected, .vs__search {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.vs__actions {
-  padding: 0 !important;
-}
-
-
-.v-select input::-webkit-input-placeholder {
-  color: #b1c2d9 !important;
-  opacity: 1
-}
-
-.v-select input::-moz-placeholder {
-  color: #b1c2d9 !important;
-  opacity: 1
-}
-
-.v-select input::-ms-input-placeholder {
-  color: #b1c2d9 !important;
-  opacity: 1
-}
-
-.v-select input::placeholder {
-  color: #b1c2d9 !important;
-  opacity: 1
-}
-
-.vs--open .vs__dropdown-toggle {
-  border-bottom-left-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-}
-
-.vs__dropdown-menu {
-  border-top-width: 1px;
-  border-color: #d2ddec !important;
-  box-shadow: none !important;
-}
 
 .custom-control-label{
   width:100%

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <GameCard :bulk="bulk"
-              :game="game.game"
-              :bg-variant="bgVariant">
+    <GameCard :bg-variant="bgVariant"
+              :bulk="bulk"
+              :game="game.game">
 
       <!-- Image (or checkbox if enabled)-->
       <template v-slot:image>
@@ -15,6 +15,7 @@
               <b-icon-check/>
             </b-button>
           </div>
+
           <b-avatar :src="game.game.thumbnail" rounded size="lg"></b-avatar>
         </div>
       </template>
@@ -36,6 +37,15 @@
                     variant="white"
                     @click="returnGame(game)">
             <span class="text-muted">RETURN ({{ game.location }})</span></b-button>
+
+          <b-dropdown class="ml-1" no-caret size="sm" toggle-class="text-decoration-none" variant="white">
+            <template #button-content>
+              <b-icon-three-dots/>
+            </template>
+            <b-dropdown-item-button>Edit</b-dropdown-item-button>
+            <b-dropdown-item-button>Checkout</b-dropdown-item-button>
+          </b-dropdown>
+
         </div>
 
       </template>
@@ -51,8 +61,8 @@
 
       </template>
     </GameCard>
-    <!--      <CheckinModal id="checkin-modal" :shelves="shelves_options" :game="selectedGame"-->
-    <!--                    v-on:checkin="checkinGame"></CheckinModal>-->
+          <CheckinModal id="checkin-modal" :shelves="shelves_options" :game="selectedGame"
+                        v-on:checkin="checkinGame"></CheckinModal>
   </div>
 </template>
 
@@ -61,12 +71,14 @@
 import withdrawService from '@/services/withdraw.service'
 import GameCard from "@/components/GameCard";
 import usersMixin from "@/mixins/users.mixin";
+import CheckinModal from "@/components/CheckinModal";
 
 export default {
 
   name: "LibraryGame",
   components: {
-    GameCard
+    GameCard,
+    CheckinModal
   },
   mixins: [usersMixin],
   props: ['checked', 'value', 'game', 'bulk', 'bgVariant'],
