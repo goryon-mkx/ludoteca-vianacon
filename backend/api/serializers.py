@@ -2,12 +2,18 @@ from django.contrib.auth.models import User
 
 from rest_framework import serializers
 
-from .models import LibraryGame, BggGame, Withdraw, Player, Badge, Location
+from .models import LibraryGame, BggGame, Withdraw, Player, Badge, Location, Supplier
 
 
 class BadgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Badge
+        fields = '__all__'
+
+
+class SupplierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Supplier
         fields = '__all__'
 
 

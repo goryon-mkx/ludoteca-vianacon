@@ -17,6 +17,7 @@ router = routers.DefaultRouter()
 router.register(r'library/games', views.LibraryGameViewSet)
 router.register(r'library/withdraw', views.WithdrawViewSet)
 router.register(r'library/locations', views.LocationViewSet)
+router.register(r'store/suppliers', views.SupplierViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'players', views.PlayerViewSet)
 
