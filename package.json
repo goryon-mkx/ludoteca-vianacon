@@ -1,16 +1,11 @@
 {
   "name": "ludoteca",
   "version": "0.1.0",
-  "engines": {
-    "node": "15.x",
-    "yarn": "1.x"
-  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "start": "node server.js"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.x",
@@ -20,11 +15,8 @@
     "bootstrap-vue": "^2.x",
     "eslint": "^7.x",
     "eslint-plugin-vue": "^7.x",
-    "express": "^4.17.1",
     "js-cookie": "^2.x",
     "popper.js": "^1.x",
-    "serve-static": "^1.14.1",
-    "vee-validate": "^3.x",
     "vue": "^2.x",
     "vue-router": "^3.x",
     "vue-select": "^3.x",

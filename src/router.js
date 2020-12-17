@@ -33,7 +33,7 @@ const routes = [
                 path: "/",
                 name: "Home",
                 component: Home,
-                props: {title: 'Library', pretitle: 'leiriacon 2021'}
+                props: {title: 'Library', pretitle: 'leiriacon 2022'}
             },
             {
                 path: "/library/",
@@ -57,7 +57,6 @@ const routes = [
     {
         path: "/library/new",
         name: "AddLibraryGame",
-        props: {title: "New library game"},
         beforeEnter: guardAuthenticated,
         component: AddGame
     },

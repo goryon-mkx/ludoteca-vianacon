@@ -3,44 +3,34 @@
   ================================================== -->
 
   <div class="min-vh-100 d-flex">
-  <div class="container align-self-center">
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-5 col-xl-4 my-5">
+    <div class="container align-self-center">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
 
-        <!-- Heading -->
-        <h1 class="display-4 text-center mb-3">
-          Sign in
-        </h1>
+          <!-- Heading -->
+          <h1 class="display-4 text-center mb-3">
+            Sign in
+          </h1>
 
-        <!-- Subheading -->
-        <p class="text-muted text-center mb-5">
-          Free access to leiriacon platform
-        </p>
+          <!-- Subheading -->
+          <p class="text-muted text-center mb-5">
+            Free access to leiriacon platform
+          </p>
 
-        <!-- Form -->
-        <ValidationObserver ref="form" v-slot="{ handleSubmit }">
-          <form @submit.prevent="handleSubmit(doLogin)">
+          <!-- Form -->
+          <form @submit.prevent="doLogin">
 
 
-            <!-- Email address -->
-            <ValidationProvider
-                rules="required"
-                v-slot="{ errors }"
-                name="E-mail"
-            >
-              <b-form-group label="E-mail">
+            <b-form-group label="E-mail">
 
-                <!-- Input -->
-                <b-form-input lab
-                              type="text"
-                              :state="errors[0] ? false : null"
-                              v-model="username"
-                              tabindex="1"
-                              placeholder="Enter your e-mail"/>
+              <!-- Input -->
+              <b-form-input v-model="username"
+                            lab
+                            placeholder="Enter your e-mail"
+                            tabindex="1"
+                            type="text"/>
 
-                <b-form-invalid-feedback>{{ errors[0] }}</b-form-invalid-feedback>
-              </b-form-group>
-            </ValidationProvider>
+            </b-form-group>
 
             <!-- Password -->
             <b-form-group>
@@ -55,7 +45,7 @@
                 <div class="col-auto">
 
                   <!-- Help text -->
-                  <a href="password-reset.html" class="form-text small text-muted">
+                  <a class="form-text small text-muted" href="password-reset.html">
                     Forgot password?
                   </a>
 
@@ -66,8 +56,8 @@
               <b-input-group class="input-group-merge">
 
                 <!-- Input -->
-                <b-form-input type="password" v-model="password" tabindex="2"
-                              placeholder="Enter your password"/>
+                <b-form-input v-model="password" placeholder="Enter your password" tabindex="2"
+                              type="password"/>
               </b-input-group>
 
             </b-form-group>
@@ -85,27 +75,19 @@
             </div>
 
           </form>
-        </ValidationObserver>
 
-      </div>
-    </div> <!-- / .row -->
-  </div> <!-- / .container -->
+        </div>
+      </div> <!-- / .row -->
+    </div> <!-- / .container -->
   </div>
 </template>
 
 <script>
-import {ValidationProvider, ValidationObserver, extend} from 'vee-validate';
-import * as rules from "vee-validate/dist/rules";
-import axiosUtils from "@/mixins/axios.utils"
 
-// install rules
-Object.keys(rules).forEach(rule => {
-  extend(rule, rules[rule]);
-});
+import axiosUtils from "@/mixins/axios.utils"
 
 export default {
   name: "Login",
-  components: {ValidationProvider, ValidationObserver},
   data: function () {
     return {
       username: '',

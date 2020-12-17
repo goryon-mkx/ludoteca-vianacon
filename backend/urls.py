@@ -14,12 +14,12 @@ from django.http import FileResponse
 from backend.api import views
 
 router = routers.DefaultRouter()
-router.register(r'library-games', views.LibraryGameViewSet)
+router.register(r'library/games', views.LibraryGameViewSet)
+router.register(r'library/withdraw', views.WithdrawViewSet)
+router.register(r'library/locations', views.LocationViewSet)
+router.register(r'store/suppliers', views.SupplierViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'players', views.PlayerViewSet)
-# router.register(r'owners', views.OwnerViewSet)
-router.register(r'withdraw', views.WithdrawViewSet)
-router.register(r'locations', views.LocationViewSet)
 
 urlpatterns = [
     path('', index_view, name='index'),

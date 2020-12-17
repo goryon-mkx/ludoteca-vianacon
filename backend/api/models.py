@@ -4,6 +4,7 @@ from django.db import models
 from django.db.models import Count
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Badge(models.Model):
@@ -11,6 +12,13 @@ class Badge(models.Model):
 
     def __str__(self):
         return self.label
+
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=100)
+    phone = PhoneNumberField(blank=True, null=True, default=None)
+    email = models.EmailField(blank=True, null=True, default=None)
+    website = models.CharField(blank=True, null=True, default=None, max_length=200)
 
 
 class Location(models.Model):

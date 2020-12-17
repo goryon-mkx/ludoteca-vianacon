@@ -1,8 +1,10 @@
-import settingsService from '@/services/settings.service'
+import playersService from '@/services/player.service'
+import libraryService from '@/services/library.service'
 
 const state = {
     games: [],
-    locations: []
+    locations: [],
+    players: []
 }
 
 const getters = {
@@ -11,13 +13,21 @@ const getters = {
     },
     locations: state => {
         return state.locations
+    },
+    players: state => {
+        return state.players
     }
 }
 
 const actions = {
-    loadLocations({commit}){
-        settingsService.getLocations().then(data => {
+    loadLocations({commit}) {
+        libraryService.getLocations().then(data => {
             commit("setLocations", data)
+        })
+    },
+    loadPlayers({commit}){
+        playersService.fetchPlayers().then(data => {
+            commit("setPlayers", data)
         })
     }
 }
@@ -32,8 +42,11 @@ const mutations = {
     deleteGame(state, gameId) {
         state.games = state.games.filter(obj => obj.pk !== gameId)
     },
-    setLocations(state, payload){
+    setLocations(state, payload) {
         state.locations = payload
+    },
+    setPlayers(state, payload){
+        state.players = payload
     }
 }
 

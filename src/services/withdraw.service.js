@@ -1,6 +1,6 @@
 import {authApi} from '@/services/api'
 
-const URL = '/api/withdraw/'
+const URL = '/api/library/withdraw/'
 
 export default {
     withdrawGame(payload) {

@@ -5,36 +5,33 @@ from django.views.generic import TemplateView
 from rest_framework import viewsets, permissions, generics
 from rest_framework import filters
 from django_filters import rest_framework as django_filters
-
-# Serve Vue Application
-from rest_framework.exceptions import ValidationError
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
 from backend.api.filters import LibraryGameFilter, PlayerFilter
-from backend.api.models import LibraryGame, Player, Withdraw, Location
+from backend.api.models import LibraryGame, Player, Withdraw, Location, Supplier
 from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer, \
-    LocationSerializer
+    LocationSerializer, SupplierSerializer
 from backend.api.utils import BggGameUtils
-
 
 # Serve Vue Application
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 50
 
 
-# class OwnerViewSet(viewsets.ModelViewSet):
-#     queryset = Player.objects.annotate(num_games=Count('librarygame')).filter(num_games__gt=0)
-#     serializer_class = PlayerSerializer
-#     authentication_classes = (authentication.JWTAuthentication,)
-#     filter_backends = (filters.SearchFilter,)
-#     search_fields = ['name', 'email']
-#     permission_classes = (permissions.IsAdminUser,)
-#
+class SupplierViewSet(viewsets.ModelViewSet):
+    queryset = Supplier.objects.order_by('name')
+    serializer_class = SupplierSerializer
+    authentication_classes = (authentication.JWTAuthentication,)
+    permission_classes = (permissions.IsAdminUser,)
+    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
+    search_fields = ['name']
+
 
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.order_by('name')
