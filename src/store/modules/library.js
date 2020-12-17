@@ -1,5 +1,5 @@
-import settingsService from '@/services/settings.service'
 import playersService from '@/services/player.service'
+import libraryService from '@/services/library.service'
 
 const state = {
     games: [],
@@ -21,7 +21,7 @@ const getters = {
 
 const actions = {
     loadLocations({commit}) {
-        settingsService.getLocations().then(data => {
+        libraryService.getLocations().then(data => {
             commit("setLocations", data)
         })
     },
