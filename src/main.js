@@ -56,16 +56,6 @@ Vue.component('v-select', vSelect)
 
 
 // -----------------------------------------------------------
-// Vue cool select
-// -----------------------------------------------------------
-import { CoolSelectPlugin } from 'vue-cool-select'
-
-import 'vue-cool-select/dist/themes/bootstrap.css'
-
-Vue.use(CoolSelectPlugin)
-
-
-// -----------------------------------------------------------
 // Theme and custom styles
 // -----------------------------------------------------------
 import "../public/theme/css/theme.min.css"

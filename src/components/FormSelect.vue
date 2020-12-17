@@ -11,17 +11,6 @@
     >
     </v-select>
 
-<!--    {{ selected }}-->
-<!--    <cool-select-->
-<!--        v-model="selected"-->
-<!--        :error-message="state === null ? '' : 'It doesn\'t matter, it won\'t be shown anyway. Just make sure is not empty.'"-->
-<!--        :item-text="optionText"-->
-<!--        :item-value="optionValue"-->
-<!--        :items="options"-->
-<!--        :placeholder="placeholder"-->
-<!--        :successful="null"-->
-<!--        @search="$emit('search', $event)"-->
-<!--    />-->
   </div>
 </template>
 
