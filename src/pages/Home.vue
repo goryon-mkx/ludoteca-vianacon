@@ -149,7 +149,7 @@
         </b-col>
       </b-row>
 
-      <CheckinModal id="checkin-modal" :game="selectedGame" :shelves="shelves_options"
+      <CheckinModal id="checkin-modal" :game="selectedGame" :shelves="$store.getters['library/locations']"
                     v-on:checkin="checkinGame"></CheckinModal>
     </div>
 
@@ -266,7 +266,6 @@ export default {
       players: [],
       filters: this.initFilters(),
       filtersOpen: false,
-      shelves_options: ['A1', 'A2', 'A3', 'A4', 'A5', 'B1', 'B2', 'B3', 'B4', 'B5', 'C1', 'C2', 'C3', 'C4', 'C5'],
       availability_options: [],
       status_options: [
         {value: 'available', text: 'Available'},
