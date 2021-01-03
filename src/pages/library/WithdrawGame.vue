@@ -1,5 +1,5 @@
 <template>
-  <WizardScreen :title="title" back-to="{name: 'Home'}">
+  <WizardScreen :title="title" :back-to="{name: 'LibraryHome'}">
     <template #content>
       <b-form>
         <b-form-group label="Game">
