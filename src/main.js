@@ -60,6 +60,7 @@ Vue.component('v-select', vSelect)
 // -----------------------------------------------------------
 import "../public/theme/css/theme.min.css"
 import '../public/static/main.scss'
+import "../public/theme/fonts/feather/feather.css"
 
 
 // -----------------------------------------------------------
