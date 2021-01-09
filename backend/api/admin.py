@@ -1,7 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin
+
 from backend.api.models import BggGame, Badge, Location
+
+User = get_user_model()
+
+admin.site.register(User, UserAdmin)
 
 
 @admin.register(BggGame)

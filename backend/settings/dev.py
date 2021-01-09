@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'phonenumber_field',
+    'django_rest_passwordreset',
     'backend.api',
 ]
 
@@ -146,5 +147,8 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 WHITENOISE_INDEX_FILE = True
+
+AUTH_USER_MODEL = 'api.User'

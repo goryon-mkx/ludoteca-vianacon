@@ -1,15 +1,14 @@
-import csv
+import random
 import time
-from io import StringIO
 
 import boardgamegeek
 import pandas as pd
-import requests
 from boardgamegeek import BGGClient
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
-from backend.api.models import BggGame, LibraryGame, Location
+from backend.api.models import BggGame, LibraryGame, Location, Withdraw
 from backend.api.utils import BggGameUtils
 
 User = get_user_model()
@@ -29,30 +28,24 @@ class Command(BaseCommand):
                 rs = bgg.search(query)
 
                 if rs:
-                    print('Successfully fetch game: ' + rs[0].name + str())
                     return bgg.game(game_id=rs[0].id)
 
             except boardgamegeek.exceptions.BGGValueError:
-                print('[ERROR] Invalid parameters')
                 raise
 
             except boardgamegeek.exceptions.BGGApiRetryError:
-                print('[ERROR] Retry after delay, retrying...')
                 max_count -= 1
                 time.sleep(10)
 
             except boardgamegeek.exceptions.BGGApiError:
-                print('[ERROR] API response invalid or not parsed')
                 max_count -= 1
                 time.sleep(10)
 
             except boardgamegeek.exceptions.BGGApiTimeoutError:
-                print('[ERROR] Timeout')
                 max_count -= 1
                 time.sleep(10)
 
             except Exception as err:
-                print('err')
                 max_count -= 1
                 time.sleep(10)
 
@@ -155,4 +148,46 @@ class Command(BaseCommand):
             else:
                 print('game without id')
 
-        print('Done, games skipped: ' + str(skipped))
+        print(f'Done (number of games skipped: {len(skipped)})')
+
+        print('4. Set library games location and randomize status')
+        shelves = Location.objects.all()
+
+        statuses = ['not-checkedin', 'available', 'not-available', 'checkedout']
+
+        for game in LibraryGame.objects.all():
+            # understand wich it will be the status of the mocked game
+            # 0 => not checkedin,
+            # 1 => available
+            # 2 => on the table
+            # 3 => checkedout
+            mode = random.randint(0, 99)
+            # mode = random.choice(statuses)
+
+            if 0 <= mode < 5:
+                game.location = None
+                game.date_checkout = None
+
+            elif 5 <= mode < 85:
+                game.location = random.choice(shelves)
+                withdraw_filter = game.withdraw_set.filter(date_returned=None)
+                if withdraw_filter.count() > 0:
+                    for w in withdraw_filter:
+                        w.date_returned = timezone.now()
+                        w.save()
+
+            elif 85 <= mode < 99:
+                game.location = random.choice(shelves)
+                withdraw = Withdraw()
+                withdraw.game = game
+                withdraw.requisitor = random.choice(User.objects.all())
+                withdraw.date_withdrawn = timezone.now()
+                withdraw.save()
+
+            elif mode >= 7:
+                game.location = None
+                game.date_checkout = timezone.now()
+
+            game.save()
+        print('Done')
+        print('Exiting...')
