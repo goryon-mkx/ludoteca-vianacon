@@ -21,7 +21,7 @@
             <b-col lg="6" sm="12">
               <b-form-group label="Owner">
                 <FormSelect
-                  v-model="filters['player']"
+                  v-model="filters['owner']"
                   :options="$store.getters['library/players']"
                   option-text="name"
                   option-value="id"
