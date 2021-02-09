@@ -48,7 +48,10 @@
       <FiltersButton :filters="filters" collapse-id="filters-collapse" />
     </b-row>
 
-    <Filters v-model="filters" collapse-id="filters-collapse" />
+    <Filters v-model="filters" collapse-id="filters-collapse">
+      <FilterSelect v-model="filters" id="location" label="Location" :options="$store.getters['library/locations']"/>
+      <FilterSelect v-model="filters" id="player" label="Owner" :options="$store.getters['library/players']" @search="searchPlayers"/>
+    </Filters>
 
     <!-- Content -->
     <div class="mt-4">
@@ -193,6 +196,7 @@ import axiosUtils from '@/mixins/axios.utils'
 import Pagination from '@/components/Pagination'
 import Filters from '@/components/Filters'
 import FiltersButton from '@/components/FiltersButton'
+import FilterSelect from '@/components/FilterSelect'
 
 export default {
   name: 'Home',
@@ -209,7 +213,7 @@ export default {
       },
       selectedGames: [],
       players: [],
-      filters: {},
+      filters: new Filters.Model(),
       availability_options: [],
       status_options: [
         { value: 'available', text: 'Available' },
@@ -230,6 +234,7 @@ export default {
     Header,
     ItemCard,
     Filters,
+    FilterSelect,
   },
   mixins: [gamesMixin, usersMixin],
   mounted() {

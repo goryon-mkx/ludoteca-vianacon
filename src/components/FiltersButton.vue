@@ -12,8 +12,8 @@
     >
       <b-icon-filter></b-icon-filter>
       Filters
-      <b-badge v-show="Object.keys(filters).length > 0" class="ml-1">{{
-        Object.keys(filters).length
+      <b-badge v-show="filters.count() > 0" class="ml-1">{{
+        filters.count()
       }}</b-badge>
     </b-button>
   </b-col>
