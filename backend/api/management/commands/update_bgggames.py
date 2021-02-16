@@ -15,6 +15,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for game in BggGame.objects.all():
-            external_game = utils.get_external_game(game.bggid)
-            game = utils.external_game_to_api(external_game, game)
+            external_game = utils.BoardGameGeek.get_external_game(game.bggid)
+            game = utils.BoardGameGeek.convert_external_game(external_game, game)
             game.save()
