@@ -11,10 +11,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
 from backend.api.filters import LibraryGameFilter
-from backend.api.models import LibraryGame, Withdraw, Location, Supplier
+from backend.api.models import LibraryGame, Withdraw, Location, Supplier, BggGame
 from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer, \
-    LocationSerializer, SupplierSerializer
-from backend.api.utils import BggGameUtils
+    LocationSerializer, SupplierSerializer, BggGameSerializer
+from backend.api import utils
 
 User = get_user_model()
 
@@ -49,7 +49,7 @@ class PlayerViewSet(viewsets.ModelViewSet):
 class LibraryGameViewSet(viewsets.ModelViewSet):
     queryset = LibraryGame.objects.order_by('game__name')
     serializer_class = LibraryGameSerializer
-    search_fields = ['game__name']
+    search_fields = ['game__name', 'game__other_names']
     filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     filterset_class = LibraryGameFilter
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
@@ -58,10 +58,10 @@ class LibraryGameViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         bggid = serializer.initial_data['game_id']
-        game = BggGameUtils.find(bggid)
+        game = utils.BGGGame.find(bggid)
 
         if game is None:
-            game = BggGameUtils.create(bggid)
+            game = utils.BGGGame.create(bggid)
 
         serializer.is_valid()
         serializer.save(game=game)
