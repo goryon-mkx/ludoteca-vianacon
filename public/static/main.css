@@ -1,27 +1,33 @@
-.select2-dropdown, .select2-search__field, .select2-container {
-  border-color: #d2ddec !important;
-}
-
-.select2-container {
-  border-width: 1px;
-  border-style: solid;
-}
-
-.select2-selection {
-  border-width: 0 !important;
-}
-
-.select2-selection__rendered {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
-
 .mh-300-px {
   max-height: 300px;
 }
 
-select:invalid {
-  color: #95aac9;
+/*
+Media query manager
+
+0-600px :   Phone
+600-100px:  Tablet portrait
+1000-1200px: Tablet landscape
+1200-1800px: Normal desktops
+1800px-...: Big Desktop
+
+$breakpoint argument choices:
+- phone
+- tab-port
+- tab-land
+- big-desktop
+
+ORDER: Base + typography > general layout + grid > page layout > components
+*/
+@media (max-width: 62.5em) {
+  html {
+    font-size: 87.5%;
+  }
+}
+@media (min-width: 87.5em) {
+  html {
+    font-size: 100%;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,82 +1,124 @@
 <template>
-  <ItemCard
-    :bulk="bulk"
-    :loading="loading"
-    :title="game.name"
-    :variant="bgVariant"
-  >
-    <template v-slot:image>
-      <slot name="image">
-        <b-avatar :src="game.thumbnail" rounded size="lg"></b-avatar>
-      </slot>
+  <b-skeleton-wrapper :loading="loading">
+    <template #loading>
+      <b-card no-body>
+        <b-card-img src="./static/blank_box.jpg" style="height: 8rem" />
+        <b-card-body>
+          <b-skeleton width="50%" />
+          <b-skeleton class="mt-2" width="40%" />
+          <b-skeleton class="mt-2" width="30%" />
+          <b-skeleton class="mt-2" width="30%" />
+        </b-card-body>
+        <b-card-footer v-if="!noFooter">
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+          >
+            <b-skeleton width="20%" />
+            <b-skeleton width="20%" />
+          </div>
+        </b-card-footer>
+      </b-card>
     </template>
-    <!--    <template v-slot:badges>-->
-    <!--      <span v-for="(badge, index) in game.badges" v-bind:key="index" class="ml-2 badge" v-bind:class="{-->
-    <!--      'badge-soft-primary': badge.label === 'Recomendado',-->
-    <!--      'badge-soft-success': badge.label === 'Jogo do Ano'-->
-    <!--      }"-->
-    <!--      >{{ badge.label }}</span>-->
-    <!--    </template>-->
-    <template v-slot:metadata>
-      <slot name="metadata">
-        <b-icon-person-fill class="text-muted mr-2"></b-icon-person-fill>
-        <span class=" text-muted">{{
-          num_players(game.min_players, game.max_players)
-        }}</span>
-        <b-icon-clock-fill
-          class="ml-4 mr-2 text-muted"
-          font-scale="0.8"
-        ></b-icon-clock-fill>
-        <span class=" text-muted"
-          >{{ playtime(game.min_playtime, game.max_playtime) }}
-        </span>
-      </slot>
-    </template>
-    <template v-slot:top-right>
-      <slot name="top-right"></slot>
-    </template>
-    <template v-slot:bottom-right>
-      <slot name="bottom-right"></slot>
-    </template>
-    <template v-slot:right>
-      <slot name="right"></slot>
-    </template>
-  </ItemCard>
+
+    <b-card no-body>
+      <div class="position-relative">
+        <b-card-img-lazy
+          v-if="!noImage"
+          :src="image"
+          blank-src="./static/blank_box.jpg"
+          blank-height="8rem"
+          style="object-fit: cover; height: 8rem"
+        />
+        <div v-if="selectable"
+          class="position-absolute"
+          style="
+            top: 0;
+            border-radius: 5px 0 5px 0;
+            background-color: rgba(1,1, 1, 0.5);
+          "
+        >
+          <b-checkbox v-model="gameSelected" class="ml-3 mr-1 my-2" size="lg" />
+        </div>
+      </div>
+      <b-card-body>
+        <span
+          class="text-nowrap font-size-lg d-block overflow-hidden text-truncate"
+          v-show="title"
+          >{{ title }}</span
+        >
+
+        <div>
+          <slot name="badges"></slot>
+        </div>
+        <div class="mt-2">
+          <slot name="metadata"></slot>
+        </div>
+      </b-card-body>
+      <b-card-footer v-if="!noFooter">
+        <slot name="footer">
+          <div
+            class="d-flex flex-row align-items-center justify-content-between"
+          >
+            <slot name="status"></slot>
+            <slot name="actions"></slot>
+          </div>
+        </slot>
+      </b-card-footer>
+    </b-card>
+  </b-skeleton-wrapper>
 </template>
 
 <script>
-import ItemCard from '@/components/cards/ItemCard'
 import gamesMixin from '@/mixins/games.mixin'
 
 export default {
   name: 'GameCard',
   props: {
-    game: {
-      required: true,
-      type: Object,
-    },
     loading: {
       default: false,
       type: Boolean,
     },
-    bulk: {
+    game_id: {
+      required: true,
+      type: Number
+    },
+    title: {
+      default: '',
+      type: String,
+    },
+    image: {
+      default: '',
+      type: String,
+    },
+    noFooter: {
       default: false,
       type: Boolean,
     },
-    bgVariant: {
-      type: String,
+    noImage: {
+      default: false,
+      type: Boolean,
     },
-  },
-
-  mixins: [gamesMixin],
-  components: {
-    ItemCard,
-  },
-  data() {
-    return {
-      selected: [],
+    selectable: {
+      default: false,
+      type: Boolean
+    },
+    selected: {
+      default: false,
+      type: Boolean
     }
   },
+computed: {
+    gameSelected:{
+      get(){
+        return this.selected
+      },
+      // eslint-disable-next-line no-unused-vars
+      set(val){
+        this.$emit('selected-change', this.game_id)
+      }
+    }
+},
+  mixins: [gamesMixin],
 }
 </script>
 
