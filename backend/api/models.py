@@ -35,7 +35,12 @@ class Supplier(models.Model):
 
 
 class Location(models.Model):
+    TYPE_ROOM = 'room'
+    TYPE_SHELF = 'shelf'
+    TYPES = [(TYPE_ROOM, 'Room'), (TYPE_SHELF, 'Shelf')]
+
     name = models.CharField(max_length=20, unique=True)
+    type = models.CharField(max_length=32, choices=TYPES, default=TYPE_SHELF)
 
     def __str__(self):
         return self.name
@@ -112,6 +117,15 @@ class LibraryGame(Game):
 
 class UsedGame(Game):
     price = models.FloatField(default=0.0, blank=False, null=False)
+
+
+class StoreGame(models.Model):
+    game = models.ForeignKey(BggGame, null=True, blank=True, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, null=True, blank=True, on_delete=models.CASCADE)
+    selling_price = models.FloatField(default=0.0, blank=False, null=False)
+    selling_price_associate = models.FloatField(default=0.0, blank=False, null=False)
+    buying_price = models.FloatField(default=0.0, blank=False, null=False)
+    stock = models.FloatField(default=0.0, blank=False, null=False)
 
 
 class Withdraw(models.Model):

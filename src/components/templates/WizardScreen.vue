@@ -1,46 +1,64 @@
 <template>
-  <b-container>
-    <b-row class="justify-content-center mb-7 mt-5">
-      <b-col cols="12" xl="10">
-        <b-row class="justify-content-center">
+  <div>
+    <b-container class="sticky sticky-top">
+      <b-row class="justify-content-center">
+        <b-col lg="10" md="10" sm="12" xl="8">
+          <div class="header mt-3 mt-md-5 mb-0">
+            <div class="header-body">
+              <b-row class="align-items-center">
+                <b-col cols="auto">
+                  <b-button :to="backTo" class="btn-rounded-circle btn-white">
+                    <span class="fe fe-arrow-left"></span></b-button
+                ></b-col>
+                <b-col>
+                  <h6 class="header-pretitle">LIBRARY</h6>
+                  <h1 class="header-title">
+                    {{ title }}
+                  </h1>
+                </b-col>
+              </b-row>
+            </div>
+
+
+          </div>
+        </b-col>
+      </b-row>
+    </b-container>
+    <b-container class="mt-5 mt-md-6">
+      <b-row class="justify-content-center">
+        <b-col lg="10" md="10" sm="12" xl="8">
+          <slot name="content"></slot>
+          <b-row class="mb-3 mt-5">
           <b-col>
-            <b-button :to="backTo">
-              <b-icon-arrow-left />
-              <span class="d-none d-sm-inline-block">back</span>
+            <hr />
+          </b-col>
+          <b-col cols="12" md="auto">
+            <b-button
+              variant="link"
+              size="lg"
+              block
+              class="text-muted"
+              :to="{ name: 'LibraryHome' }"
+              >Cancel</b-button
+            >
+          </b-col>
+          <b-col cols="12" md="auto">
+            <b-button variant="primary" size="lg" block v-on:click="$emit('submit')">
+              Finish
             </b-button>
           </b-col>
-          <b-col class="text-center d-flex align-items-center" cols="auto">
-            <!-- Pretitle -->
-            <!--        <h6 class=" text-uppercase text-muted">-->
-            <!--          {{ preTitle }}-->
-            <!--        </h6>-->
-
-            <!-- Title -->
-            <h1 class="mb-0">
-              {{ title }}
-            </h1>
-          </b-col>
-          <b-col class="d-flex justify-content-end align-items-center">
-            <UserInfo />
-          </b-col>
         </b-row>
-      </b-col>
-    </b-row>
+        </b-col>
+      </b-row>
 
-    <b-row class="justify-content-center">
-      <b-col lg="10" md="12" sm="12" xl="8">
-        <slot name="content"></slot>
-      </b-col>
-    </b-row>
-  </b-container>
+    </b-container>
+  </div>
 </template>
 
 <script>
-import UserInfo from '@/components/UserInfo'
-
 export default {
   name: 'InputScreen',
-  components: { UserInfo },
+  components: {},
   props: {
     preTitle: {},
     title: {},

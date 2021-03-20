@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Count
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 from rest_framework import viewsets, permissions, generics
@@ -11,9 +10,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
 from backend.api.filters import LibraryGameFilter
-from backend.api.models import LibraryGame, Withdraw, Location, Supplier, BggGame
+from backend.api.models import LibraryGame, Withdraw, Location, Supplier, BggGame, StoreGame
 from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer, \
-    LocationSerializer, SupplierSerializer, BggGameSerializer
+    LocationSerializer, SupplierSerializer, BggGameSerializer, StoreGameSerializer
 from backend.api import utils
 
 User = get_user_model()
@@ -23,7 +22,9 @@ index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 50
+    """60 is divisible by 2,3,4,5 and 6 making it flexible to adjust frontend layout.
+    All requests with pagination should take page_size with a base of 60"""
+    page_size = 60
     page_size_query_param = 'page_size'
     max_page_size = 1000
 
@@ -52,6 +53,26 @@ class LibraryGameViewSet(viewsets.ModelViewSet):
     search_fields = ['game__name', 'game__other_names']
     filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     filterset_class = LibraryGameFilter
+    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
+    authentication_classes = [authentication.JWTAuthentication]
+    pagination_class = StandardResultsSetPagination
+
+    def perform_create(self, serializer):
+        bggid = serializer.initial_data['game_id']
+        game = utils.BGGGame.find(bggid)
+
+        if game is None:
+            game = utils.BGGGame.create(bggid)
+
+        serializer.is_valid()
+        serializer.save(game=game)
+
+
+class StoreGameViewSet(viewsets.ModelViewSet):
+    queryset = StoreGame.objects.order_by('game__name')
+    serializer_class = StoreGameSerializer
+    search_fields = ['game__name', 'game__other_names']
+    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
     authentication_classes = [authentication.JWTAuthentication]
     pagination_class = StandardResultsSetPagination
