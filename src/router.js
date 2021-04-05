@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import StoreHome from '@/pages/store/Home'
-import LibraryHome from '@/pages/library/home/Home'
 import Login from './pages/Login'
 
 import WithdrawGame from '@/pages/library/WithdrawGame'
 import AddGame from '@/pages/library/AddGame'
 import LibraryDashboard from '@/pages/library/Dashboard'
+import Configurations from "@/pages/admin/Configurations"
 
 import authorizationService from '@/services/authorization.service'
 import PageNotFound from '@/pages/PageNotFound'
-import Configurations from "@/pages/admin/Configurations"
+import LibraryHome from "@/pages/library/home/LibraryHome"
+import StoreHome from "@/pages/store/home/StoreHome"
 
 Vue.use(VueRouter)
 
@@ -49,6 +49,7 @@ const routes = [
     beforeEnter: guardAuthenticated,
     component: WithdrawGame,
   },
+
   {
     path: '/library/new',
     name: 'AddLibraryGame',
@@ -58,6 +59,7 @@ const routes = [
   {
     path: '/store',
     name: 'StoreHome',
+    props: { title: 'Store', pretitle: 'Leiriacon' },
     component: StoreHome,
   },
 

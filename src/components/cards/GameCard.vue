@@ -24,9 +24,10 @@
         <b-card-img-lazy
           v-if="!noImage"
           :src="image"
+          class="img-cover"
           blank-src="./static/blank_box.jpg"
-          blank-height="8rem"
-          style="object-fit: cover; height: 8rem"
+          :blank-height="imageHeight"
+          :style="{height: imageHeight}"
         />
         <div v-if="selectable"
           class="position-absolute"
@@ -88,6 +89,10 @@ export default {
     image: {
       default: '',
       type: String,
+    },
+    imageHeight: {
+      default: '8rem',
+      type: String
     },
     noFooter: {
       default: false,
