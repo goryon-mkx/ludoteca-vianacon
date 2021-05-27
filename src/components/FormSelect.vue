@@ -1,16 +1,17 @@
 <template>
   <div>
     <b-form-select
-      :options="options"
-      v-model="selected"
-      :value-field="optionValue"
-      :text-field="optionText"
-      :state="state"
-      size="lg"
+        :options="options"
+        v-model="selected"
+        :value-field="optionValue"
+        :text-field="optionText"
+        :state="state"
+        size="lg"
     >
       <template #first>
         <b-form-select-option :value="null" disabled
-          >Select an option</b-form-select-option
+        >Select an option
+        </b-form-select-option
         >
       </template>
     </b-form-select>
@@ -22,9 +23,6 @@ export default {
   name: 'FormSelect',
   components: {},
   props: {
-    reduce: {
-      type: Function,
-    },
     value: {},
     state: {
       type: Boolean,
@@ -41,21 +39,17 @@ export default {
     optionValue: {
       type: String,
       default: 'id',
-    },
-    placeholder: {
-      type: String,
-      default: 'Select an option',
-    },
-  },
-  data: () => {
-    return {
-      selected: null,
     }
   },
-  watch: {
-    selected: function(val) {
-      this.$emit('input', val)
-    },
-  },
+  computed: {
+    selected: {
+      get() {
+        return this.value
+      },
+      set(val) {
+        this.$emit('input', val)
+      }
+    }
+  }
 }
 </script>

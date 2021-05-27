@@ -4,7 +4,7 @@
       <b-form>
         <b-form-group label="Shelf">
           <FormSelect
-            v-model="selected"
+            v-model="location"
             :options="$store.getters['library/locations']"
             option-text="name"
             option-value="id"
@@ -38,6 +38,16 @@ export default {
       selected: '',
     }
   },
+  computed: {
+    location:{
+      get() {
+        return this.game && this.game.location? this.game.location.id : null
+      },
+      set(value){
+        this.selected = value
+      }
+    }
+  },
   methods: {
     checkin() {
       libraryService
@@ -47,10 +57,10 @@ export default {
         })
         .then(response => {
           this.$toast.success(
-            'Success! Place the game on ' + response.location.name,
+            `Got it! ${response.game.name} on ${response.location.name}`
           )
           this.$bvModal.hide(this.id)
-          this.$emit('done')
+          this.$emit('done', response)
         })
     },
   },

@@ -15,7 +15,7 @@
           </b-dropdown>
 
           <b-button :to="{ name: 'AddLibraryGame' }" variant="primary">
-            <b-icon-plus class="mr-2"></b-icon-plus>
+            <b-icon-plus class="mr-2"/>
             Add game
           </b-button>
         </div>
@@ -76,10 +76,10 @@
         >
           <Game
               :game="game"
-            :loading="loading"
-            :selectable="isGameSelectable(game)"
-            :selected="selected.includes(game.id)"
-            @selected-change="updateSelected"
+              :loading="loading"
+              :selectable="isGameSelectable(game)"
+              :selected="selected.includes(game.id)"
+              @selected-change="updateSelected"
               @check-in="openLocationModal"
               @return="refreshGames"
           >
@@ -91,7 +91,7 @@
         id="checkin-modal"
         :game="selectedGame"
         :shelves="$store.getters['library/locations']"
-        @done="refreshGames"
+        @done="updateGame($event)"
       />
     </div>
 
@@ -270,7 +270,7 @@ export default {
     checkoutGames() {
       const isOwnerLeiriaCon = this.games.filter(
         (game) =>
-          game.owner.name == 'leiriacon' && this.selected.includes(game.id),
+          game.owner.name === 'leiriacon' && this.selected.includes(game.id),
       ).length
 
       if (isOwnerLeiriaCon) {
@@ -343,6 +343,12 @@ export default {
     },
     isGameSelectable(game) {
       return this.bulk && game.status === 'available'
+    },
+    updateGame(game){
+      if (game) {
+        const outdatedGameObject = this.games.filter((item) => item.id === game.id)[0]
+        this.$set(this.games, this.games.indexOf(outdatedGameObject), game)
+      }
     },
   },
 

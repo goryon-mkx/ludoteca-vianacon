@@ -39,6 +39,17 @@
         >
           <b-checkbox v-model="gameSelected" class="ml-3 mr-1 my-2" size="lg" />
         </div>
+                <div class="position-absolute" style="top:0; right: 0;">
+
+          <b-dropdown size="lg" right variant="link" toggle-class="text-decoration-none" no-caret>
+            <template #button-content>
+              <b-icon-three-dots-vertical class="text-white mr-n3"
+                                          style="filter: drop-shadow( 1px 1px 3px rgba(0, 0, 0, 1));" font-scale="2"/>
+            </template>
+            <b-dropdown-item @click="$emit('check-in', game)">Change location</b-dropdown-item>
+
+          </b-dropdown>
+        </div>
       </div>
       <b-card-body>
         <span
@@ -102,7 +113,6 @@
               <div v-if="game.status === 'not-checked-in'">
                 <b-link
                   class="d-inline d-md-none"
-                  v-b-modal.checkin-modal
                   v-b-tooltip.hover
                   title="Check-in"
                   @click="$emit('check-in', game)"

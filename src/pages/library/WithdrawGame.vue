@@ -2,27 +2,12 @@
   <WizardScreen :title="title" :back-to="{ name: 'LibraryHome' }" @submit="doWithdraw">
     <template #content>
       <b-form>
-        <b-form-group :state="validateState('requisitor')"
-            label="Requisitor" invalid-feedback="You need to select a player first">
-          <b-row>
-            <b-col class="d-flex align-items-center">
-              <span v-if="!form.requisitor" class="text-muted"
-                >No player selected</span
-              >
-              <b-form-input
-                v-if="!!form.requisitor"
-                readonly
-
-                :value="form.requisitor.name"
-              />
-            </b-col>
-            <b-col cols="auto">
-              <b-button variant="white" v-b-modal.player-select>
-                <span v-if="!!form.requisitor">Change</span
-                ><span v-if="!form.requisitor">Select</span>
-              </b-button>
-            </b-col>
-          </b-row>
+        <b-form-group
+            label="Requisitor" invalid-feedback="Required">
+          <l-form-select
+            v-model="requisitor.name"
+            :state="validateState('requisitor_id')"
+            @select="$bvModal.show('player-select')"/>
         </b-form-group>
 
         <ModalPlayerSelect
@@ -50,6 +35,7 @@ import libraryService from '@/services/library.service'
 import ModalPlayerSelect from '@/components/ModalPlayerSelect'
 import WizardScreen from '@/components/templates/InputScreenTemplate'
 import LocationShelves from '@/components/location/LocationShelves'
+import LFormSelect from "@/components/form/LFormSelect"
 
 import formMixin from '@/mixins/form.mixins'
 
@@ -61,6 +47,7 @@ export default {
     LocationShelves,
     ModalPlayerSelect,
     WizardScreen,
+    LFormSelect
   },
   mixins: [usersMixin, axiosMixin, gamesMixin, formMixin],
   props: ['title', 'pretitle'],
@@ -72,8 +59,9 @@ export default {
         },
         location: '',
       },
+      requisitor: {},
       form: {
-        requisitor: undefined,
+        requisitor_id: '',
       },
     }
   },
@@ -86,7 +74,7 @@ export default {
       }
 
       let data = {
-        requisitor_id: this.form.requisitor.id,
+        requisitor_id: this.form.requisitor_id,
         game_id: this.game.id,
       }
 
@@ -94,14 +82,15 @@ export default {
         .withdrawGame(data)
         .then(() => {
           this.$toast.success(
-            'Success! Don\'t forget to give the game to '+ this.form.requisitor.name,
+            'Success! Don\'t forget to give the game to '+ this.requisitor.name,
           )
           this.$router.push({ name: 'Home' })
         })
         .catch((response) => this.$toast(this.getErrorDescription(response)))
     },
     setRequisitor(player) {
-      this.form.requisitor = player
+      this.requisitor = player
+      this.form.requisitor_id = player.id
       this.$bvModal.hide('player-select')
     },
   },
@@ -112,7 +101,7 @@ export default {
   },
   validations: {
     form: {
-      requisitor: {
+      requisitor_id: {
           required,
       },
     },
