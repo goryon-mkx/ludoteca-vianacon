@@ -78,8 +78,7 @@ export default {
     }
   },
   methods: {
-    doWithdraw(e) {
-      e.preventDefault()
+    doWithdraw() {
 
       this.$v.form.$touch()
       if (this.$v.form.$anyError) {
