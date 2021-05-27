@@ -59,8 +59,9 @@
               />
             </b-form-group>
             <b-form-group
-              invalid-feedback="Required"
+              invalid-feedback="Not valid"
               label="Phone"
+              description="Optional"
             >
               <b-form-input
                 v-model="form.phone"
@@ -178,9 +179,6 @@ export default {
       email: {
         email,
         required,
-      },
-      phone: {
-        required
       },
       website: {
         url
