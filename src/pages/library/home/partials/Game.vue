@@ -39,7 +39,7 @@
         >
           <b-checkbox v-model="gameSelected" class="ml-3 mr-1 my-2" size="lg" />
         </div>
-                <div class="position-absolute" style="top:0; right: 0;">
+                <div v-if="isAdmin()" class="position-absolute" style="top:0; right: 0;">
 
           <b-dropdown size="lg" right variant="link" toggle-class="text-decoration-none" no-caret>
             <template #button-content>
@@ -168,6 +168,7 @@ import gamesMixin from '@/mixins/games.mixin'
 import MetadataItem from '@/components/cards/MetadataItem'
 import withdrawService from "@/services/withdraw.service"
 import libraryService from "@/services/library.service"
+import usersMixin from "@/mixins/users.mixin"
 
 export default {
   name: 'LibraryHomeGameCard',
@@ -220,7 +221,7 @@ export default {
       type: Boolean,
     },
   },
-    mixins: [gamesMixin],
+    mixins: [gamesMixin, usersMixin],
   components: {
     MetadataItem,
   },
