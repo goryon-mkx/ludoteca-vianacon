@@ -5,8 +5,7 @@
         <b-card-img src="./static/blank_box.jpg" style="height: 8rem" />
         <b-card-body>
           <b-skeleton width="50%" />
-          <b-skeleton class="mt-2" width="40%" />
-          <b-skeleton class="mt-2" width="30%" />
+          <b-skeleton class="mt-3" width="30%" />
           <b-skeleton class="mt-2" width="30%" />
         </b-card-body>
         <b-card-footer v-if="!noFooter">
@@ -25,9 +24,10 @@
         <b-card-img-lazy
           v-if="!noImage"
           :src="image"
+          class="img-cover"
           blank-src="./static/blank_box.jpg"
-          blank-height="8rem"
-          style="object-fit: cover; height: 8rem"
+          :blank-height="imageHeight"
+          :style="{height: imageHeight}"
         />
         <div v-if="selectable"
           class="position-absolute"
@@ -42,7 +42,7 @@
       </div>
       <b-card-body>
         <span
-          class="text-nowrap font-size-lg d-block overflow-hidden text-truncate"
+          class="font-size text-nowrap overflow-hidden d-block"
           v-show="title"
           >{{ title }}</span
         >
@@ -50,7 +50,7 @@
         <div>
           <slot name="badges"></slot>
         </div>
-        <div class="mt-2">
+        <div class="mt-3">
           <slot name="metadata"></slot>
         </div>
       </b-card-body>
@@ -89,6 +89,10 @@ export default {
     image: {
       default: '',
       type: String,
+    },
+    imageHeight: {
+      default: '8rem',
+      type: String
     },
     noFooter: {
       default: false,

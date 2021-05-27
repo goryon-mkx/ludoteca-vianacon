@@ -10,10 +10,10 @@
       <b-collapse id="nav-collapse" class="w-100" is-nav>
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'LibraryHome' }" active-class="active">
-            Ludoteca
+            Library
           </b-nav-item>
           <b-nav-item :to="{ name: 'StoreHome' }" active-class="active">
-            Loja
+            Store
           </b-nav-item>
         </b-navbar-nav>
 
@@ -32,7 +32,8 @@
               right
               toggle-class="pl-0"
           >
-            <b-dropdown-item>Profile</b-dropdown-item>
+            <b-dropdown-item :to="{name: 'Configurations'}">Configurations</b-dropdown-item>
+            <b-dropdown-divider></b-dropdown-divider>
             <b-dropdown-item-button @click="logout"
             >Logout
             </b-dropdown-item-button
@@ -46,7 +47,7 @@
 <script>
 import usersMixin from '@/mixins/users.mixin'
 import authorizationService from '@/services/authorization.service'
-//import UserInfo from "@/components/UserInfo";
+//import UserInfo from "@/partials/UserInfo";
 
 export default {
   name: 'TopNav',
@@ -56,9 +57,6 @@ export default {
     logout() {
       authorizationService.logout()
       location.reload()
-    },
-    isAuthenticated() {
-      return authorizationService.isAuthenticated()
     },
   },
 }

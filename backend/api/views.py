@@ -1,19 +1,16 @@
-from django.contrib.auth import get_user_model
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
-from rest_framework import viewsets, permissions, generics
-from rest_framework import filters
 from django_filters import rest_framework as django_filters
+from rest_framework import filters
+from rest_framework import viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
-from backend.api.filters import LibraryGameFilter
-from backend.api.models import LibraryGame, Withdraw, Location, Supplier, BggGame, StoreGame
-from backend.api.serializers import LibraryGameSerializer, UserSerializer, PlayerSerializer, WithdrawSerializer, \
-    LocationSerializer, SupplierSerializer, BggGameSerializer, StoreGameSerializer
 from backend.api import utils
+from backend.api.filters import LibraryGameFilter
+from backend.api.serializers import *
 
 User = get_user_model()
 
@@ -70,12 +67,16 @@ class LibraryGameViewSet(viewsets.ModelViewSet):
 
 class StoreGameViewSet(viewsets.ModelViewSet):
     queryset = StoreGame.objects.order_by('game__name')
-    serializer_class = StoreGameSerializer
     search_fields = ['game__name', 'game__other_names']
     filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
     authentication_classes = [authentication.JWTAuthentication]
     pagination_class = StandardResultsSetPagination
+
+    def get_serializer_class(self):
+        if self.request.user.is_staff:
+            return StoreGameSerializer
+        return AnonStoreGameSerializer
 
     def perform_create(self, serializer):
         bggid = serializer.initial_data['game_id']
@@ -123,3 +124,10 @@ class StatisticsViewSet(APIView):
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.order_by('name').all()
     serializer_class = LocationSerializer
+
+
+class ConfigurationViewSet(viewsets.ModelViewSet):
+    queryset = Configuration.objects.all()
+    serializer_class = ConfigurationSerializer
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)

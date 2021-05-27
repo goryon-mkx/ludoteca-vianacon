@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import StoreHome from '@/pages/store/Home'
-import LibraryHome from '@/pages/library/home/Home'
 import Login from './pages/Login'
 
-import HomeTemplate from '@/pages/templates/HomeTemplate'
 import WithdrawGame from '@/pages/library/WithdrawGame'
 import AddGame from '@/pages/library/AddGame'
 import LibraryDashboard from '@/pages/library/Dashboard'
+import Configurations from "@/pages/admin/Configurations"
 
 import authorizationService from '@/services/authorization.service'
 import PageNotFound from '@/pages/PageNotFound'
+import LibraryHome from "@/pages/library/home/LibraryHome"
+import StoreHome from "@/pages/store/home/StoreHome"
+import StoreAddGame from "@/pages/store/new/NewGame"
 
 Vue.use(VueRouter)
 
@@ -25,33 +26,29 @@ function guardAuthenticated(to, from, next) {
 
 const routes = [
   {
-    path: '',
-    component: HomeTemplate,
-    children: [
-      {
-        path: '/',
-        name: 'Home',
-        component: LibraryHome,
-        props: { title: 'Library', pretitle: 'leiriacon 2022' },
-      },
-      {
-        path: '/library/',
-        name: 'LibraryHome',
-        component: LibraryHome,
-        props: { title: 'Library', pretitle: 'leiriacon 2022' },
-      },
-      {
-        path: '/library/dashboard',
-        name: 'LibraryDashboard',
-        beforeEnter: guardAuthenticated,
-        component: LibraryDashboard,
-      },
-      {
-        path: '/store/',
-        name: 'StoreHome',
-        component: StoreHome,
-      },
-    ],
+    path: '/',
+    name: 'Home',
+    component: LibraryHome,
+    props: { title: 'Library', pretitle: 'leiriacon 2022' },
+  },
+  {
+    path: '/library',
+    name: 'LibraryHome',
+    component: LibraryHome,
+    props: { title: 'Library', pretitle: 'leiriacon 2022' },
+  },
+  {
+    path: '/library/dashboard',
+    name: 'LibraryDashboard',
+    beforeEnter: guardAuthenticated,
+    component: LibraryDashboard,
+  },
+  {
+    path: '/library/:id/withdraw',
+    name: 'WithdrawGame',
+    props: { title: 'Withdraw game', pretitle: 'Library' },
+    beforeEnter: guardAuthenticated,
+    component: WithdrawGame,
   },
 
   {
@@ -61,11 +58,24 @@ const routes = [
     component: AddGame,
   },
   {
-    path: '/library/:id/withdraw',
-    name: 'WithdrawGame',
-    props: { title: 'Withdraw game', pretitle: 'Library' },
+    path: '/store',
+    name: 'StoreHome',
+    props: { title: 'Store', pretitle: 'Leiriacon' },
+    component: StoreHome,
+  },
+  {
+    path: '/store/new',
+    name: 'StoreAddGame',
     beforeEnter: guardAuthenticated,
-    component: WithdrawGame,
+    props: { title: 'Add game', pretitle: 'Store' },
+    component: StoreAddGame,
+  },
+  {
+    path: '/configurations',
+    name: 'Configurations',
+    props: { title: 'Configurations', pretitle: 'Admin' },
+    beforeEnter: guardAuthenticated,
+    component: Configurations,
   },
   {
     path: '/login',

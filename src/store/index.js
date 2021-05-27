@@ -6,6 +6,8 @@ import users from '@/store/modules/users'
 import router from '@/router'
 import authorizationService from '@/services/authorization.service'
 import localStorageService from '@/services/localStorage.service'
+import configurations from "@/store/modules/configurations"
+import store from "@/store/modules/store"
 
 Vue.use(Vuex)
 
@@ -14,6 +16,8 @@ export default new Vuex.Store({
     messages,
     library,
     users,
+    configurations,
+    store
   },
   actions: {
     /**
@@ -30,6 +34,12 @@ export default new Vuex.Store({
         dispatch('users/loadCurrent').then(() => router.push({ name: 'Home' }))
       })
     },
+    init({dispatch}){
+      dispatch('users/loadCurrent')
+      dispatch('library/loadLocations')
+      dispatch('library/loadPlayers')
+      dispatch('store/loadSuppliers')
+    }
   },
 
   mutations: {
