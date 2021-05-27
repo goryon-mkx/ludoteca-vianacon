@@ -55,7 +55,6 @@
                 v-model="form.email"
                 :state="validateState('email')"
                 placeholder="eg. name@mail.com"
-                type="email"
               />
             </b-form-group>
             <b-form-group
@@ -65,8 +64,7 @@
             >
               <b-form-input
                 v-model="form.phone"
-                :state="validateState('phone')"
-                placeholder="Phone"
+                placeholder="Insert a phone number"
                 type="tel"
               />
             </b-form-group>
@@ -78,7 +76,7 @@
               <b-form-input
                 v-model="form.website"
                 :state="validateState('website')"
-                placeholder="https://suppliers.site"
+                placeholder="Insert an URL"
                 type="text56u"
               />
             </b-form-group>
@@ -91,7 +89,7 @@
         v-if="!isNewSupplier"
         class="btn btn-info"
         type="button"
-        @click="enableSupplierForm"
+        @click.prevent="enableSupplierForm"
       >
         Add
       </button>
@@ -133,11 +131,12 @@ export default {
   },
   methods: {
     enableSupplierForm(e) {
+      //this.form.name = this.search
+      console.log('teste')
       e.preventDefault()
       this.isNewSupplier = true
     },
     search(val) {
-      this.form.name = val
       this.loading = true
 
       Promise.all([
@@ -147,6 +146,7 @@ export default {
 
     },
     onSubmit() {
+      console.log('submit')
       this.$v.form.$touch()
       if (this.$v.form.$anyError) {
         return
@@ -174,17 +174,17 @@ export default {
   validations: {
     form: {
       name: {
-        required,
+        required
       },
       email: {
         email,
-        required,
+        required
       },
       website: {
         url
       }
-    },
-  },
+    }
+  }
 }
 </script>
 

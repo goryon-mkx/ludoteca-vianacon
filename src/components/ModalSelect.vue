@@ -29,7 +29,7 @@
         </slot>
       </template>
       <template v-slot:default>
-        <div style="min-height:400px; max-height: 400px">
+        <div style="min-height:400px; max-height: 600px">
           <slot name="content">
             <b-skeleton-wrapper :loading="loading">
               <template #loading>
