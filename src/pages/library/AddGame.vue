@@ -60,7 +60,6 @@
         <!-- Notes -->
         <b-form-group description="Optional" label="Notes">
           <b-form-textarea
-              size="lg"
             v-model="form.notes"
             placeholder="Eg. expansion included, missing components"
           ></b-form-textarea>
