@@ -63,7 +63,7 @@ $ cd django-vue-template
 Setup
 ```
 $ yarn install
-$ pipenv install --dev && pipenv shell
+$ pip install poetry && poetry install
 $ python manage.py migrate
 ```
 
