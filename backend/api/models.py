@@ -1,9 +1,7 @@
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Count
 from django.dispatch import receiver
@@ -16,7 +14,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 
@@ -91,7 +88,7 @@ class Game(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return u"%s" % self.name
+        return "%s" % self.name
 
 
 class LibraryGame(Game):
@@ -119,7 +116,7 @@ class LibraryGame(Game):
         if self.location:
             self.date_checkin = timezone.now()
 
-        super(LibraryGame, self).save()
+        super().save()
 
 
 class UsedGame(Game):
@@ -146,13 +143,13 @@ class Withdraw(models.Model):
     def returned(self):
         return self.date_returned is not None
 
-    returned.boolean = True
+    # returned.boolean = True
 
     def __unicode__(self):
-        return u"%s with %s" % (self.game.name, self.requisitor.name)
+        return f"{self.game.name} with {self.requisitor.name}"
 
     def __str__(self):
-        return u"%s with %s" % (self.game.name, self.requisitor.name)
+        return f"{self.game.name} with {self.requisitor.name}"
 
     @staticmethod
     def last(days):
