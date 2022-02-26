@@ -63,7 +63,10 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         # Add dist to
-        "DIRS": [os.path.join(BASE_DIR, "dist")],
+        "DIRS": [
+            os.path.join(BASE_DIR, "dist"),
+            os.path.join(BASE_DIR, "backend", "templates"),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -128,7 +131,7 @@ STATIC_URL = "/static/"
 # STATIC_URL = '/'
 # Place static in the same location as webpack build files
 STATIC_ROOT = os.path.join(BASE_DIR, "dist", "static")
-STATICFILES_DIRS = []
+STATICFILES_DIRS: list = []
 
 ##########
 # STATIC #
@@ -146,8 +149,6 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
 # This will allow whitenoise to serve SPA files as well
 WHITENOISE_INDEX_FILE = True
 
@@ -155,3 +156,10 @@ WHITENOISE_INDEX_FILE = True
 AUTH_USER_MODEL = "api.User"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.mailtrap.io"
+EMAIL_HOST_USER = "d4ea6e5039a977"
+EMAIL_HOST_PASSWORD = "4f1b714bc3067a"
+EMAIL_PORT = "2525"
+EMAIL_USE_TLS = True

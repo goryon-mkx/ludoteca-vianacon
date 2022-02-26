@@ -5,6 +5,17 @@
     :title="title"
     :pre-title="pretitle"
   >
+
+
+    <b-form-group class="max-width-3-md" invalid-feedback="This field is required" label="Convention name">
+      <b-form-input/>
+    </b-form-group>
+        <b-form-group class="max-width-3-md" invalid-feedback="This field is required" label="Convention username">
+      <b-form-input/>
+    </b-form-group>
+        <b-form-group class="max-width-3-md" invalid-feedback="This field is required" label="Convention name">
+      <b-form-input/>
+    </b-form-group>
     <b-card no-body class="mt-5">
       <b-card-header>
         <b-input-group class="input-group-flush">
