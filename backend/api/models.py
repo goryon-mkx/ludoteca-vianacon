@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import datetime, timedelta
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
@@ -91,7 +91,7 @@ class Game(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return u"%s" % self.game.name
+        return "%s" % self.game.name
 
     def __str__(self):
         return self.game.name
@@ -122,7 +122,7 @@ class LibraryGame(Game):
         if self.location:
             self.date_checkin = timezone.now()
 
-        super(LibraryGame, self).save()
+        super().save()
 
 
 class UsedGame(Game):
@@ -148,7 +148,7 @@ class Withdraw(models.Model):
     def returned(self):
         return self.date_returned is not None
 
-    returned.boolean = True
+    # returned.boolean = True
 
     def __unicode__(self):
         return self.requisitor.get_full_name()
