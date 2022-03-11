@@ -25,33 +25,12 @@
     <b-row class="align-items-center mb-3">
       <!-- Search -->
       <b-col>
-        <form>
-          <div class="input-group input-group-lg input-group-merge">
-            <b-form-input
-                v-model="search"
-                class="form-control-appended form-control-prepended"
-                debounce="300"
-                placeholder="Search"
-                type="search"
-            />
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <b-icon-search font-scale="0.8"/>
-              </div>
-            </div>
-                        <div class="input-group-append">
-              <div class="input-group-text">
-                <b-link>
-                <b-icon-x v-if="search" @click="search = ''"/>
-                  </b-link>
-              </div>
-            </div>
-          </div>
-        </form>
+        <l-search v-model="search"/>
       </b-col>
 
       <FiltersButton :filters="filters" collapse-id="filters-collapse"/>
     </b-row>
+
 
     <Filters
         v-model="filters"
@@ -216,6 +195,7 @@ import FilterSelect from '@/components/filters/FilterSelect'
 import HomeScreenTemplate from "@/components/templates/HomeScreenTemplate"
 import Game from "./partials/Game"
 import FilterRadioButton from "@/components/filters/FilterRadioButton"
+import LSearch from "@/components/form/LSearch"
 
 export default {
   name: 'Home',
@@ -249,6 +229,7 @@ export default {
     }
   },
   components: {
+    LSearch,
     FilterRadioButton,
     HomeScreenTemplate,
     FiltersButton,
@@ -264,6 +245,9 @@ export default {
     this.refreshGames()
   },
   methods: {
+    log(value){
+      console.log(value)
+    },
     selectAll() {
       const availableGames = this.games.filter((game) =>
           this.isGameSelectable(game),
