@@ -8,6 +8,7 @@
     </template>
     <Games :loading="loading" :games="games" @update="updateGame" @delete="deleteGame"/>
 
+    <Pagination v-model="currentPage" :total-count="totalGamesCount"/>
   </HomeScreenTemplate>
 </template>
 
@@ -16,26 +17,27 @@ import Games from "@/pages/store/home/partials/Games"
 import HomeScreenTemplate from "@/components/templates/HomeScreenTemplate"
 import storeService from "@/services/store.service"
 import usersMixin from "@/mixins/users.mixin"
+import Pagination from "@/components/Pagination"
 
 export default {
   name: 'StoreHome',
   components: {
     HomeScreenTemplate,
     Games,
+    Pagination
   },
   mixins: [usersMixin],
   props: ['title', 'pretitle'],
   data() {
     return {
+      currentPage: 1,
       games: [],
-      loading: true
+      loading: true,
+      totalGamesCount: 0
     }
   },
   mounted(){
-    storeService.fetchGames(1).then(response => {
-      this.games = response.results
-      this.loading = false
-    })
+    this.refreshGames()
   },
   computed:{
     associate_discount(){
@@ -46,7 +48,20 @@ export default {
       return 1
     }
   },
+  watch: {
+      currentPage() {
+      this.refreshGames()
+    }
+  },
   methods: {
+    refreshGames(){
+      this.loading = true
+      storeService.fetchGames(this.currentPage).then(response => {
+        this.games = response.results
+        this.loading = false
+        this.totalGamesCount = response.count
+    })
+    },
     updateGame(game){
       if (game) {
         const outdatedGameObject = this.games.filter((item) => item.id === game.id)[0]
@@ -60,7 +75,7 @@ export default {
         const outdatedGameObject = this.games.filter((item) => item.id === game_id)[0]
         this.games.splice(this.games.indexOf(outdatedGameObject), 1)
       } else {
-        storeService.fetchGames().then(response => this.games = response)
+        storeService.fetchGames(this.currentPage).then(response => this.games = response)
       }
     }
   }

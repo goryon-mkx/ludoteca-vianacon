@@ -58,7 +58,7 @@ export default {
     },
     perPage: {
       type: Number,
-      default: 50,
+      default: 60,
     },
   },
   data() {
