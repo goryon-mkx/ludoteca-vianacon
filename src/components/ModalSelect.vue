@@ -19,6 +19,7 @@
               flush
               placeholder="Search"
               type="search"
+              autofocus
             />
             <div class="input-group-prepend">
               <div class="input-group-text">
