@@ -60,19 +60,20 @@
           <div v-else>
             <b-button v-if="game.status !== 'not-available'" :pressed.sync="gameSelected" block size="sm"
                       variant="outline-dark">
-          <span v-if="gameSelected" class="d-flex align-items-center justify-content-center">
-          <b-icon-x-circle class="mr-3" font-scale="0.9"/>
-            Undo selection
-          </span>
+              <span v-if="gameSelected" class="d-flex align-items-center justify-content-center">
+                <b-icon-x-circle class="mr-3" font-scale="0.9"/>
+                  Undo selection
+                </span>
               <span v-else class="d-flex align-items-center justify-content-center">
-          <b-icon-check-circle-fill class="mr-3" font-scale="0.9"/>
-            Select
-          </span>
+                <b-icon-check-circle-fill class="mr-3" font-scale="0.9"/>
+                  Select
+                </span>
             </b-button>
           </div>
         </div>
       </div>
 
+      <!-- Public content -->
       <div v-else class="flex flex-column">
         <MetadataItem
             class="text-muted"

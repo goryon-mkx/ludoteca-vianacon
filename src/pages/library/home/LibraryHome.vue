@@ -364,7 +364,7 @@ export default {
     },
     updateSelected(game_id) {
       if (this.selected.includes(game_id)) {
-        this.selected.splice(this.selected.indexOf(game_id))
+        this.selected.splice(this.selected.indexOf(game_id),1)
       } else {
         this.selected.push(game_id)
       }
