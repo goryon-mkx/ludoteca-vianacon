@@ -11,8 +11,8 @@
       <div v-if="isAdmin()">
         <metadata-item class="text-muted" :text="game.owner.name" icon="briefcase-fill"/>
         <metadata-item
-            v-bind:class="{ 'text-danger': !game.location, 'text-muted': game.location }"
-            :text="game.location ? game.location.name : 'Not available'"
+            v-bind:class="{ 'text-danger': !isGameAvailable(game), 'text-muted': isGameAvailable(game) }"
+            :text="isGameAvailable(game) ? game.location.name : 'Not available'"
             icon="geo-fill"
         />
         <metadata-item
@@ -30,7 +30,7 @@
                         v-b-modal="`${game.id}-return-modal`">
                 Return
               </b-button>
-              <b-button v-if="game.status === 'not-checked-in'"
+              <b-button v-if="game.status === 'not-checked-in' || game.status === 'checked-out'"
                         block
                         size="sm"
                         variant="white"
@@ -85,7 +85,7 @@
             icon="clock-fill"
         />
         <metadata-item
-            v-if="game.status === 'not-checked-in'"
+            v-if="game.status === 'not-checked-in' || game.status==='checked-out'"
             icon="exclamation-circle-fill" text="Not available" class="text-danger">
 
         </metadata-item>
@@ -186,6 +186,9 @@ export default {
     },
   },
   methods: {
+    isGameAvailable(game){
+      return game.location && !game.date_checkout
+    },
     returnGame(game) {
       withdrawService.returnGame(game.current_withdraw.id).then(() => {
         this.$toast.success(`Done`)

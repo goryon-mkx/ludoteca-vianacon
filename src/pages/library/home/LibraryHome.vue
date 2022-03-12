@@ -156,8 +156,11 @@
                 ></b-icon-caret-up-fill>
               </div>
             </template>
+            <b-dropdown-item-button @click="deleteGames"
+            >Remove
+            </b-dropdown-item-button>
             <b-dropdown-item-button @click="checkoutGames"
-            >Remove game(s)
+            >Checkout
             </b-dropdown-item-button>
           </b-dropdown>
         </div>
@@ -273,7 +276,26 @@ export default {
         this.players = response
       })
     },
-    checkoutGames() {
+    checkoutGames(){
+      let promises = this.selected.map((id) => libraryService.checkoutGame(id))
+
+      Promise.all(promises)
+          .then(() => {
+            this.$toast.success(`Checked-out ${promises.length} ${this.selected.length > 1 ? 'games' : 'game' }`)
+          })
+          .catch((response) => {
+            this.$toast.error(
+                'Error checking-out game(s): ' +
+                axiosUtils.getErrorDescription(response),
+            )
+          })
+          .finally(() => {
+            this.bulk = false
+            this.unselectAll()
+            this.refreshGames()
+          })
+    },
+    deleteGames() {
       const isOwnerLeiriaCon = this.games.filter(
           (game) =>
               game.owner.name === 'leiriacon' && this.selected.includes(game.id),
@@ -292,26 +314,26 @@ export default {
             )
             .then((confirmed) => {
               if (confirmed) {
-                this.deleteCheckedOutGames()
+                this.deleteSelectedGames()
               }
             })
             .catch((error) =>
                 this.$toast.error('Error checking-out game(s): ' + error),
             )
       } else {
-        this.deleteCheckedOutGames()
+        this.deleteSelectedGames()
       }
     },
-    deleteCheckedOutGames() {
+    deleteSelectedGames() {
       let promises = this.selected.map((id) => libraryService.deleteGame(id))
 
       Promise.all(promises)
           .then(() => {
-            this.$toast.success(`Checked-out ${promises.length} game(s)!`)
+            this.$toast.success(`Deleted ${promises.length} ${this.selected.length > 1 ? 'games' : 'game' }`)
           })
           .catch((response) => {
             this.$toast.error(
-                'Error checking-out game(s): ' +
+                'Error deleting game(s): ' +
                 axiosUtils.getErrorDescription(response),
             )
           })

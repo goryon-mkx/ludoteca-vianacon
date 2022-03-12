@@ -63,6 +63,18 @@ export default {
   },
 
   /**
+   * Check-out game
+   * Sets location as empty and applies a checkout date
+   * @param gameId
+   * @returns {Promise<{date_checkout: Date}>}
+   */
+  checkoutGame(gameId){
+    return authApi
+      .patch(URL + `games/${gameId}/`, {date_checkout: new Date()})
+      .then(response => response.data)
+  },
+
+  /**
    * Delete game with the given gameId
    * @param gameId
    * @returns {Promise<AxiosResponse<any>>}

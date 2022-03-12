@@ -54,6 +54,7 @@ export default {
         .updateGame(this.game.id, {
           location_id: this.selected,
           date_checkin: new Date(),
+          date_checkout: null
         })
         .then(response => {
           this.$toast.success(

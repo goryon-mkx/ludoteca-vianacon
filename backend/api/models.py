@@ -119,7 +119,7 @@ class LibraryGame(Game):
             return None
 
     def save(self, *args, **kwargs):
-        if self.location:
+        if self.location and not self.date_checkin:
             self.date_checkin = timezone.now()
 
         super().save()
