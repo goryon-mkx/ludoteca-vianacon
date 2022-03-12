@@ -6,9 +6,10 @@
       class="col list-pagination-prev pagination pagination-tabs justify-content-start"
     >
       <li class="page-item">
-        <a class="page-link" href="#">
-          <i class="fe fe-arrow-left mr-1"></i> Previous
-        </a>
+        <b-link class="page-link" href="#" :disabled="currentPage === 1"
+        @click="setPage(currentPage-=1)">
+          <i class="fe fe-arrow-left mr-1"/> Previous
+        </b-link>
       </li>
     </ul>
 
@@ -36,9 +37,9 @@
       class="col list-pagination-next pagination pagination-tabs justify-content-end"
     >
       <li class="page-item">
-        <a class="page-link" href="#">
+        <b-link :disabled="currentPage===lastPage" class="page-link" href="#" @click="setPage(currentPage+=1)">
           Next <i class="fe fe-arrow-right ml-1"></i>
-        </a>
+        </b-link>
       </li>
     </ul>
   </b-row>
@@ -67,6 +68,9 @@ export default {
     }
   },
   computed: {
+    lastPage() {
+      return Math.ceil(this.totalCount / this.perPage)
+    },
     currentPage: {
       get() {
         return this.value
@@ -84,7 +88,7 @@ export default {
       this.pages = []
 
       let current = this.currentPage,
-        last = Math.ceil(this.totalCount / this.perPage),
+        last = this.lastPage,
         delta = 2,
         left = current - delta,
         right = current + delta + 1,

@@ -31,7 +31,6 @@
       <FiltersButton :filters="filters" collapse-id="filters-collapse"/>
     </b-row>
 
-
     <Filters
         v-model="filters"
         collapse-id="filters-collapse"

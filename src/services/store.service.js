@@ -5,15 +5,17 @@ import authorizationService from '@/services/authorization.service'
 const URL = '/api/store/'
 
 export default {
+  getApi(){
+    return authorizationService.isAuthenticated() ? authApi : unauthApi
+  },
   /**
    * Get all games for the given page
    * @param page
    * @returns {Promise<*>}
    */
   fetchGames(page) {
-    const api = authorizationService.isAuthenticated() ? authApi : unauthApi
 
-    return api
+    return this.getApi()
       .get(URL + 'games/', {
         params: {
           page: page,
@@ -38,7 +40,7 @@ export default {
    * @returns {Promise<AxiosResponse<any>>}
    */
   filterGames(params) {
-    return unauthApi
+    return this.getApi()
       .get(URL + 'games/', {
         params: params,
       })
