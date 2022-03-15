@@ -39,8 +39,8 @@
       </div>
 
       <div class="d-flex flex-column">
-      <span class="mt-3"
-            style="display: -webkit-box; -webkit-line-clamp:1;-webkit-box-orient: vertical; overflow: hidden; ">
+      <span class="mt-3 mb-0 font-condensed"
+            style="font-size: 1.25rem; font-weight: 400; letter-spacing: 0.02rem; display: -webkit-box; -webkit-line-clamp:1;-webkit-box-orient: vertical; overflow: hidden; ">
           {{ title }}
         </span>
         <slot name="content"></slot>

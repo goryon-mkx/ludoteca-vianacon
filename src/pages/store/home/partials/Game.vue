@@ -8,9 +8,14 @@
     </template>
     <template #content>
       <div v-if="isAdmin()">
-              <div class="d-flex flex-row">
+              <div class="d-flex flex-row mt-2">
                 <div class="d-flex flex-column flex-grow-1">
-                  <span class="font-weight-bold">{{ game.selling_price }} €</span>
+                  <div>
+                    <span class="font-weight font-size-lg">{{ game.selling_price }} €</span>
+                    <br/>
+                    <b-icon-award-fill class="font-size-lg text-warning mr-2"/>
+                    <span class="font-size-lg text-warning">{{ game.discount_price }} €</span></div>
+
                   <span class="text-muted">{{ game.stock }} available</span>
                 </div>
 
@@ -25,15 +30,16 @@
             </div>
 
             <div v-else>
-              <span v-if="game.is_available" class="font-weight-bold mb-0" style="font-weight: 400">
-                {{ game.selling_price }} €
-              </span>
+                <span class="font-weight font-size-lg">{{ game.selling_price }} €</span>
+                <br/>
+                <b-icon-award-fill class="font-size-lg text-warning mr-2"/>
+                <span class="font-size-lg text-warning">{{ game.discount_price }} €</span>
+
               <span v-if="!game.is_available" class="small d-block text-danger">
                 Sold out
               </span>
             </div>
-      <b-modal :id="`modal-${game.id}`" :title="game.game.name"
-               @ok="updateStock">
+            <b-modal :id="`modal-${game.id}`" :title="game.game.name" @ok="updateStock">
         <b-form-group class="max-width-2" label="Current">
           <b-form-spinbutton disabled readonly
                              :value="game.stock"

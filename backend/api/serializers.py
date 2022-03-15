@@ -134,6 +134,7 @@ class StoreGameSerializer(serializers.ModelSerializer):
             # "supplier",
             # "supplier_id",
             "selling_price",
+            "discount_price",
             "stock",
         )
         extra_kwargs = {
@@ -148,7 +149,7 @@ class AnonStoreGameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StoreGame
-        fields = ("id", "game", "selling_price", "is_available")
+        fields = ("id", "game", "selling_price", "is_available", "discount_price")
 
     def get_is_available(self, data):
         return data.stock > 0

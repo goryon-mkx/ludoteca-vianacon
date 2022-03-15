@@ -40,6 +40,10 @@
           <l-form-input-currency :state="validateState('selling_price')" v-model="form.selling_price"/>
         </b-form-group>
 
+        <b-form-group class="max-width-2-md" invalid-feedback="Invalid amount" label="Discount Price">
+          <l-form-input-currency :state="validateState('discount_price')" v-model="form.discount_price"/>
+        </b-form-group>
+
       <b-form-group label="Stock" class="max-width-2-md" invalid-feedback="Invalid number">
         <b-form-input number placeholder="Insert a quantity" v-model="form.stock" :state="validateState('stock')" />
       </b-form-group>
@@ -75,8 +79,8 @@ export default {
       form: {
         game_id: '',
         supplier_id: '',
+        discount_price: null,
         selling_price: null,
-        buying_price: null,
         stock: ''
       },
     }
@@ -116,6 +120,9 @@ export default {
         required,
       },
       selling_price: {
+        required,
+      },
+      discount_price: {
         required,
       },
       stock: {

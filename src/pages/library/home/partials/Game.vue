@@ -204,12 +204,13 @@ export default {
 
       let
           minutes = Math.floor((diff / (1000 * 60)) % 60),
-          hours = Math.floor((diff / (1000 * 60 * 60)) % 24)
+          hours = Math.floor((diff / (1000 * 60 * 60)) % 24),
+          days = Math.floor((diff / (1000 * 60 * 60 * 24)))
 
       hours = (hours < 10) ? "0" + hours : hours
       minutes = (minutes < 10) ? "0" + minutes : minutes
 
-      return hours + ":" + minutes
+      return (days > 0 ? days+":" : "") + hours + ":" + minutes
     }
   },
 

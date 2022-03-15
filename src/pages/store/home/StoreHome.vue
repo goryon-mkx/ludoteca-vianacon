@@ -2,9 +2,9 @@
   <HomeScreenTemplate :title="title" :pre-title="pretitle">
     <template #actions>
 
-      <b-alert class="mb-0 d-inline-block" v-if="!isAdmin()" variant="warning" :show="true"><b-icon-patch-exclamation-fill/> 10% discount for Associates</b-alert>
+      <b-alert class="mb-0 d-inline-block" variant="warning" :show="true"><b-icon-award-fill/> Discount for Associates</b-alert>
 
-      <b-button class="d-inline-block" v-if="isAdmin()" variant="primary" :to="{name: 'StoreAddGame'}">Add game</b-button>
+      <b-button class="d-inline-block ml-3" v-if="isAdmin()" variant="primary" :to="{name: 'StoreAddGame'}">Add game</b-button>
     </template>
     <b-row class="mb-3">
       <!-- Search -->

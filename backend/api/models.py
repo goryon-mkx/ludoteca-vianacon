@@ -135,6 +135,7 @@ class StoreGame(models.Model):
         Supplier, null=True, blank=True, on_delete=models.CASCADE
     )
     selling_price = models.FloatField(default=0.0, blank=False, null=False)
+    discount_price = models.FloatField(default=0.0, blank=False, null=False)
     stock = models.IntegerField(default=0, blank=False, null=False)
 
 

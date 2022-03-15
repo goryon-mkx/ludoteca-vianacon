@@ -1,4 +1,4 @@
-// 
+//
 // user.scss
 // Use this to write your custom SCSS
 //
@@ -25,3 +25,13 @@
   }
 }
 
+
+.font-condensed{
+  font-family: 'Kenyan-Coffee', sans-serif;
+}
+
+
+html, body {
+    max-width: 100%;
+    //overflow-x: hidden;
+}
