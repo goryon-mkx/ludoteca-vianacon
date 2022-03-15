@@ -12,9 +12,11 @@
                 <div class="d-flex flex-column flex-grow-1">
                   <div>
                     <span class="font-weight font-size-lg">{{ game.selling_price }} €</span>
-                    <br/>
+                    <div v-if="game.discount_price > 0">
                     <b-icon-award-fill class="font-size-lg text-warning mr-2"/>
-                    <span class="font-size-lg text-warning">{{ game.discount_price }} €</span></div>
+                    <span class="font-size-lg text-warning">{{ game.discount_price }} €</span>
+                    </div>
+                    </div>
 
                   <span class="text-muted">{{ game.stock }} available</span>
                 </div>
