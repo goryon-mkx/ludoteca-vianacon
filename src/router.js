@@ -67,7 +67,7 @@ const routes = [
   {
     path: '/store',
     name: 'StoreHome',
-    props: { title: 'Store', pretitle: 'Leiriacon' },
+    props: { title: 'Store', pretitle: 'Leiriacon 2022' },
     component: StoreHome,
   },
   {
