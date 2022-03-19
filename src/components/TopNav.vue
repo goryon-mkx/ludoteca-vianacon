@@ -16,9 +16,6 @@
           <b-nav-item :to="{ name: 'StoreHome' }" active-class="active">
             Store
           </b-nav-item>
-          <b-nav-item :to="{ name: 'GoogleDocs' }" active-class="active">
-            Google Docs
-          </b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

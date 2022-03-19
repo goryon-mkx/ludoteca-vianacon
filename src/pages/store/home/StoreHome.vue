@@ -2,7 +2,7 @@
   <HomeScreenTemplate :title="title" :pre-title="pretitle">
     <template #actions>
 
-      <b-alert class="mb-0 d-inline-block" variant="warning" :show="true"><b-icon-award-fill/> Price for Associates</b-alert>
+      <b-alert class="mb-0 d-inline-block" variant="warning" :show="true"><b-icon-award-fill/> Membership's Price</b-alert>
 
       <b-button class="d-inline-block ml-3" v-if="isAdmin()" variant="primary" :to="{name: 'StoreAddGame'}">Add game</b-button>
     </template>
