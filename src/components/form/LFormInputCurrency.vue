@@ -30,7 +30,8 @@ export default {
       hideGroupingSeparatorOnFocus: true,
       hideNegligibleDecimalDigitsOnFocus: true,
       precision: 2,
-      currencyDisplay: 'hidden'
+      currencyDisplay: 'hidden',
+      locale: 'en-US',
     })
 
     return { inputRef, formattedValue }

@@ -2,7 +2,14 @@
   <HomeScreenTemplate :title="title" :pre-title="pretitle">
     <template #actions>
 
-      <b-alert class="mb-0 d-inline-block" variant="warning" :show="true"><b-icon-award-fill/> Membership's Price</b-alert>
+      <b-alert class="mb-0 d-none d-sm-inline-block" variant="warning" :show="true">
+        <div class="d-flex justify-content-between"><div><b-icon-award-fill/>
+        &nbsp;Membership's Price</div>
+        <a target="_blank"
+           href="https://forms.gle/PgGGPTsLpgKjGUEbA" class="ml-3 alert-link font-weight-bold">
+          Become a member
+        </a></div>
+      </b-alert>
 
       <b-button class="d-inline-block ml-3" v-if="isAdmin()" variant="primary" :to="{name: 'StoreAddGame'}">Add game</b-button>
     </template>
@@ -12,7 +19,19 @@
         <l-search v-model="search"/>
       </b-col>
     </b-row>
-
+    <b-row>
+      <b-col>
+                  <b-alert class="d-block d-sm-none mb-3 mt-3" variant="warning" :show="true">
+                <div class="d-flex justify-content-between"><div><b-icon-award-fill/>
+            &nbsp;Membership's Price</div>
+            <a target="_blank"
+               href="https://forms.gle/PgGGPTsLpgKjGUEbA"
+               class="ml-3 alert-link font-weight-bold">
+              Become a member
+            </a></div>
+          </b-alert>
+      </b-col>
+    </b-row>
     <Games :loading="loading" :games="games" @update="updateGame" class="pt-5" @delete="deleteGame"/>
 
     <Pagination v-model="currentPage" :total-count="totalGamesCount"/>
