@@ -16,6 +16,9 @@
           <b-nav-item :to="{ name: 'StoreHome' }" active-class="active">
             Store
           </b-nav-item>
+            <b-nav-item href="https://docs.google.com/spreadsheets/u/0/d/1lHZ6OA-yshGf8GgxmFI-IXygkEvq5a7SZdDl2U8bCcI/"
+                        target="_blank" active-class="active">Google Docs</b-nav-item>
+
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

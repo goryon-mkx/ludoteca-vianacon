@@ -13,7 +13,6 @@ import LibraryHome from "@/pages/library/home/LibraryHome"
 import Dashboard from "@/pages/dashboard/home"
 import StoreHome from "@/pages/store/home/StoreHome"
 import StoreAddGame from "@/pages/store/new/NewGame"
-import GoogleDocs from "@/pages/google-docs/GoogleDocs"
 
 Vue.use(VueRouter)
 
@@ -77,12 +76,6 @@ const routes = [
     beforeEnter: guardAuthenticated,
     props: { title: 'Add game', pretitle: 'Store' },
     component: StoreAddGame,
-  },
-  {
-    path: '/google-docs',
-    name: 'GoogleDocs',
-    props: { title: '', pretitle: '' },
-    component: GoogleDocs,
   },
   {
     path: '/configurations',
