@@ -162,6 +162,7 @@ export default {
             .createPlayer(player)
             .then((response) => {
               this.$bvModal.hide(this.id)
+              this.$store.dispatch('library/loadPlayers')
               this.$emit('player-selected', response)
             })
             .catch((response) => {
