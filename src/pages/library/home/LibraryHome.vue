@@ -34,7 +34,9 @@
     <Filters
         v-model="filters"
         collapse-id="filters-collapse"
+        :sort-options="[{value: 'game__name', text:'Name'}, {value: 'num_withdraws', text:'Requisitions'}, {value: 'game__rank', text:'BGG Rank'}]"
         @filter-change="filtersChange">
+
       <FilterSelect
           v-if="isAdmin()"
           id="location"
@@ -57,6 +59,7 @@
           :options="[{ text: 'Available', value: 'available' },
                      { text: 'Playing', value: 'not-available' },
                      { text: 'Not checked-in', value: 'not-checked-in' }]"/>
+
     </Filters>
 
     <!-- Content -->
@@ -350,6 +353,17 @@ export default {
 
       if (this.search) {
         params['search'] = this.search
+      }
+
+      if(this.filters.sortBy){
+        if(this.filters.sortBy.fields){
+
+          if(this.filters.sortBy.order === 'asc'){
+            params['ordering'] = this.filters.sortBy.fields
+          } else if(this.filters.sortBy.order === 'desc'){
+            params['ordering'] = `-${this.filters.sortBy.fields}`
+          }
+        }
       }
 
       Object.keys(this.filters.filtersSelected).forEach(

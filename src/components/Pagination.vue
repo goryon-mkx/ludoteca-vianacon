@@ -8,7 +8,7 @@
       <li class="page-item">
         <b-link class="page-link" href="#" :disabled="currentPage === 1"
         @click="setPage(currentPage-=1)">
-          <i class="fe fe-arrow-left mr-1"/> Previous
+          <i class="fe fe-arrow-left mr-1"/><span class="d-none d-md-inline-block"> Previous</span>
         </b-link>
       </li>
     </ul>
@@ -38,7 +38,7 @@
     >
       <li class="page-item">
         <b-link :disabled="currentPage===lastPage" class="page-link" href="#" @click="setPage(currentPage+=1)">
-          Next <i class="fe fe-arrow-right ml-1"></i>
+          <span class="d-none d-md-inline-block">Next</span> <i class="fe fe-arrow-right ml-1"></i>
         </b-link>
       </li>
     </ul>
