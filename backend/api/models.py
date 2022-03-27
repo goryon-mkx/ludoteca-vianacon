@@ -61,6 +61,7 @@ class BggGame(models.Model):
     thumbnail = models.CharField(blank=True, max_length=500, default="")
     image = models.CharField(blank=True, max_length=500)
     other_names = models.JSONField(blank=True, default=list)
+    year = models.CharField(blank=True, max_length=10, default="", null=True)
 
     @staticmethod
     def most_withdraws(number):

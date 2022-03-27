@@ -77,6 +77,7 @@ class BoardGameGeek:
         game.max_playtime = external.maxplaytime
         game.rank = external.boardgame_rank
         game.other_names = external.alternative_names
+        game.year = external.yearpublished
         return game
 
     @staticmethod

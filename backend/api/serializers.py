@@ -67,6 +67,7 @@ class BggGameSerializer(serializers.ModelSerializer):
             "max_players",
             "badges",
             "other_names",
+            "year",
         )
 
 

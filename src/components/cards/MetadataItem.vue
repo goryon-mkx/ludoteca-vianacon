@@ -1,7 +1,6 @@
 <template>
-  <div class="mr-4 mt-2 d-block" v-b-tooltip.hover :title="tooltip">
+  <div class="mr-4 mt-2 d-block small" v-b-tooltip.hover :title="tooltip">
     <b-icon v-if="!noIcon" :icon="icon" class=" mr-2"/>
-
     <span>
       {{ text }}
     </span>
