@@ -36,7 +36,7 @@
       collapse-id="filters-collapse"
       :sort-options="[
         { value: 'game__name', text: 'Name' },
-        { value: 'game__year', text: 'Year' },
+        { value: 'game__year,game__name', text: 'Year' },
         { value: 'num_withdraws', text: 'Requisitions' },
         { value: 'game__rank', text: 'BGG Rank' },
       ]"

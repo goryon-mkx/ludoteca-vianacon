@@ -38,7 +38,7 @@
       collapse-id="store-filters"
       :sort-options="[
         { value: 'game__name', text: 'Name' },
-        { value: 'game__year', text: 'Year' },
+        { value: 'game__year,game__name', text: 'Year' },
         { value: 'selling_price', text: 'Price' },
         { value: 'game__rank', text: 'BGG Rank' },
       ]"
