@@ -55,7 +55,7 @@ class LibraryGameViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter,
     )
     filterset_class = LibraryGameFilter
-    ordering_fields = ["game__name", "game__rank", "num_withdraws"]
+    ordering_fields = ["game__name", "game__year", "game__rank", "num_withdraws"]
     ordering = "game__name"
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
     authentication_classes = [authentication.JWTAuthentication]
@@ -80,7 +80,7 @@ class StoreGameViewSet(viewsets.ModelViewSet):
         django_filters.DjangoFilterBackend,
         filters.OrderingFilter,
     )
-    ordering_fields = ["game__name", "game__rank", "selling_price"]
+    ordering_fields = ["game__name", "game__year", "game__rank", "selling_price"]
     ordering = "game__name"
     filterset_class = StoreGameFilter
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
