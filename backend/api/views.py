@@ -19,10 +19,10 @@ index_view = never_cache(TemplateView.as_view(template_name="index.html"))
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    """60 is divisible by 2,3,4,5 and 6 making it flexible to adjust frontend layout.
+    """30 is divisible by 2,3,4,5 and 6 making it flexible to adjust frontend layout.
     All requests with pagination should take page_size with a base of 60"""
 
-    page_size = 60
+    page_size = 30
     page_size_query_param = "page_size"
     max_page_size = 1000
 

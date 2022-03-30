@@ -59,7 +59,7 @@ export default {
     },
     perPage: {
       type: Number,
-      default: 60,
+      default: 30,
     },
   },
   data() {
