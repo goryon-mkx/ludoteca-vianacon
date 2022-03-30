@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from backend.api.models import BggGame, Badge, Location, LibraryGame
+from backend.api.models import Badge, BggGame, LibraryGame, Location, Withdraw
 
 User = get_user_model()
 
@@ -37,3 +37,9 @@ class LibraryGameAdmin(admin.ModelAdmin):
 class LocationAdmin(admin.ModelAdmin):
     list_display = ("name", "type")
     ordering = ("name", "type")
+
+
+@admin.register(Withdraw)
+class WithdrawAdmin(admin.ModelAdmin):
+    list_display = ("game", "requisitor")
+    ordering = ("game", "requisitor")
