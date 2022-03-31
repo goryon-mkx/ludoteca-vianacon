@@ -79,7 +79,7 @@
                 <b-list-group-item
                   v-show="items.length === 0"
                   class="px-4 text-muted"
-                  >No results to show. Start typing to filter results
+                  >No results to show
                 </b-list-group-item>
               </b-list-group>
             </b-skeleton-wrapper>
@@ -130,7 +130,10 @@ export default {
   },
   methods: {
     itemList(){
-      return this.items && this.items.length ? this.items : this.defaultItems
+      if (this.search){
+        return this.items
+      } else
+        return this.items && this.items.length ? this.items : this.defaultItems
       }
     }
 }
