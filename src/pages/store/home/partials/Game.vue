@@ -4,6 +4,7 @@
     :loading="loading"
     :title="game.game.name"
     :image="game.game.image"
+    :thumbnail="game.game.thumbnail"
   >
     <template #loading>
       <b-skeleton width="30%" />

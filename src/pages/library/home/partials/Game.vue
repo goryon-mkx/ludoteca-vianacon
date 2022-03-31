@@ -5,6 +5,7 @@
     :selected="selected"
     :title="game.game.name"
     :game_id="game.id"
+    :thumbnail="game.game.thumbnail"
   >
     <template #loading>
       <b-skeleton width="40%" />
