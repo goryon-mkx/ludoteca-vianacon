@@ -31,6 +31,7 @@
       <FiltersButton :filters="filters" collapse-id="filters-collapse" />
     </b-row>
 
+    <!-- Filters -->
     <Filters
       v-model="filters"
       collapse-id="filters-collapse"
@@ -215,7 +216,7 @@ export default {
   data() {
     return {
       search: '',
-      games: new Array(60).fill({
+      games: new Array(6).fill({
         game: { name: '', image: '' },
         owner: { name: '' },
         id: 0,
@@ -369,6 +370,7 @@ export default {
       if (this.search) {
         params['search'] = this.search
       }
+      params['page_size'] = this.$store.getters["pagination/pageSize"]
 
       if (this.filters.sortBy) {
         if (this.filters.sortBy.fields) {

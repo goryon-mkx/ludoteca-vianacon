@@ -7,6 +7,7 @@ import router from '@/router'
 import authorizationService from '@/services/authorization.service'
 import localStorageService from '@/services/localStorage.service'
 import configurations from "@/store/modules/configurations"
+import pagination from "@/store/modules/pagination"
 import store from "@/store/modules/store"
 
 Vue.use(Vuex)
@@ -17,7 +18,8 @@ export default new Vuex.Store({
     library,
     users,
     configurations,
-    store
+    store,
+    pagination
   },
   actions: {
     /**

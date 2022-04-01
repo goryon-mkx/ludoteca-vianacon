@@ -4,20 +4,6 @@ const URL = '/api/library/'
 
 export default {
   /**
-   * Get all games for the given page
-   * @param page
-   * @returns {Promise<*>}
-   */
-  fetchGames(page) {
-    return unauthApi
-      .get(URL + 'games/', {
-        params: {
-          page: page,
-        },
-      })
-      .then(response => response.data)
-  },
-  /**
    * Get library game by game id
    * @param gameId
    * @returns {Promise<*>}

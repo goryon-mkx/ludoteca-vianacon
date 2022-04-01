@@ -29,6 +29,9 @@
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
+              <b-form-group label="Page size">
+                  <b-form-select v-model="pageSize" :options="[6, 30, 60]" />
+              </b-form-group>
             </b-col>
             <div class="d-flex w-100 flex-row justify-content-end">
               <b-link class="text-gray-800" @click="clearFilters">
@@ -80,6 +83,14 @@ export default {
         this.filtersModel.sortBy.fields = value
       },
     },
+    pageSize:{
+      get() {
+        return this.$store.getters["pagination/pageSize"]
+      },
+      set(value) {
+        this.$store.dispatch("pagination/setPageSize", value)
+      },
+    }
   },
   methods: {
     setOrder(value) {
