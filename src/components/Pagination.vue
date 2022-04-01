@@ -57,10 +57,6 @@ export default {
       type: Number,
       required: true,
     },
-    perPage: {
-      type: Number,
-      default: 30,
-    },
   },
   data() {
     return {
@@ -68,6 +64,9 @@ export default {
     }
   },
   computed: {
+    perPage(){
+      return this.$store.getters["pagination/pageSize"]
+    },
     lastPage() {
       return Math.ceil(this.totalCount / this.perPage)
     },
