@@ -11,7 +11,6 @@ import authorizationService from '@/services/authorization.service'
 import PageNotFound from '@/pages/PageNotFound'
 import LibraryHome from "@/pages/library/home/LibraryHome"
 import Dashboard from "@/pages/dashboard/home"
-import StoreHome from "@/pages/store/home/StoreHome"
 import StoreAddGame from "@/pages/store/new/NewGame"
 
 Vue.use(VueRouter)
@@ -64,12 +63,12 @@ const routes = [
     beforeEnter: guardAuthenticated,
     component: AddGame,
   },
-  {
-    path: '/store',
-    name: 'StoreHome',
-    props: { title: 'Store', pretitle: 'Leiriacon 2022' },
-    component: StoreHome,
-  },
+  // {
+  //   path: '/store',
+  //   name: 'StoreHome',
+  //   props: { title: 'Store', pretitle: 'Leiriacon 2022' },
+  //   component: StoreHome,
+  // },
   {
     path: '/store/new',
     name: 'StoreAddGame',

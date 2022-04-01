@@ -210,14 +210,6 @@ export default {
       default: '',
       type: String,
     },
-    noFooter: {
-      default: false,
-      type: Boolean,
-    },
-    noImage: {
-      default: false,
-      type: Boolean,
-    },
     selectable: {
       default: false,
       type: Boolean,
