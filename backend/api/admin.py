@@ -27,7 +27,7 @@ admin.site.register(Badge)
 
 @admin.register(LibraryGame)
 class LibraryGameAdmin(admin.ModelAdmin):
-    search_fields = ["game__name", "description"]
+    search_fields = ["game__name", "notes"]
     list_display = (
         "game",
         "owner",
@@ -42,5 +42,5 @@ class LocationAdmin(admin.ModelAdmin):
 
 @admin.register(Withdraw)
 class WithdrawAdmin(admin.ModelAdmin):
-    list_display = ("game", "requisitor")
+    list_display = ("game", "requisitor", "duration")
     ordering = ("game", "requisitor")

@@ -157,6 +157,14 @@ class Withdraw(models.Model):
         return self.date_returned is not None
 
     # returned.boolean = True
+    def duration(self):
+        date_returned = (
+            self.date_returned.replace(tzinfo=None)
+            if self.date_returned
+            else datetime.now().replace(tzinfo=None)
+        )
+
+        return date_returned - self.date_withdrawn.replace(tzinfo=None)
 
     def __unicode__(self):
         return self.requisitor.get_full_name()
