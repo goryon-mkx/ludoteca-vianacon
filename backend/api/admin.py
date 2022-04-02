@@ -27,6 +27,7 @@ admin.site.register(Badge)
 
 @admin.register(LibraryGame)
 class LibraryGameAdmin(admin.ModelAdmin):
+    search_fields = ["game__name", "description"]
     list_display = (
         "game",
         "owner",
