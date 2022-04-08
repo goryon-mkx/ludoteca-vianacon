@@ -12,6 +12,7 @@ import PageNotFound from '@/pages/PageNotFound'
 import LibraryHome from "@/pages/library/home/LibraryHome"
 import Dashboard from "@/pages/dashboard/home"
 import StoreAddGame from "@/pages/store/new/NewGame"
+import StoreHome from "@/pages/store/home/StoreHome"
 
 Vue.use(VueRouter)
 
