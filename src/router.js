@@ -63,12 +63,12 @@ const routes = [
     beforeEnter: guardAuthenticated,
     component: AddGame,
   },
-  // {
-  //   path: '/store',
-  //   name: 'StoreHome',
-  //   props: { title: 'Store', pretitle: 'Leiriacon 2022' },
-  //   component: StoreHome,
-  // },
+  {
+    path: '/store',
+    name: 'StoreHome',
+    props: { title: 'Store', pretitle: 'Leiriacon 2022' },
+    component: StoreHome,
+  },
   {
     path: '/store/new',
     name: 'StoreAddGame',
