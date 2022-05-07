@@ -8,36 +8,36 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.17.0",
     "@popperjs/core": "^2.9.1",
     "@vue/composition-api": "^1.2.4",
     "axios": "^0.x",
-    "babel-eslint": "^10.x",
     "bootstrap": "^4.x",
     "bootstrap-icons": "^1.4.0",
     "bootstrap-vue": "^2.x",
     "feather-icons": "^4.28.0",
     "js-cookie": "^3.0.1",
-    "node-sass": "^6.0.1",
+    "node-sass": "^7.0.1",
     "vue": "^2.x",
     "vue-currency-input": "^2.4.0",
     "vue-progressive-image": "^3.2.0",
     "vue-router": "^3.x",
     "vue-toastification": "^1.x",
-    "vue2-timeago": "2.0.4",
+    "vue2-timeago": "^2.0.4",
     "vuelidate": "^0.x",
     "vuex": "^3.x",
     "xml2json-light": "^1.x",
     "yarn": "^1.x"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^5.0.0-beta.4",
-    "@vue/cli-plugin-eslint": "^5.0.0-beta.4",
-    "@vue/cli-service": "^5.0.0-beta.4",
-    "eslint": "^7.22.0",
+    "@vue/cli-plugin-babel": "^5.0.4",
+    "@vue/cli-plugin-eslint": "^5.0.4",
+    "@vue/cli-service": "^5.0.4",
+    "eslint": "^8.14.0",
     "eslint-plugin-prettier-vue": "^3.1.0",
     "eslint-plugin-vue": "^7.8.0",
     "husky": "^7.0.2",
-    "lint-staged": "^11.2.1",
+    "lint-staged": "^12.4.1",
     "sass-loader": "^12.1.0",
     "vue-template-compiler": "^2.x",
     "webpack": "^5.58.1"
@@ -63,7 +63,8 @@
       ]
     },
     "parserOptions": {
-      "parser": "babel-eslint"
+      "parser": "@babel/eslint-parser",
+      "requireConfigFile": false
     }
   },
   "postcss": {
