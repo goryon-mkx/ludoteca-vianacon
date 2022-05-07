@@ -11,8 +11,8 @@ import authorizationService from '@/services/authorization.service'
 import PageNotFound from '@/pages/PageNotFound'
 import LibraryHome from "@/pages/library/home/LibraryHome"
 import Dashboard from "@/pages/dashboard/home"
-import StoreHome from "@/pages/store/home/StoreHome"
 import StoreAddGame from "@/pages/store/new/NewGame"
+import StoreHome from "@/pages/store/home/StoreHome"
 
 Vue.use(VueRouter)
 
@@ -67,7 +67,7 @@ const routes = [
   {
     path: '/store',
     name: 'StoreHome',
-    props: { title: 'Store', pretitle: 'Leiriacon' },
+    props: { title: 'Store', pretitle: 'Leiriacon 2022' },
     component: StoreHome,
   },
   {

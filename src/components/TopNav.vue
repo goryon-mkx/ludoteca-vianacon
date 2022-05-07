@@ -1,7 +1,8 @@
 <template>
-  <b-navbar sticky toggleable="md">
-    <b-container fluid="xl">
-      <b-navbar-brand :to="{ name: 'LibraryHome' }">
+
+    <b-container fluid class="px-0">
+      <b-navbar sticky  toggleable="md" class="px-3 px-xl-5">
+      <b-navbar-brand :to="{ name: 'LibraryHome' }" class="mr-3">
         <img src="@/assets/leiriacon.png"/>
       </b-navbar-brand>
 
@@ -42,8 +43,8 @@
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
+          </b-navbar>
     </b-container>
-  </b-navbar>
 </template>
 <script>
 import usersMixin from '@/mixins/users.mixin'

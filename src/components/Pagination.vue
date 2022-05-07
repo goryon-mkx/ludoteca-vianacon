@@ -6,9 +6,10 @@
       class="col list-pagination-prev pagination pagination-tabs justify-content-start"
     >
       <li class="page-item">
-        <a class="page-link" href="#">
-          <i class="fe fe-arrow-left mr-1"></i> Previous
-        </a>
+        <b-link class="page-link" href="#" :disabled="currentPage === 1"
+        @click="setPage(currentPage-=1)">
+          <i class="fe fe-arrow-left mr-1"/><span class="d-none d-md-inline-block"> Previous</span>
+        </b-link>
       </li>
     </ul>
 
@@ -36,9 +37,9 @@
       class="col list-pagination-next pagination pagination-tabs justify-content-end"
     >
       <li class="page-item">
-        <a class="page-link" href="#">
-          Next <i class="fe fe-arrow-right ml-1"></i>
-        </a>
+        <b-link :disabled="currentPage===lastPage" class="page-link" href="#" @click="setPage(currentPage+=1)">
+          <span class="d-none d-md-inline-block">Next</span> <i class="fe fe-arrow-right ml-1"></i>
+        </b-link>
       </li>
     </ul>
   </b-row>
@@ -56,10 +57,6 @@ export default {
       type: Number,
       required: true,
     },
-    perPage: {
-      type: Number,
-      default: 50,
-    },
   },
   data() {
     return {
@@ -67,6 +64,12 @@ export default {
     }
   },
   computed: {
+    perPage(){
+      return this.$store.getters["pagination/pageSize"]
+    },
+    lastPage() {
+      return Math.ceil(this.totalCount / this.perPage)
+    },
     currentPage: {
       get() {
         return this.value
@@ -84,7 +87,7 @@ export default {
       this.pages = []
 
       let current = this.currentPage,
-        last = Math.ceil(this.totalCount / this.perPage),
+        last = this.lastPage,
         delta = 2,
         left = current - delta,
         right = current + delta + 1,

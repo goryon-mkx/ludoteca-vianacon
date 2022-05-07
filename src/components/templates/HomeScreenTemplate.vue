@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopNav></TopNav>
+    <TopNav/>
     <b-container fluid="xl">
       <Header :pretitle="preTitle" :title="title">
         <template v-slot:content-right>

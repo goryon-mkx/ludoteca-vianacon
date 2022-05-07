@@ -1,7 +1,9 @@
 from datetime import datetime, timedelta
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.core.mail import send_mail
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Count
 from django.dispatch import receiver
@@ -14,8 +16,15 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
+
+    def __str__(self):
+        return self.get_full_name()
+
+    def __unicode__(self):
+        return self.get_full_name()
 
 
 class Badge(models.Model):
@@ -58,6 +67,7 @@ class BggGame(models.Model):
     thumbnail = models.CharField(blank=True, max_length=500, default="")
     image = models.CharField(blank=True, max_length=500)
     other_names = models.JSONField(blank=True, default=list)
+    year = models.CharField(blank=True, max_length=10, default="", null=True)
 
     @staticmethod
     def most_withdraws(number):
@@ -88,7 +98,10 @@ class Game(models.Model):
         abstract = True
 
     def __unicode__(self):
-        return "%s" % self.name
+        return "%s" % self.game.name
+
+    def __str__(self):
+        return self.game.name
 
 
 class LibraryGame(Game):
@@ -113,7 +126,7 @@ class LibraryGame(Game):
             return None
 
     def save(self, *args, **kwargs):
-        if self.location:
+        if self.location and not self.date_checkin:
             self.date_checkin = timezone.now()
 
         super().save()
@@ -129,7 +142,7 @@ class StoreGame(models.Model):
         Supplier, null=True, blank=True, on_delete=models.CASCADE
     )
     selling_price = models.FloatField(default=0.0, blank=False, null=False)
-    buying_price = models.FloatField(default=0.0, blank=False, null=False)
+    discount_price = models.FloatField(default=0.0, blank=False, null=False)
     stock = models.IntegerField(default=0, blank=False, null=False)
 
 
@@ -144,12 +157,20 @@ class Withdraw(models.Model):
         return self.date_returned is not None
 
     # returned.boolean = True
+    def duration(self):
+        date_returned = (
+            self.date_returned.replace(tzinfo=None)
+            if self.date_returned
+            else datetime.now().replace(tzinfo=None)
+        )
+
+        return date_returned - self.date_withdrawn.replace(tzinfo=None)
 
     def __unicode__(self):
-        return f"{self.game.name} with {self.requisitor.name}"
+        return self.requisitor.get_full_name()
 
     def __str__(self):
-        return f"{self.game.name} with {self.requisitor.name}"
+        return self.requisitor.get_full_name()
 
     @staticmethod
     def last(days):

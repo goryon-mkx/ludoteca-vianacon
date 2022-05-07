@@ -22,6 +22,8 @@ import '../public/theme/scss/theme.scss'
 import '../public/static/main.scss'
 import '../public/theme/fonts/feather/feather.css'
 
+import VueProgressiveImage from 'vue-progressive-image'
+Vue.use(VueProgressiveImage)
 
 // Vuelidate
 import {Vuelidate} from 'vuelidate'

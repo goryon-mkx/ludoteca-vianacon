@@ -55,3 +55,7 @@ class LibraryGameFilter(filters.FilterSet):
                 .filter(open_withdraws__gt=0)
             )
         return queryset
+
+
+class StoreGameFilter(filters.FilterSet):
+    price = filters.RangeFilter(field_name="selling_price")

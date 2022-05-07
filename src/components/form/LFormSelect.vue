@@ -2,7 +2,7 @@
   <b-input-group>
     <b-form-input
         :state="state"
-        placeholder="Select an option"
+        placeholder="Nothing selected"
         readonly
         :value="value"
         @input="$emit('input')"/>

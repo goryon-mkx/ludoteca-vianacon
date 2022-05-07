@@ -4,20 +4,6 @@ const URL = '/api/library/'
 
 export default {
   /**
-   * Get all games for the given page
-   * @param page
-   * @returns {Promise<*>}
-   */
-  fetchGames(page) {
-    return unauthApi
-      .get(URL + 'games/', {
-        params: {
-          page: page,
-        },
-      })
-      .then(response => response.data)
-  },
-  /**
    * Get library game by game id
    * @param gameId
    * @returns {Promise<*>}
@@ -59,6 +45,18 @@ export default {
   updateGame(gameId, payload) {
     return authApi
       .patch(URL + `games/${gameId}/`, payload)
+      .then(response => response.data)
+  },
+
+  /**
+   * Check-out game
+   * Sets location as empty and applies a checkout date
+   * @param gameId
+   * @returns {Promise<{date_checkout: Date}>}
+   */
+  checkoutGame(gameId){
+    return authApi
+      .patch(URL + `games/${gameId}/`, {date_checkout: new Date()})
       .then(response => response.data)
   },
 

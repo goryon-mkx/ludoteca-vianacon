@@ -1,16 +1,15 @@
-from django.db.models import Count, Sum, ExpressionWrapper, F, fields, Avg
+from django.db.models import Avg, Count, ExpressionWrapper, F, Sum, fields
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 from django_filters import rest_framework as django_filters
-from rest_framework import filters
-from rest_framework import viewsets, permissions
+from rest_framework import filters, permissions, viewsets
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt import authentication
 
 from backend.api import utils
-from backend.api.filters import LibraryGameFilter
+from backend.api.filters import LibraryGameFilter, StoreGameFilter
 from backend.api.serializers import *
 
 User = get_user_model()
@@ -20,10 +19,10 @@ index_view = never_cache(TemplateView.as_view(template_name="index.html"))
 
 
 class StandardResultsSetPagination(PageNumberPagination):
-    """60 is divisible by 2,3,4,5 and 6 making it flexible to adjust frontend layout.
+    """30 is divisible by 2,3,4,5 and 6 making it flexible to adjust frontend layout.
     All requests with pagination should take page_size with a base of 60"""
 
-    page_size = 60
+    page_size = 30
     page_size_query_param = "page_size"
     max_page_size = 1000
 
@@ -47,11 +46,17 @@ class PlayerViewSet(viewsets.ModelViewSet):
 
 
 class LibraryGameViewSet(viewsets.ModelViewSet):
-    queryset = LibraryGame.objects.order_by("game__name")
+    queryset = LibraryGame.objects.all().annotate(num_withdraws=Count("withdraw"))
     serializer_class = LibraryGameSerializer
     search_fields = ["game__name", "game__other_names"]
-    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
+    filter_backends = (
+        filters.SearchFilter,
+        django_filters.DjangoFilterBackend,
+        filters.OrderingFilter,
+    )
     filterset_class = LibraryGameFilter
+    ordering_fields = ["game__name", "game__year", "game__rank", "num_withdraws"]
+    ordering = "game__name"
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
     authentication_classes = [authentication.JWTAuthentication]
     pagination_class = StandardResultsSetPagination
@@ -68,9 +73,16 @@ class LibraryGameViewSet(viewsets.ModelViewSet):
 
 
 class StoreGameViewSet(viewsets.ModelViewSet):
-    queryset = StoreGame.objects.order_by("game__name")
+    queryset = StoreGame.objects.all()
     search_fields = ["game__name", "game__other_names"]
-    filter_backends = (filters.SearchFilter, django_filters.DjangoFilterBackend)
+    filter_backends = (
+        filters.SearchFilter,
+        django_filters.DjangoFilterBackend,
+        filters.OrderingFilter,
+    )
+    ordering_fields = ["game__name", "game__year", "game__rank", "selling_price"]
+    ordering = "game__name"
+    filterset_class = StoreGameFilter
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
     authentication_classes = [authentication.JWTAuthentication]
     pagination_class = StandardResultsSetPagination
@@ -103,7 +115,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if pk == "current":
             return self.request.user
 
-        return super(UserViewSet, self).get_object()
+        return super().get_object()
 
 
 class WithdrawViewSet(viewsets.ModelViewSet):

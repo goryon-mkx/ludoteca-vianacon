@@ -1,67 +1,111 @@
 <template>
-  <l-game-card :game_id="game.id" :loading="loading" :title="game.game.name" :image="game.game.image">
+  <l-game-card
+    :game_id="game.id"
+    :loading="loading"
+    :title="game.game.name"
+    :image="game.game.image"
+    :thumbnail="game.game.thumbnail"
+  >
     <template #loading>
-      <b-skeleton width="30%"/>
+      <b-skeleton width="30%" />
       <div v-if="isAdmin()">
-        <b-skeleton width="50%"/>
+        <b-skeleton width="50%" />
       </div>
     </template>
     <template #content>
       <div v-if="isAdmin()">
-              <div class="d-flex flex-row">
-                <div class="d-flex flex-column flex-grow-1">
-                  <span class="font-weight-bold">{{ game.selling_price }} €</span>
-                  <span class="text-muted">{{ game.stock }} available</span>
-                </div>
-
-                <b-dropdown right variant="link" toggle-class="text-decoration-none" no-caret>
-                  <template #button-content>
-                    <b-icon-three-dots-vertical class="text-dark mr-n3" font-scale="1"/>
-                  </template>
-                  <b-dropdown-item v-b-modal="`modal-${game.id}`">Update stock</b-dropdown-item>
-                  <b-dropdown-item @click="deleteGame(game.id)">Delete</b-dropdown-item>
-                </b-dropdown>
+        <div class="d-flex flex-row mt-2">
+          <div class="d-flex flex-column flex-grow-1">
+            <div>
+              <span class="font-weight font-size-lg"
+                >{{ game.selling_price }} €</span
+              >
+              <div v-if="game.discount_price > 0">
+                <b-icon-award-fill class="font-size-lg text-warning mr-2" />
+                <span class="font-size-lg text-warning"
+                  >{{ game.discount_price }} €</span
+                >
               </div>
             </div>
 
-            <div v-else>
-              <span v-if="game.is_available" class="font-weight-bold mb-0" style="font-weight: 400">
-                {{ game.selling_price }} €
-              </span>
-              <span v-if="!game.is_available" class="small d-block text-danger">
-                Sold out
-              </span>
-            </div>
-      <b-modal :id="`modal-${game.id}`" :title="game.game.name"
-               @ok="updateStock">
-        <b-form-group class="max-width-2" label="Current">
-          <b-form-spinbutton disabled readonly
-                             :value="game.stock"
-                             size="lg"/>
-        </b-form-group>
+            <span class="text-muted">{{ game.stock }} available</span>
+          </div>
 
-        <b-form-group class="max-width-2" label="New">
-          <b-form-spinbutton
-              min="0" v-model="form.stock"
-              size="lg"/>
-        </b-form-group>
+          <b-dropdown
+            right
+            variant="link"
+            toggle-class="text-decoration-none"
+            no-caret
+          >
+            <template #button-content>
+              <b-icon-three-dots-vertical
+                class="text-dark mr-n3"
+                font-scale="1"
+              />
+            </template>
+            <b-dropdown-item v-b-modal="`modal-${game.id}`"
+              >Edit</b-dropdown-item
+            >
+            <b-dropdown-item @click="deleteGame(game.id)"
+              >Delete</b-dropdown-item
+            >
+          </b-dropdown>
+        </div>
+      </div>
 
+      <div v-else>
+        <span class="font-weight font-size-lg">{{ game.selling_price }} €</span>
+        <br />
+        <b-icon-award-fill class="font-size-lg text-warning mr-2" />
+        <span class="font-size-lg text-warning"
+          >{{ game.discount_price }} €</span
+        >
+
+        <span v-if="!game.is_available" class="small d-block text-danger">
+          Sold out
+        </span>
+      </div>
+      <b-modal
+        :id="`modal-${game.id}`"
+        :title="game.game.name"
+        @ok="handleOk"
+      >
+        <b-form @submit="handleSubmit">
+        <b-row>
+          <b-col>
+            <b-form-group class="max-width-2" label="Price">
+          <l-form-input-currency v-model="form.selling_price" :state="validateState('selling_price')"/>
+        </b-form-group>
+          </b-col>
+          <b-col>
+            <b-form-group class="max-width-2" label="Discount Price" invalid-feedback="Invalid amount">
+          <l-form-input-currency  v-model="form.discount_price" :state="validateState('discount_price')" />
+        </b-form-group>
+          </b-col>
+        </b-row>
+        <b-form-group class="max-width-2" label="Stock">
+          <b-form-spinbutton min="0" v-model="form.stock" />
+        </b-form-group>
+</b-form>
       </b-modal>
     </template>
-
   </l-game-card>
 </template>
 
 <script>
 import gamesMixin from '@/mixins/games.mixin'
 import usersMixin from '@/mixins/users.mixin'
+import formMixin from '@/mixins/form.mixins'
 import storeService from '@/services/store.service'
-import LGameCard from "@/components/cards/GameCard"
+import LGameCard from '@/components/cards/GameCard'
+import LFormInputCurrency from "@/components/form/LFormInputCurrency"
+import {minValue, numeric, required} from "vuelidate/lib/validators"
 
 export default {
   name: 'StoreHomePartialGameCard',
   components: {
-    LGameCard
+    LGameCard,
+    LFormInputCurrency
   },
   props: {
     loading: {
@@ -78,7 +122,7 @@ export default {
             image: '',
             name: '',
           },
-          is_available: true
+          is_available: true,
         }
       },
       type: Object,
@@ -92,12 +136,14 @@ export default {
       type: Boolean,
     },
   },
-  mixins: [gamesMixin, usersMixin],
+  mixins: [gamesMixin, usersMixin, formMixin],
   data() {
     return {
       form: {
-        stock: this.game.stock
-      }
+        stock: this.game.stock,
+        selling_price: this.game.selling_price,
+        discount_price: this.game.discount_price,
+      },
     }
   },
   computed: {
@@ -115,23 +161,60 @@ export default {
       let parcel = 1
       const configurations = this.$store.getters['configurations/all']
       if (configurations) {
-        const configuration = configurations.filter(conf => conf.key === 'associate_discount')[0]
+        const configuration = configurations.filter(
+          (conf) => conf.key === 'associate_discount',
+        )[0]
         parcel = configuration.value
       }
       return parcel
-    }
+    },
   },
   methods: {
-    updateStock() {
-      storeService.updateGame(this.game.id, {'stock': this.form.stock}).then((response) => {
-        this.$emit('update', response)
-      })
+    handleOk(bvModalEvt) {
+      // Prevent modal from closing
+      bvModalEvt.preventDefault()
+      // Trigger submit handler
+      this.handleSubmit()
     },
+    handleSubmit(){
+      this.$v.form.$touch()
+      if (this.$v.form.$anyError) {
+        return
+      }
+
+      storeService
+        .updateGame(this.game.id, {
+          stock: this.form.stock,
+          selling_price: this.form.selling_price,
+          discount_price: this.form.discount_price
+        })
+        .then((response) => {
+          console.log('edit success')
+          this.$bvModal.hide(`modal-${this.game.id}`)
+          this.$emit('update', response)
+        })
+    },
+
     deleteGame(game_id) {
       storeService.deleteGame(game_id).then(() => {
         this.$emit('delete', game_id)
       })
-    }
+    },
+  },
+  validations:{
+    form: {
+      selling_price: {
+        required,
+      },
+      discount_price: {
+        required,
+      },
+      stock: {
+        required,
+        numeric,
+        minValue: minValue(0)
+      },
+    },
   }
 }
 </script>

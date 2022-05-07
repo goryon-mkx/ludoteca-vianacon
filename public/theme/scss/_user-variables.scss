@@ -1,4 +1,4 @@
-// 
+//
 // user-variables.scss
 // Use this to overwrite Bootstrap and Dashkit variables
 //
@@ -343,6 +343,101 @@
 }
 
 $font-family-sans-serif: 'Jost*', sans-serif !default;
+
+@font-face {
+    font-family: 'Kenyan-Coffee';
+    src: url('../fonts/kenyan-coffee/kenyan-coffee-rg.woff2') format('woff2'),
+        url('../fonts/kenyan-coffee/kenyan-coffee-rg.woff2') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Kenyan-Coffee';
+    src: url('../fonts/kenyan-coffee/kenyan-coffee-bd.woff2') format('woff2'),
+        url('../fonts/kenyan-coffee/kenyan-coffee-bd.woff2') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+$font-family-condensed: 'Kenyan-Coffee', sans-serif !default;
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-Thin.woff') format('woff');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-ExtraLight.woff') format('woff');
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-Book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-ExtraBold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Morganite';
+    src: url('../fonts/morganite/Morganite-Black.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+$font-family-condensed: 'Morganite', sans-serif !default;
 
 .form-group{
     margin-bottom: 1.75rem !important;
