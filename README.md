@@ -115,6 +115,11 @@ PYTHONUNBUFFERED=1;DJANGO_SETTINGS_MODULE=backend.settings.dev
 
 Click Apply then Ok
 
+## Environment variables
+| Name                    | Function                          |
+|-------------------------|:----------------------------------|
+| EMAIL_TEMPLATE_BASE_URL | Base url for links sent in emails |
+
 ## Development data
 
 Included in `backend` folder there is some `.csv` files with example games and players. In order to see some dummy data, run the following scripts (root folder):

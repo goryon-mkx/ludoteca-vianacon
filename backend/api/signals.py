@@ -1,12 +1,16 @@
-import json
+import os
 
 from django.core import serializers
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.dispatch import receiver
-from django.forms import model_to_dict
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django_rest_passwordreset.signals import reset_password_token_created
+
+
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())  # loads the configs from .env
+# reading .env file
 
 
 @receiver(reset_password_token_created)
@@ -28,20 +32,11 @@ def password_reset_token_created(
         "current_user": serializers.serialize("json", [reset_password_token.user]),
         "username": reset_password_token.user.username,
         "email": reset_password_token.user.email,
-        "reset_password_url": "{}?token={}".format(
-            instance.request.build_absolute_uri(
-                reverse("password_reset:reset-password-confirm")
-            ),
-            reset_password_token.key,
-        ),
+        "reset_password_url": f"{os.environ.get('EMAIL_TEMPLATE_BASE_URL')}?token={reset_password_token.key}",
     }
 
-    if reset_password_token.user.last_login:
-        subject = "Reset password"
-        email_html_message = render_to_string("email/user_reset_password.html", context)
-    else:
-        subject = "[leiracon] Confirm your email"
-        email_html_message = render_to_string("email/email_confirmation.html", context)
+    subject = "leiriacon.pt - Reset your password"
+    email_html_message = render_to_string("email/user_reset_password.html", context)
 
     # render email text
 
@@ -50,7 +45,7 @@ def password_reset_token_created(
     msg = EmailMultiAlternatives(
         subject,
         body=email_html_message,
-        from_email="admin@leiriacon.pt",
+        from_email="info@leiriacon.pt",
         to=[reset_password_token.user.email],
     )
     msg.attach_alternative(email_html_message, "text/html")
