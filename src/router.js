@@ -1,18 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from './pages/Login'
+import RequestResetPassword from './pages/RequestResetPassword'
 
 import WithdrawGame from '@/pages/library/WithdrawGame'
 import AddGame from '@/pages/library/AddGame'
 import LibraryDashboard from '@/pages/library/Dashboard'
-import Configurations from "@/pages/admin/Configurations"
+import Configurations from '@/pages/admin/Configurations'
 
 import authorizationService from '@/services/authorization.service'
-import PageNotFound from '@/pages/PageNotFound'
-import LibraryHome from "@/pages/library/home/LibraryHome"
-import Dashboard from "@/pages/dashboard/home"
-import StoreAddGame from "@/pages/store/new/NewGame"
-import StoreHome from "@/pages/store/home/StoreHome"
+import passwordService from '@/services/password.service'
+
+//import PageNotFound from '@/pages/PageNotFound'
+import NotFound from '@/pages/error/NotFound'
+import LibraryHome from '@/pages/library/home/LibraryHome'
+import Dashboard from '@/pages/dashboard/home'
+import StoreAddGame from '@/pages/store/new/NewGame'
+import StoreHome from '@/pages/store/home/StoreHome'
+import NewPassword from '@/pages/auth/NewPassword'
+import SignUp from '@/pages/auth/SignUp'
 
 Vue.use(VueRouter)
 
@@ -22,6 +28,14 @@ function guardAuthenticated(to, from, next) {
     next()
   } else {
     next({ name: 'Login' })
+  }
+}
+
+function guardNotAuthenticated(to, from, next) {
+  if (authorizationService.isAuthenticated()) {
+    next({ name: 'NotFound' })
+  } else {
+    next()
   }
 }
 
@@ -88,18 +102,39 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    beforeEnter: guardNotAuthenticated,
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp,
+    beforeEnter: guardNotAuthenticated,
+  },
+  {
+    path: '/request-reset-password',
+    name: 'RequestResetPassword',
+    component: RequestResetPassword,
+    beforeEnter: guardNotAuthenticated,
+  },
+  {
+    path: '/new-password',
+    name: 'NewPassword',
+    component: NewPassword,
     beforeEnter: (to, from, next) => {
-      if (authorizationService.isAuthenticated()) {
-        next({ name: 'NotFound' })
-      } else {
-        next()
-      }
+      console.log(JSON.stringify(to.query.token))
+      passwordService.isTokenValid(to.query.token).then((isValid) => {
+        if (isValid) {
+          next()
+        } else {
+          next({ name: 'NotFound' })
+        }
+      })
     },
   },
   {
     name: 'NotFound',
     path: '*',
-    component: PageNotFound,
+    component: NotFound,
   },
 ]
 

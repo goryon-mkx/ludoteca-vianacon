@@ -1,7 +1,7 @@
 import localStorageService from '@/services/localStorage.service'
 import { unauthApi } from '@/services/api'
 
-const URL = '/api/token/'
+const URL = '/api'
 
 export default {
   refreshToken,
@@ -17,7 +17,7 @@ export default {
  * @returns {Promise<AxiosResponse<any>>}
  */
 function doLogin(email, password) {
-  return unauthApi.post(URL, {
+  return unauthApi.post(URL + '/token/', {
     email: email,
     password: password,
   })
@@ -35,10 +35,10 @@ function refreshToken() {
   // call API to get a new token
   return (
     unauthApi
-      .post(URL + 'refresh/', {
+      .post(URL + '/token/refresh/', {
         refresh: localStorageService.getRefreshToken(),
       })
-      .then(response => {
+      .then((response) => {
         // save new token to LocalStorage
         localStorageService.setAccessToken(response.data.access)
         return Promise.resolve(response.data.access)
