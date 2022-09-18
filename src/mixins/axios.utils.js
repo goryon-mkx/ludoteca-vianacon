@@ -10,7 +10,6 @@ function getErrorDescription(response) {
     console.log(Object.values(response.response.data)[0])
     return Object.values(response.response.data)[0][0]
   } else {
-    console.log(Object.values(response.response))
-    return 'error'
+    return response.response.data.detail
   }
 }

@@ -5,18 +5,19 @@
 
         <!-- Form -->
       <form @submit.prevent="doLogin">
-        <b-form-group label="E-mail">
+        <b-form-group label="E-mail" invalid-feedback="This field is equired">
           <!-- Input -->
           <b-form-input
-            v-model="email"
+            v-model="form.email"
             placeholder="Enter your e-mail"
+            :state="validateState('email')"
             tabindex="1"
             type="text"
           />
         </b-form-group>
 
         <!-- Password -->
-        <b-form-group>
+        <b-form-group invalid-feedback="This field is required">
           <div class="row">
             <div class="col">
               <!-- Label -->
@@ -34,16 +35,14 @@
           </div>
           <!-- / .row -->
 
-          <!-- Input group -->
-          <b-input-group class="input-group-merge">
-            <!-- Input -->
             <b-form-input
-              v-model="password"
+              v-model="form.password"
               placeholder="Enter your password"
+              :state="validateState('password')"
               tabindex="2"
               type="password"
             />
-          </b-input-group>
+
         </b-form-group>
 
         <!-- Submit -->
@@ -67,22 +66,32 @@ import axiosUtils from '@/mixins/axios.utils'
 import authorizationService from '@/services/authorization.service'
 import router from '@/router'
 import AuthTemplate from "@/pages/auth/AuthTemplate"
+import {required} from "vuelidate/lib/validators"
+import formMixin from "@/mixins/form.mixins"
 
 export default {
   name: 'Login',
   components: {AuthTemplate},
+  mixins: [formMixin],
   data: function() {
     return {
-      email: '',
-      password: '',
+      form: {
+        email: '',
+        password: '',
+      }
     }
   },
   methods: {
     doLogin() {
       this.loading = true
 
+      this.$v.form.$touch()
+      if (this.$v.form.$anyError) {
+        return
+      }
+
       return authorizationService
-        .doLogin(this.email, this.password)
+        .doLogin(this.form.email, this.form.password)
         .then(response => {
           this.$store.commit('AUTH_SUCCESS', response.data)
           this.$store.dispatch("init")
@@ -94,6 +103,12 @@ export default {
         .finally(() => (this.loading = false))
     },
   },
+  validations: {
+    form: {
+      email:{ required, },
+      password: { required, }
+    }
+  }
 }
 </script>
 
