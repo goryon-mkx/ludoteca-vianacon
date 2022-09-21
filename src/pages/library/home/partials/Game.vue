@@ -18,7 +18,7 @@
           :text="game.game.year"
           icon="calendar-fill"
         />
-      <div v-if="isAdmin()">
+      <div v-if="isStaff()">
         <metadata-item
           class="text-muted"
           :text="game.owner.name"

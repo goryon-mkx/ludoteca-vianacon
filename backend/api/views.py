@@ -1,8 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Avg, Count, ExpressionWrapper, F, Sum, fields
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 from django_filters import rest_framework as django_filters
-from rest_framework import filters, permissions, viewsets
+from rest_framework import filters, viewsets, permissions
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,7 +11,10 @@ from rest_framework_simplejwt import authentication
 
 from backend.api import utils
 from backend.api.filters import LibraryGameFilter, StoreGameFilter
-from backend.api.serializers import *
+from backend.api.models import Supplier, LibraryGame, StoreGame, Withdraw, Location, Configuration
+from backend.api.serializers.legacy import SupplierSerializer, LibraryGameSerializer, StoreGameSerializer, \
+    AnonStoreGameSerializer, WithdrawSerializer, LocationSerializer, ConfigurationSerializer
+from backend.api.serializers.users import PlayerSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -80,6 +84,8 @@ class StoreGameViewSet(viewsets.ModelViewSet):
         django_filters.DjangoFilterBackend,
         filters.OrderingFilter,
     )
+
+
     ordering_fields = ["game__name", "game__year", "game__rank", "selling_price"]
     ordering = "game__name"
     filterset_class = StoreGameFilter
@@ -104,10 +110,14 @@ class StoreGameViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by("first_name", "last_name")
     serializer_class = UserSerializer
     authentication_classes = [authentication.JWTAuthentication]
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = [
+        permissions.IsAdminUser |
+        permissions.DjangoObjectPermissions |
+        permissions.DjangoModelPermissions
+    ]
 
     def get_object(self):
         pk = self.kwargs.get("pk")

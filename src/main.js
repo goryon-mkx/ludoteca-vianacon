@@ -1,20 +1,17 @@
 import Vue from 'vue'
 import App from '@/App.vue'
 
-
 // Vuex
 import store from '@/store'
-
 
 // Vue-router
 import router from '@/router'
 
-
 // Vue toastification
-import Toast, {POSITION} from 'vue-toastification'
+import Toast, { POSITION } from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 // Vue Bootstrap
-import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 // Theme and custom styles
@@ -26,22 +23,20 @@ import VueProgressiveImage from 'vue-progressive-image'
 Vue.use(VueProgressiveImage)
 
 // Vuelidate
-import {Vuelidate} from 'vuelidate'
+import { Vuelidate } from 'vuelidate'
 
 Vue.use(Toast, {
-    position: POSITION.TOP_CENTER,
-    transition: 'Vue-Toastification__fade',
-    maxToasts: 10,
-    newestOnTop: true,
-    hideProgressBar: false,
-    icon: true,
-    closeButton: 'button',
+  position: POSITION.TOP_CENTER,
+  transition: 'Vue-Toastification__fade',
+  maxToasts: 10,
+  newestOnTop: true,
+  hideProgressBar: false,
+  icon: true,
+  closeButton: 'button',
 })
-
 
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
-
 
 Vue.use(Vuelidate)
 
@@ -49,9 +44,9 @@ Vue.use(Vuelidate)
 Vue.config.productionTip = false
 
 const vue = new Vue({
-    router,
-    store,
-    render: h => h(App),
+  router,
+  store,
+  render: (h) => h(App),
 })
 
 vue.$mount('#app')

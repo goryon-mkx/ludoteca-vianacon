@@ -13,8 +13,11 @@
           <b-nav-item :to="{ name: 'LibraryHome' }" active-class="active">
             Library
           </b-nav-item>
-          <b-nav-item :to="{ name: 'StoreHome' }" active-class="active">
+          <b-nav-item v-if="hasPermission(game_permissions.Store.View)" :to="{ name: 'StoreHome' }" active-class="active">
             Store
+          </b-nav-item>
+          <b-nav-item v-if="hasPermission(user_permissions.Add)" :to="{ name: 'PlayersHome' }" active-class="active">
+            Players
           </b-nav-item>
         </b-navbar-nav>
 
@@ -33,9 +36,9 @@
               right
               toggle-class="py-0 d-flex"
           >
-            <b-dropdown-item v-if="isAdmin()" :to="{name: 'Dashboard'}">Dashboard</b-dropdown-item>
+            <b-dropdown-item v-if="isStaff()" :to="{name: 'Dashboard'}">Dashboard</b-dropdown-item>
             <b-dropdown-item v-if="isAdmin()" :to="{name: 'Configurations'}">Configurations</b-dropdown-item>
-            <b-dropdown-divider v-if="isAdmin()"></b-dropdown-divider>
+            <b-dropdown-divider v-if="isStaff() || isAdmin()"></b-dropdown-divider>
             <b-dropdown-item-button @click="logout"
             >Logout
             </b-dropdown-item-button
@@ -49,12 +52,19 @@
 <script>
 import usersMixin from '@/mixins/users.mixin'
 import authorizationService from '@/services/authorization.service'
+import {GamePermissions, UserPermissions} from '@/enums/permissions.enum'
 //import UserInfo from "@/partials/UserInfo";
 
 export default {
   name: 'TopNav',
   components: {},
   mixins: [usersMixin],
+  data(){
+    return {
+      game_permissions: GamePermissions,
+      user_permissions: UserPermissions
+    }
+  },
   methods: {
     logout() {
       authorizationService.logout()

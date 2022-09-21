@@ -14,16 +14,23 @@ import passwordService from '@/services/password.service'
 //import PageNotFound from '@/pages/PageNotFound'
 import NotFound from '@/pages/error/NotFound'
 import LibraryHome from '@/pages/library/home/LibraryHome'
+import PlayersHome from '@/pages/players/Home'
 import Dashboard from '@/pages/dashboard/home'
 import StoreAddGame from '@/pages/store/new/NewGame'
 import StoreHome from '@/pages/store/home/StoreHome'
 import NewPassword from '@/pages/auth/NewPassword'
 import SignUp from '@/pages/auth/SignUp'
 
+import { GamePermissions, UserPermissions } from '@/enums/permissions.enum'
+
 Vue.use(VueRouter)
 
 //Guardians
 function guardAuthenticated(to, from, next) {
+  //const is_authenticated = authorizationService.isAuthenticated()
+  //const has_permissions = passwordService.isAuthenticated()
+  console.log(JSON.stringify(to.meta))
+
   if (authorizationService.isAuthenticated()) {
     next()
   } else {
@@ -83,6 +90,10 @@ const routes = [
     name: 'StoreHome',
     props: { title: 'Store', pretitle: 'Leiriacon 2022' },
     component: StoreHome,
+    beforeEnter: guardAuthenticated,
+    meta: {
+      permission: GamePermissions.Store.View,
+    },
   },
   {
     path: '/store/new',
@@ -90,6 +101,15 @@ const routes = [
     beforeEnter: guardAuthenticated,
     props: { title: 'Add game', pretitle: 'Store' },
     component: StoreAddGame,
+  },
+  {
+    path: '/players',
+    name: 'PlayersHome',
+    beforeEnter: guardAuthenticated,
+    component: PlayersHome,
+    meta: {
+      permission: UserPermissions.Add,
+    },
   },
   {
     path: '/configurations',

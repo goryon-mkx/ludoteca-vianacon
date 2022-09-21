@@ -20,7 +20,7 @@
 
       <b-button
         class="d-inline-block ml-3"
-        v-if="isAdmin()"
+        v-if="isStaff()"
         variant="primary"
         :to="{ name: 'StoreAddGame' }"
         >Add game</b-button

@@ -8,12 +8,12 @@
   >
     <template #loading>
       <b-skeleton width="30%" />
-      <div v-if="isAdmin()">
+      <div v-if="isStaff()">
         <b-skeleton width="50%" />
       </div>
     </template>
     <template #content>
-      <div v-if="isAdmin()">
+      <div v-if="isStaff()">
         <div class="d-flex flex-row mt-2">
           <div class="d-flex flex-column flex-grow-1">
             <div>

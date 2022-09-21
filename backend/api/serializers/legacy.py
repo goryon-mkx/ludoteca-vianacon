@@ -1,16 +1,8 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import (
-    Badge,
-    BggGame,
-    Configuration,
-    LibraryGame,
-    Location,
-    StoreGame,
-    Supplier,
-    Withdraw,
-)
+from backend.api.models import Supplier, Badge, Location, BggGame, Withdraw, LibraryGame, StoreGame, Configuration
+from backend.api.serializers.users import PlayerSerializer
 
 User = get_user_model()
 
@@ -31,23 +23,6 @@ class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
         fields = "__all__"
-
-
-class PlayerSerializer(serializers.HyperlinkedModelSerializer):
-    name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = ("id", "first_name", "last_name", "name", "email", "username")
-        extra_kwargs = {
-            "url": {"view_name": "players", "lookup_field": "id"},
-            "first_name": {"required": True},
-            "email": {"required": True},
-            "username": {"required": True},
-        }
-
-    def get_name(self, obj: User):
-        return obj.get_full_name()
 
 
 class BggGameSerializer(serializers.ModelSerializer):
@@ -119,7 +94,7 @@ class StoreGameSerializer(serializers.ModelSerializer):
     game = BggGameSerializer(read_only=True)
 
     game_id = serializers.IntegerField(write_only=True, required=True)
-    # supplier_id = serializers.PrimaryKeyRelatedField(
+    # supplier_id = serializer.PrimaryKeyRelatedField(
     #     queryset=Supplier.objects.all(),
     #     source="supplier",
     #     required=True,
@@ -154,17 +129,6 @@ class AnonStoreGameSerializer(serializers.ModelSerializer):
 
     def get_is_available(self, data):
         return data.stock > 0
-
-
-class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        exclude = ("password", "first_name", "last_name")
-
-    def get_name(self, data):
-        return f"{data.first_name} {data.last_name}"
 
 
 class WithdrawSerializer(serializers.ModelSerializer):

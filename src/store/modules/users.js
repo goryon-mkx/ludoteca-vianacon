@@ -6,18 +6,19 @@ const state = {
     username: '',
     is_staff: false,
     is_superuser: false,
+    group_permissions: [],
   },
 }
 
 const getters = {
-  current: state => {
+  current: (state) => {
     return state.current
   },
 }
 
 const actions = {
   loadCurrent({ commit }) {
-    userService.fetchUser('current').then(response => {
+    userService.fetchUser('current').then((response) => {
       commit('setCurrent', response)
     })
   },

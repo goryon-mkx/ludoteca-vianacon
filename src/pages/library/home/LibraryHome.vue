@@ -1,7 +1,7 @@
 <template>
   <HomeScreenTemplate :pre-title="pretitle" :title="title">
     <template #actions>
-      <div v-if="isAdmin()">
+      <div v-if="isStaff()">
         <b-dropdown class="mr-3" no-caret variant="white">
           <template #button-content>
             <b-icon-gear />
@@ -14,7 +14,7 @@
           </b-dropdown-item-button>
         </b-dropdown>
 
-        <b-button :to="{ name: 'AddLibraryGame' }" variant="primary">
+        <b-button v-if="isStaff()" :to="{ name: 'AddLibraryGame' }" variant="primary">
           <b-icon-plus class="mr-2" />
           Add game
         </b-button>
@@ -44,14 +44,14 @@
       @filter-change="filtersChange"
     >
       <FilterSelect
-        v-if="isAdmin()"
+        v-if="isStaff()"
         id="location"
         v-model="filters"
         :options="$store.getters['library/locations']"
         label="Location"
       />
       <FilterSelect
-        v-if="isAdmin()"
+        v-if="isStaff()"
         id="owner"
         v-model="filters"
         :options="$store.getters['library/players']"
