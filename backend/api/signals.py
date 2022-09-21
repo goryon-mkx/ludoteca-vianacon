@@ -1,3 +1,4 @@
+import logging
 import os
 
 from django.core import serializers
@@ -28,25 +29,29 @@ def password_reset_token_created(
     :return:
     """
     # send an e-mail to the user
-    context = {
-        "current_user": serializers.serialize("json", [reset_password_token.user]),
-        "username": reset_password_token.user.username,
-        "email": reset_password_token.user.email,
-        "reset_password_url": f"{os.environ.get('EMAIL_TEMPLATE_BASE_URL')}?token={reset_password_token.key}",
-    }
+    logging.info("Received reset_password_token_created signal")
+    try:
+        context = {
+            "current_user": serializers.serialize("json", [reset_password_token.user]),
+            "username": reset_password_token.user.username,
+            "email": reset_password_token.user.email,
+            "reset_password_url": f"{os.environ.get('EMAIL_TEMPLATE_BASE_URL')}?token={reset_password_token.key}",
+        }
 
-    subject = "leiriacon.pt - Reset your password"
-    email_html_message = render_to_string("email/user_reset_password.html", context)
+        subject = "leiriacon.pt - Reset your password"
+        email_html_message = render_to_string("email/user_reset_password.html", context)
 
-    # render email text
+        # render email text
 
-    # email_plaintext_message = render_to_string('email/user_reset_password.txt', context)
+        # email_plaintext_message = render_to_string('email/user_reset_password.txt', context)
 
-    msg = EmailMultiAlternatives(
-        subject,
-        body=email_html_message,
-        from_email="info@leiriacon.pt",
-        to=[reset_password_token.user.email],
-    )
-    msg.attach_alternative(email_html_message, "text/html")
-    msg.send()
+        msg = EmailMultiAlternatives(
+            subject,
+            body=email_html_message,
+            from_email="info@leiriacon.pt",
+            to=[reset_password_token.user.email],
+        )
+        msg.attach_alternative(email_html_message, "text/html")
+        msg.send()
+    except Exception:
+        logging.error("error while trying to send mail")
