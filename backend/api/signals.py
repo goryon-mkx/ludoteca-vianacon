@@ -53,5 +53,6 @@ def password_reset_token_created(
         )
         msg.attach_alternative(email_html_message, "text/html")
         msg.send()
-    except Exception:
-        logging.error("error while trying to send mail")
+    except Exception as err:
+        logging.error(err)
+        raise err
