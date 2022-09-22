@@ -2,9 +2,9 @@ import logging
 import os
 
 from django.core import serializers
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mail
 from django.dispatch import receiver
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
 from django_rest_passwordreset.signals import reset_password_token_created
 
 
@@ -29,7 +29,7 @@ def password_reset_token_created(
     :return:
     """
     # send an e-mail to the user
-    logging.info("Received reset_password_token_created signal")
+    print("Received reset_password_token_created signal")
     try:
         context = {
             "current_user": serializers.serialize("json", [reset_password_token.user]),
@@ -39,20 +39,20 @@ def password_reset_token_created(
         }
 
         subject = "leiriacon.pt - Reset your password"
-        email_html_message = render_to_string("email/user_reset_password.html", context)
+        #body = get_template("email/user_reset_password.html").render(context)
+        body = get_template("email/password_reset.html").render(context)
 
-        # render email text
-
-        # email_plaintext_message = render_to_string('email/user_reset_password.txt', context)
-
-        msg = EmailMultiAlternatives(
+        msg = EmailMessage(
             subject,
-            body=email_html_message,
+            body=body,
             from_email="info@leiriacon.pt",
             to=[reset_password_token.user.email],
+            reply_to=['info@spielportugal.org']
         )
-        msg.attach_alternative(email_html_message, "text/html")
+        msg.content_subtype = "html"
+        #send_mail("Subject", "Teste", "info@leiriacon.pt", [reset_password_token.user.email])
         msg.send()
+
     except Exception as err:
-        logging.error(err)
+        print(err)
         raise err
