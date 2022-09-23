@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from backend.api.models import Supplier, Badge, Location, BggGame, Withdraw, LibraryGame, StoreGame, Configuration
+from backend.api.models import Supplier, Badge, Location, BggGame, Withdraw, LibraryGame, StoreGame
 from backend.api.serializers.users import PlayerSerializer
 
 User = get_user_model()
@@ -155,9 +155,3 @@ class WithdrawSerializer(serializers.ModelSerializer):
             "date_withdrawn",
             "date_returned",
         )
-
-
-class ConfigurationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Configuration
-        fields = "__all__"

@@ -29,7 +29,7 @@ def password_reset_token_created(
     :return:
     """
     # send an e-mail to the user
-    print("Received reset_password_token_created signal")
+    logging.info("Received reset_password_token_created signal")
     try:
         context = {
             "current_user": serializers.serialize("json", [reset_password_token.user]),
@@ -39,7 +39,6 @@ def password_reset_token_created(
         }
 
         subject = "leiriacon.pt - Reset your password"
-        #body = get_template("email/user_reset_password.html").render(context)
         body = get_template("email/password_reset.html").render(context)
 
         msg = EmailMessage(
@@ -50,9 +49,8 @@ def password_reset_token_created(
             reply_to=['info@spielportugal.org']
         )
         msg.content_subtype = "html"
-        #send_mail("Subject", "Teste", "info@leiriacon.pt", [reset_password_token.user.email])
         msg.send()
 
     except Exception as err:
-        print(err)
+        logging.error(err)
         raise err

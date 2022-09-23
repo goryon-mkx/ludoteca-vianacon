@@ -11,9 +11,9 @@ from rest_framework_simplejwt import authentication
 
 from backend.api import utils
 from backend.api.filters import LibraryGameFilter, StoreGameFilter
-from backend.api.models import Supplier, LibraryGame, StoreGame, Withdraw, Location, Configuration
+from backend.api.models import Supplier, LibraryGame, StoreGame, Withdraw, Location
 from backend.api.serializers.legacy import SupplierSerializer, LibraryGameSerializer, StoreGameSerializer, \
-    AnonStoreGameSerializer, WithdrawSerializer, LocationSerializer, ConfigurationSerializer
+    AnonStoreGameSerializer, WithdrawSerializer, LocationSerializer
 from backend.api.serializers.users import PlayerSerializer, UserSerializer
 
 User = get_user_model()
@@ -244,10 +244,3 @@ class StatisticsViewSet(APIView):
 class LocationViewSet(viewsets.ModelViewSet):
     queryset = Location.objects.order_by("name").all()
     serializer_class = LocationSerializer
-
-
-class ConfigurationViewSet(viewsets.ModelViewSet):
-    queryset = Configuration.objects.all()
-    serializer_class = ConfigurationSerializer
-    authentication_classes = [authentication.JWTAuthentication]
-    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)

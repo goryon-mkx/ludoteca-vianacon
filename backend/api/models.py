@@ -200,12 +200,3 @@ class Withdraw(models.Model):
         items.sort(key=lambda o: o["date_withdrawn"])
         return items
 
-
-class Configuration(models.Model):
-    class Types(models.TextChoices):
-        STORE = "store", "Store"
-        LIBRARY = "library", "Library"
-
-    key = models.fields.CharField(unique=True, max_length=100)
-    type = models.TextField(choices=Types.choices)
-    value = models.TextField()
