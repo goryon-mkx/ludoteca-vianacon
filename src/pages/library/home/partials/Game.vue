@@ -1,11 +1,9 @@
 <template>
   <l-game-card
-    :image="game.game.image"
     :loading="loading"
     :selected="selected"
-    :title="game.game.name"
     :game_id="game.id"
-    :thumbnail="game.game.thumbnail"
+    :game="game.game"
   >
     <template #loading>
       <b-skeleton width="40%" />

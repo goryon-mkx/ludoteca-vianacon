@@ -29,9 +29,6 @@
                   </b-input-group-append>
                 </b-input-group>
               </b-form-group>
-              <b-form-group label="Page size">
-                  <b-form-select @change="$emit('page-size-change')" v-model="pageSize" :options="[6, 30, 60]" />
-              </b-form-group>
             </b-col>
             <div class="d-flex w-100 flex-row justify-content-end">
               <b-link class="text-gray-800" @click="clearFilters">

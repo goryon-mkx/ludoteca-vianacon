@@ -7,7 +7,7 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from backend.api import utils
-from backend.api.models import Location, Configuration, StoreGame
+from backend.api.models import Location, StoreGame
 
 User = get_user_model()
 

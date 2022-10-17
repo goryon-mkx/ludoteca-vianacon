@@ -14,8 +14,8 @@
         <b-link v-b-modal="`details-game-${game_id}`">
           <progressive-img
               class="rounded"
-            :src="image"
-            :src-fallback="thumbnail"
+              :src="game.image"
+              :src-fallback="game.thumbnail"
               placeholder-src="/static/blank_box.jpg"
             :aspect-ratio="1"
           />
@@ -65,13 +65,13 @@
       </div>
     </b-skeleton-wrapper>
     <b-modal
-      body-class="p-0"
-      hide-header
       hide-footer
+      header-class="p-0"
       :id="`details-game-${game_id}`"
     >
-      <div class="position-relative">
-        <div class="position-absolute p-3 top w-100 right">
+      <template #modal-header>
+        <div class="position-relative">
+          <div class="position-absolute p-3 top w-100 right">
           <b-button
             size="lg"
             @click="hideModal"
@@ -82,8 +82,31 @@
             <b-icon-x
           /></b-button>
         </div>
-        <b-card-img :src="image" />
-      </div>
+          <b-card-img :src="game.image" />
+        </div>
+      </template>
+      <template #default>
+        <b-row>
+          <b-col>
+            <b-media vertical-align="center">
+              <template #aside>
+                <b-icon-people-fill scale="2"/>
+              </template>
+              <span class="text-muted text-uppercase small font-weight-bold">Players</span><br/>
+              <span>{{ range(game.min_players, game.max_players) }}</span>
+            </b-media>
+          </b-col>
+          <b-col>
+            <b-media vertical-align="center">
+              <template #aside>
+                <b-icon-clock-fill scale="2"/>
+              </template>
+              <span class="text-muted text-uppercase small font-weight-bold">Playtime</span><br/>
+              <span>{{ range(game.min_playtime, game.max_playtime) }}</span>
+            </b-media>
+          </b-col>
+        </b-row>
+      </template>
     </b-modal>
   </div>
 </template>
@@ -103,10 +126,6 @@ export default {
       type: Number,
     },
     title: {
-      default: '',
-      type: String,
-    },
-    image: {
       default: '',
       type: String,
     },
@@ -130,8 +149,8 @@ export default {
       default: false,
       type: Boolean,
     },
-    thumbnail: {
-      type: String
+    game: {
+      type: Object
     }
   },
   computed: {

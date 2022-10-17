@@ -85,7 +85,6 @@ class StoreGameViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter,
     )
 
-
     ordering_fields = ["game__name", "game__year", "game__rank", "selling_price"]
     ordering = "game__name"
     filterset_class = StoreGameFilter

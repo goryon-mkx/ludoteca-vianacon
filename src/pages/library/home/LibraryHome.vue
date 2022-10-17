@@ -68,6 +68,10 @@
           { text: 'Not checked-in', value: 'not-checked-in' },
         ]"
       />
+      <div class="d-flex flex-row">
+        <FilterRange id="players" class="mr-2" label="Players" v-model="filters" @minimum-changed="log" @maximum-changed="log"/>
+        <FilterRange id="playtime" class="ml-2" label="Playtime" v-model="filters" @minimum-changed="log" @maximum-changed="log"/>
+      </div>
     </Filters>
 
     <!-- Content -->
@@ -209,6 +213,7 @@ import HomeScreenTemplate from '@/components/templates/HomeScreenTemplate'
 import Game from './partials/Game'
 import FilterRadioButton from '@/components/filters/FilterRadioButton'
 import LSearch from '@/components/form/LSearch'
+import FilterRange from "@/components/filters/FilterRange.vue"
 
 export default {
   name: 'Home',
@@ -242,6 +247,7 @@ export default {
     }
   },
   components: {
+    FilterRange,
     LSearch,
     FilterRadioButton,
     HomeScreenTemplate,
