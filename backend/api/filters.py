@@ -18,10 +18,10 @@ class LibraryGameFilter(filters.FilterSet):
         field_name="game__max_players", lookup_expr="gte"
     )
     min_playtime = filters.NumberFilter(
-        field_name="game__min_playtime", lookup_expr="lte"
+        field_name="game__min_playtime", lookup_expr="gte"
     )
     max_playtime = filters.NumberFilter(
-        field_name="game__max_playtime", lookup_expr="gte"
+        field_name="game__max_playtime", lookup_expr="lte"
     )
     status = filters.ChoiceFilter(
         method="filter_status", choices=LIBRARY_GAMES_STATUS_CHOICES
