@@ -59,7 +59,7 @@
             overflow: hidden;
           "
         >
-          {{ title }}
+          {{ game.name }}
         </span>
         <slot name="content"></slot>
       </div>
@@ -124,10 +124,6 @@ export default {
     game_id: {
       required: true,
       type: Number,
-    },
-    title: {
-      default: '',
-      type: String,
     },
     imageHeight: {
       default: '8rem',
