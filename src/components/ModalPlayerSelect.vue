@@ -137,8 +137,6 @@ export default {
       ])
         .then((responses) => {
           this.players = responses[0]
-          console.log(this.players)
-          console.log(responses)
         })
         .finally(() => (this.loading = false))
     },

@@ -13,19 +13,18 @@ function search(search) {
         query: search,
       },
     })
-    .then(response => {
+    .then((response) => {
       if (!response.items || !response.items.item) {
         return []
       }
       let items = response.items.item
 
-      console.log(items)
       // When only one result is returned by API for some reason it doesn't return as an Array ¯\_(ツ)_/¯
-      if (!Array.isArray(items)){
+      if (!Array.isArray(items)) {
         items = [items]
       }
 
-      items = items.map(item => {
+      items = items.map((item) => {
         item.name = getGameName(item)
         item.rank = calculateRank(item.name, search)
         return item
@@ -35,7 +34,7 @@ function search(search) {
 
       items = items.slice(0, 30)
 
-      return items.map(item => mapGame(item))
+      return items.map((item) => mapGame(item))
     })
 }
 
@@ -47,7 +46,7 @@ function fetch(id) {
         id: id,
       },
     })
-    .then(response => {
+    .then((response) => {
       if (!response.items || !response.items.item) {
         return {}
       }

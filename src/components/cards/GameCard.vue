@@ -16,7 +16,6 @@
               class="rounded"
               :src="game.image"
               :src-fallback="game.thumbnail"
-              placeholder-src="/static/blank_box.jpg"
             :aspect-ratio="1"
           />
           <div

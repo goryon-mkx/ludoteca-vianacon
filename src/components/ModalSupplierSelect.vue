@@ -145,7 +145,6 @@ export default {
 
     },
     onSubmit() {
-      console.log('submit')
       this.$v.form.$touch()
       if (this.$v.form.$anyError) {
         return

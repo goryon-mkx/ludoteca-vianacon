@@ -2,9 +2,7 @@
   <l-game-card
     :game_id="game.id"
     :loading="loading"
-    :title="game.game.name"
-    :image="game.game.image"
-    :thumbnail="game.game.thumbnail"
+    :game="game.game"
   >
     <template #loading>
       <b-skeleton width="30%" />
@@ -189,7 +187,6 @@ export default {
           discount_price: this.form.discount_price
         })
         .then((response) => {
-          console.log('edit success')
           this.$bvModal.hide(`modal-${this.game.id}`)
           this.$emit('update', response)
         })

@@ -93,7 +93,6 @@ export default {
       })
     },
     assignSupplier(supplier) {
-      console.log('Selected: ' + supplier)
       this.supplier = supplier
       this.form.supplier_id = supplier.id
       this.$bvModal.hide('supplier-select-modal')
