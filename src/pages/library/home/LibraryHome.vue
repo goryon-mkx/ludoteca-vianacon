@@ -109,7 +109,7 @@
       />
     </div>
 
-    <Pagination v-model="currentPage" :total-count="totalGamesCount" />
+    <Pagination :current-page="currentPage" :total-count="totalGamesCount" @page-changed="pageChanged" />
 
     <div
       class="list-alert alert alert-dark alert-dismissible border fade"
@@ -419,6 +419,10 @@ export default {
     filtersChange(filters) {
       this.filters = filters
     },
+    pageChanged(page){
+      this.currentPage = page
+      this.refreshGames()
+    }
   },
 
   watch: {
@@ -434,9 +438,6 @@ export default {
         this.refreshGames()
       },
       deep: true,
-    },
-    currentPage() {
-      this.refreshGames()
     },
   },
 }

@@ -1,16 +1,10 @@
 from datetime import datetime, timedelta
 
-from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.core.mail import send_mail
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Count
-from django.dispatch import receiver
-from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django_rest_passwordreset.signals import reset_password_token_created
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -25,6 +19,11 @@ class User(AbstractUser):
 
     def __unicode__(self):
         return self.get_full_name()
+
+
+class Quota(models.Model):
+    year = models.PositiveBigIntegerField(null=False, blank=False)
+    user = models.ForeignKey(User, null=False, blank=False, on_delete=models.CASCADE)
 
 
 class Badge(models.Model):
@@ -199,4 +198,3 @@ class Withdraw(models.Model):
 
         items.sort(key=lambda o: o["date_withdrawn"])
         return items
-

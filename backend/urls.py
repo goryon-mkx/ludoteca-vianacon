@@ -27,6 +27,7 @@ router.register(r"store/suppliers", views.SupplierViewSet)
 router.register(r"store/games", views.StoreGameViewSet)
 router.register(r"users", views.UserViewSet)
 router.register(r"players", views.PlayerViewSet)
+router.register(r"quotas", views.QuotaViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(

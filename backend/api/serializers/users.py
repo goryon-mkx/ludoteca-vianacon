@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
+from backend.api.models import Quota
+
 User = get_user_model()
 
 
@@ -11,10 +13,17 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
+class QuotaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Quota
+        fields = ("year", "user")
+
+
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     group_permissions = serializers.SerializerMethodField()
-    groups = GroupSerializer(many=True)
+    groups = serializers.SerializerMethodField()
+    quotas = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -29,6 +38,12 @@ class UserSerializer(serializers.ModelSerializer):
             permissions.extend(group.permissions.all())
 
         return [p.codename for p in permissions]
+
+    def get_quotas(self, obj: User):
+        return [q.year for q in obj.quota_set.all()]
+
+    def get_groups(self, obj: User):
+        return [g.name for g in obj.groups.all()]
 
 
 # Deprecated

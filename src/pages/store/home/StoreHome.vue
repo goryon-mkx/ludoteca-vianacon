@@ -73,7 +73,7 @@
       @delete="deleteGame"
     />
 
-    <Pagination v-model="currentPage" :total-count="totalGamesCount" />
+    <Pagination :current-page="currentPage" :total-count="totalGamesCount" @page-changed="pageChanged"/>
   </HomeScreenTemplate>
 </template>
 
@@ -124,9 +124,6 @@ export default {
     },
   },
   watch: {
-    currentPage() {
-      this.refreshGames()
-    },
     search() {
       // anytime the search string is change we should reset page number
       // otherwise the user could face a 404 because the page is not available for the search results
@@ -197,6 +194,10 @@ export default {
           .then((response) => (this.games = response))
       }
     },
+    pageChanged(page){
+      this.currentPage = page
+      this.refreshGames()
+    }
   },
 }
 </script>

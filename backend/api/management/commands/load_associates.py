@@ -1,13 +1,9 @@
-from _ast import keyword
-
 import pandas as pd
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand
-from django.db import transaction
 
-from backend.api import utils
-from backend.api.models import Location, StoreGame
+from backend.api.models import Quota
 
 User = get_user_model()
 
@@ -24,12 +20,10 @@ class Command(BaseCommand):
         table = pd.read_csv(options["file"], header=0, delimiter=";")
         for _, row in table.iterrows():
 
-            names = row["name"].split(" ")
-            email = row["email"]
+            names = row["Nome"].split(" ")
+            email = row["E-mail"]
 
-            print(row["group"])
-            group = Group.objects.get(name=row["group"])
-            print(group)
+            group = Group.objects.get(name='Associate')
 
             user_count = User.objects.filter(email=email).count()
             if user_count == 0:
@@ -39,6 +33,15 @@ class Command(BaseCommand):
                 user.save()
             else:
                 user = User.objects.get(email=email)
+
+            quotas = row["Quotas"].split(",")
+
+            for year in quotas:
+                if Quota.objects.filter(year=year, user=user).count() == 0:
+                    q = Quota()
+                    q.user = user
+                    q.year = year
+                    q.save()
 
             group.user_set.add(user)
             group.save()

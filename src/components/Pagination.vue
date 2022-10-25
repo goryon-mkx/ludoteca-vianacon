@@ -7,7 +7,7 @@
     >
       <li class="page-item">
         <b-link class="page-link" href="#" :disabled="currentPage === 1"
-        @click="setPage(currentPage-=1)">
+        @click="setPage(currentPage-1)">
           <i class="fe fe-arrow-left mr-1"/><span class="d-none d-md-inline-block"> Previous</span>
         </b-link>
       </li>
@@ -37,7 +37,7 @@
       class="col list-pagination-next pagination pagination-tabs justify-content-end"
     >
       <li class="page-item">
-        <b-link :disabled="currentPage===lastPage" class="page-link" href="#" @click="setPage(currentPage+=1)">
+        <b-link :disabled="currentPage===lastPage" class="page-link" href="#" @click="setPage(currentPage+1)">
           <span class="d-none d-md-inline-block">Next</span> <i class="fe fe-arrow-right ml-1"></i>
         </b-link>
       </li>
@@ -49,9 +49,9 @@
 export default {
   name: 'Pagination',
   props: {
-    value: {
+    currentPage: {
       type: Number,
-      required: true,
+      required: true
     },
     totalCount: {
       type: Number,
@@ -69,14 +69,6 @@ export default {
     },
     lastPage() {
       return Math.ceil(this.totalCount / this.perPage)
-    },
-    currentPage: {
-      get() {
-        return this.value
-      },
-      set(value) {
-        this.$emit('input', value)
-      },
     },
   },
   beforeUpdate() {
@@ -113,7 +105,7 @@ export default {
       }
     },
     setPage(number) {
-      this.currentPage = number
+      this.$emit("page-changed", number)
     },
   },
 }

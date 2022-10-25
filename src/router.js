@@ -14,7 +14,7 @@ import passwordService from '@/services/password.service'
 //import PageNotFound from '@/pages/PageNotFound'
 import NotFound from '@/pages/error/NotFound'
 import LibraryHome from '@/pages/library/home/LibraryHome'
-import PlayersHome from '@/pages/players/Home'
+import PlayersHome from '@/pages/players/home/Home.vue'
 import Dashboard from '@/pages/dashboard/home'
 import StoreAddGame from '@/pages/store/new/NewGame'
 import StoreHome from '@/pages/store/home/StoreHome'
@@ -29,7 +29,6 @@ Vue.use(VueRouter)
 function guardAuthenticated(to, from, next) {
   //const is_authenticated = authorizationService.isAuthenticated()
   //const has_permissions = passwordService.isAuthenticated()
-  console.log(JSON.stringify(to.meta))
 
   if (authorizationService.isAuthenticated()) {
     next()
@@ -51,19 +50,28 @@ const routes = [
     path: '/',
     name: 'Home',
     component: LibraryHome,
-    props: { title: 'Library', pretitle: 'leiriacon 2022' },
+    props: {
+      title: 'Library',
+      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+    },
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
     component: Dashboard,
-    props: { title: 'Dashboard', pretitle: 'leiriacon 2022' },
+    props: {
+      title: 'Dashboard',
+      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+    },
   },
   {
     path: '/library',
     name: 'LibraryHome',
     component: LibraryHome,
-    props: { title: 'Library', pretitle: 'leiriacon 2022' },
+    props: {
+      title: 'Library',
+      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+    },
   },
   {
     path: '/library/dashboard',
@@ -88,7 +96,10 @@ const routes = [
   {
     path: '/store',
     name: 'StoreHome',
-    props: { title: 'Store', pretitle: 'Leiriacon 2022' },
+    props: {
+      title: 'Store',
+      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+    },
     component: StoreHome,
     beforeEnter: guardAuthenticated,
     meta: {
@@ -141,7 +152,6 @@ const routes = [
     name: 'NewPassword',
     component: NewPassword,
     beforeEnter: (to, from, next) => {
-      console.log(JSON.stringify(to.query.token))
       passwordService.isTokenValid(to.query.token).then((isValid) => {
         if (isValid) {
           next()

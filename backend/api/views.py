@@ -11,10 +11,10 @@ from rest_framework_simplejwt import authentication
 
 from backend.api import utils
 from backend.api.filters import LibraryGameFilter, StoreGameFilter
-from backend.api.models import Supplier, LibraryGame, StoreGame, Withdraw, Location
-from backend.api.serializers.legacy import SupplierSerializer, LibraryGameSerializer, StoreGameSerializer, \
+from backend.api.models import Supplier, LibraryGame, StoreGame, Withdraw, Location, Quota
+from backend.api.serializers.games import SupplierSerializer, LibraryGameSerializer, StoreGameSerializer, \
     AnonStoreGameSerializer, WithdrawSerializer, LocationSerializer
-from backend.api.serializers.users import PlayerSerializer, UserSerializer
+from backend.api.serializers.users import PlayerSerializer, UserSerializer, QuotaSerializer
 
 User = get_user_model()
 
@@ -112,11 +112,18 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by("first_name", "last_name")
     serializer_class = UserSerializer
     authentication_classes = [authentication.JWTAuthentication]
+    filter_backends = (
+        filters.SearchFilter,
+        django_filters.DjangoFilterBackend,
+        filters.OrderingFilter,
+    )
+    search_fields = ["first_name", "last_name", "email"]
     permission_classes = [
         permissions.IsAdminUser |
         permissions.DjangoObjectPermissions |
         permissions.DjangoModelPermissions
     ]
+    pagination_class = StandardResultsSetPagination
 
     def get_object(self):
         pk = self.kwargs.get("pk")
@@ -125,6 +132,13 @@ class UserViewSet(viewsets.ModelViewSet):
             return self.request.user
 
         return super().get_object()
+
+
+class QuotaViewSet(viewsets.ModelViewSet):
+    queryset = Quota.objects.all().order_by("year")
+    serializer_class = QuotaSerializer
+    authentication_classes = [authentication.JWTAuthentication]
+    permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
 
 
 class WithdrawViewSet(viewsets.ModelViewSet):
