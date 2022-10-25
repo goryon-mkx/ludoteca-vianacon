@@ -36,14 +36,14 @@
                 right
                 toggle-class="py-0 pl-0 pt-1 d-flex"
             >
-              <b-dropdown-text class="font-weight-normal" style="width: 240px;">
+              <b-dropdown-text v-if="isAssociate()" class="font-weight-normal" style="width: 240px;">
                 <div class="d-flex justify-content-between">
                   <span>Quotas</span>
                   <span v-if="numberOfQuotasDue === 0" class="text-success small font-weight-normal">Paid</span>
                   <span v-else class="text-warning small font-weight-normal">{{numberOfQuotasDue}} due</span>
                 </div>
               </b-dropdown-text>
-              <b-dropdown-divider></b-dropdown-divider>
+              <b-dropdown-divider v-if="isAssociate()"></b-dropdown-divider>
               <b-dropdown-item v-if="isStaff()" :to="{name: 'Dashboard'}">Dashboard</b-dropdown-item>
               <b-dropdown-item v-if="isAdmin()" :to="{name: 'Configurations'}">Configurations</b-dropdown-item>
               <b-dropdown-divider v-if="isStaff() || isAdmin()"></b-dropdown-divider>
