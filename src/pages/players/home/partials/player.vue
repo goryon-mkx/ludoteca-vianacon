@@ -1,6 +1,5 @@
 <template>
-  <div>
-  <b-card >
+  <b-card class="w-100">
           <!-- Header -->
           <div class="row align-items-center">
             <div class="col">
@@ -66,8 +65,8 @@
             </div>
           </div>
 
+          <b-button v-if="!player.groups.length" variant="outline-info" block>Promote to associate</b-button>
       </b-card>
-    </div>
 </template>
 
 <script>

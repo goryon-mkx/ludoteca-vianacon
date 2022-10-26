@@ -44,7 +44,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col sm="6" md="4" v-for="(player, index) in players.results" v-bind:key="index">
+      <b-col sm="6" md="4" v-for="(player, index) in players.results" v-bind:key="index" class="d-flex align-items-stretch">
         <PlayerCard :player="player"/>
       </b-col>
     </b-row>
