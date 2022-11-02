@@ -27,14 +27,8 @@
         </b-button>
         Remember your password? <b-link :to="{name: 'Login'}">Sign in</b-link>
       </form>
-      <div v-if="success">
-        <b-alert v-if="success" variant="info" show><b-icon-inbox-fill class="mr-2" small/> Check your inbox</b-alert>
-
-        <span class="mb-3" v-if="success">
-          If the email that you provided is registered you should have received a message with the next steps.
-        </span>
-      </div>
-
+      <l-check-inbox description="If the email that you provided is registered you should have received a message with the next steps."
+                     v-if="success"/>
     </template>
 
   </AuthTemplate>
@@ -46,10 +40,11 @@ import passwordService from '@/services/password.service'
 import {required, email} from "vuelidate/lib/validators"
 import formMixin from "@/mixins/form.mixins"
 import AuthTemplate from "@/pages/auth/AuthTemplate"
+import LCheckInbox from "@/components/email/LCheckInbox.vue"
 
 export default {
   name: 'Login',
-  components: {AuthTemplate},
+  components: {LCheckInbox, AuthTemplate},
   mixins: [formMixin],
   data: function() {
     return {

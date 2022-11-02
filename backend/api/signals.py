@@ -1,23 +1,59 @@
 import logging
-import os
 
 from django.core import serializers
-from django.core.mail import EmailMultiAlternatives, EmailMessage, send_mail
-from django.dispatch import receiver
-from django.template.loader import render_to_string, get_template
+from django.core.mail import EmailMessage
+from django.dispatch import Signal, receiver
+from django.template.loader import get_template
 from django_rest_passwordreset.signals import reset_password_token_created
+from dotenv import find_dotenv, load_dotenv
 
-
-from dotenv import load_dotenv, find_dotenv
+from backend.api.utils import environment
 
 load_dotenv(find_dotenv())  # loads the configs from .env
 # reading .env file
 
 
+user_created = Signal()
+
+
+def send_mail_html(subject, body, to):
+    msg = EmailMessage(
+        subject,
+        body=body,
+        from_email="info@leiriacon.pt",
+        to=to,
+        reply_to=["info@spielportugal.org"],
+    )
+    msg.content_subtype = "html"
+    msg.send()
+
+
+def send_mail_with_url(data, subject: str, template: str):
+    try:
+        context = {
+            "current_user": serializers.serialize("json", [data.user]),
+            "user_first_name": data.user.first_name,
+            "username": data.user.username,
+            "email": data.user.email,
+            "reset_password_url": f"{environment.get_reset_password_url()}{data.key}",
+            "logo_url": environment.get_logo_url(),
+            "name": environment.get_app_name(),
+            "app_url": environment.get_app_url(),
+        }
+
+        send_mail_html(
+            subject=subject,
+            body=get_template(template).render(context),
+            to=[data.user.email],
+        )
+
+    except Exception as err:
+        logging.error(err)
+        raise err
+
+
 @receiver(reset_password_token_created)
-def password_reset_token_created(
-    sender, instance, reset_password_token, *args, **kwargs
-):
+def send_password_url_by_mail(sender, instance, reset_password_token, *args, **kwargs):
     """
     Handles password reset tokens
     When a token is created, an e-mail needs to be sent to the user
@@ -30,29 +66,22 @@ def password_reset_token_created(
     """
     # send an e-mail to the user
     logging.info("Received reset_password_token_created signal")
-    try:
-        context = {
-            "current_user": serializers.serialize("json", [reset_password_token.user]),
-            "username": reset_password_token.user.username,
-            "email": reset_password_token.user.email,
-            "reset_password_url": f"{os.environ.get('EMAIL_TEMPLATE_BASE_URL')}?token={reset_password_token.key}",
-            "logo_url": os.environ.get('LOGO_URL', ''),
-            "name": os.environ.get('NAME', ''),
-        }
+    send_mail_with_url(
+        reset_password_token,
+        subject=f"Reset your {environment.get_app_name()} password",
+        template="email/password_reset.html",
+    )
 
-        subject = "leiriacon.pt - Reset your password"
-        body = get_template("email/password_reset.html").render(context)
 
-        msg = EmailMessage(
-            subject,
-            body=body,
-            from_email="info@leiriacon.pt",
-            to=[reset_password_token.user.email],
-            reply_to=['info@spielportugal.org']
-        )
-        msg.content_subtype = "html"
-        msg.send()
+@receiver(user_created)
+def send_password_url_by_mail_to_new_user(
+    sender, instance, reset_password_token, *args, **kwargs
+):
 
-    except Exception as err:
-        logging.error(err)
-        raise err
+    # send an e-mail to the user
+    logging.info("Received user_created signal")
+    send_mail_with_url(
+        reset_password_token,
+        subject=f"Welcome to {environment.get_app_name()}'s portal",
+        template="email/welcome.html",
+    )

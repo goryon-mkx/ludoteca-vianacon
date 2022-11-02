@@ -1,4 +1,5 @@
-import { authApi } from '@/services/api'
+import { authApi, unauthApi } from '@/services/api'
+import { splitName } from '@/utils/name.utils'
 
 const URL = '/api/users/'
 
@@ -13,7 +14,14 @@ export default {
   fetchUser(pk) {
     return authApi.get(URL + `${pk}/`).then((response) => response.data)
   },
-  postUser(payload) {
-    return authApi.post(URL, payload).then((response) => response.data)
+  createUser(form) {
+    let payload = {
+      ...form,
+      ...splitName(form['name']),
+      username: form['email'],
+    }
+    delete payload['name']
+
+    return unauthApi.post(URL, payload).then((response) => response.data)
   },
 }

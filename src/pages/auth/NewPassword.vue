@@ -5,7 +5,7 @@
     :illustration="'img/illustrations/coworking.svg'">
     <template #content>
       <!-- Form -->
-      <form @submit.prevent="doChangePassword">
+      <form @submit.prevent="doChangePassword" v-if="!success">
             <b-form-group
                 label="Password"
                 invalid-feedback="Too short. Minimum of 8 characters">
@@ -46,20 +46,24 @@
               </small>
             </div>
           </form>
+      <div v-if="success">
+        <b-alert show variant="success"><b-icon-check2-circle/> Done</b-alert>
+        You should be redirected in a few seconds.<br/>
+        If not <b-link :to="{ name: 'Login' }">click here</b-link>
+      </div>
     </template>
   </AuthTemplate>
-
 </template>
 
 <script>
 import passwordService from "@/services/password.service"
-//import router from "@/router"
 
 import {required, minLength, sameAs} from "vuelidate/lib/validators"
 import AuthTemplate from "@/pages/auth/AuthTemplate"
 import PasswordErrors from "@/components/password/errors"
 
 import formMixin from "@/mixins/form.mixins"
+import {sleep} from "@/utils/promise.utils"
 
 export default {
   name: "ResetPassword",
@@ -68,6 +72,7 @@ export default {
   data(){
     return {
       token: this.$route.query.token,
+      success: false,
       loading: false,
       form: {
         password: "",
@@ -78,17 +83,21 @@ export default {
   },
   methods: {
     doChangePassword() {
-      this.loading = true
+
+      this.errors = []
 
       this.$v.form.$touch()
       if (this.$v.form.$anyError) {
         return
       }
 
+      this.loading = true
+
       return passwordService
         .changePassword(this.form.password, this.token)
         .then(() => {
-          //router.push({ name: 'LibraryHome' })
+          this.success = true
+          sleep(3000).then(()=>this.$router.push({ name: 'Login' }))
         })
         .catch(response => {
           if (response.response.status === 404){

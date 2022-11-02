@@ -3,6 +3,7 @@ import time
 from boardgamegeek import BGGClient
 from boardgamegeek import exceptions as bgg_exceptions
 from django.contrib.auth import get_user_model
+from rest_framework.pagination import PageNumberPagination
 
 from backend.api.models import BggGame, LibraryGame
 
@@ -114,3 +115,12 @@ class BoardGameGeek:
     def _retry(count):
         count -= 1
         time.sleep(1)
+
+
+class StandardResultsSetPagination(PageNumberPagination):
+    """30 is divisible by 2,3,4,5 and 6 making it flexible to adjust frontend layout.
+    All requests with pagination should take page_size with a base of 60"""
+
+    page_size = 30
+    page_size_query_param = "page_size"
+    max_page_size = 1000

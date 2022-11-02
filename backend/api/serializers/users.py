@@ -1,16 +1,18 @@
+from typing import Type, TypeAlias
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 from backend.api.models import Quota
 
-User = get_user_model()
+User: TypeAlias = get_user_model()
 
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ('name',)
+        fields = ("name",)
 
 
 class QuotaSerializer(serializers.ModelSerializer):
@@ -20,14 +22,14 @@ class QuotaSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
-    group_permissions = serializers.SerializerMethodField()
-    groups = serializers.SerializerMethodField()
-    quotas = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField(read_only=True)
+    group_permissions = serializers.SerializerMethodField(read_only=True)
+    groups = serializers.SerializerMethodField(read_only=True)
+    quotas = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
-        exclude = ("password", "first_name", "last_name")
+        exclude = ("password",)
 
     def get_name(self, data):
         return data.get_full_name()
@@ -44,6 +46,14 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_groups(self, obj: User):
         return [g.name for g in obj.groups.all()]
+
+    # def create(self, validated_data):
+    #     groups_data = validated_data.pop('groups')
+    #     user = User.objects.create(**validated_data)
+    #     for group_data in groups_data:
+    #         group = Group.objects.get(name=group_data)
+    #         user.groups.add(group)
+    #     return user
 
 
 # Deprecated

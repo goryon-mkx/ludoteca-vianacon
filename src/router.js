@@ -52,7 +52,7 @@ const routes = [
     component: LibraryHome,
     props: {
       title: 'Library',
-      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+      pretitle: `Leiriacon`,
     },
   },
   {
@@ -61,7 +61,7 @@ const routes = [
     component: Dashboard,
     props: {
       title: 'Dashboard',
-      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+      pretitle: `Leiriacon`,
     },
   },
   {
@@ -70,7 +70,7 @@ const routes = [
     component: LibraryHome,
     props: {
       title: 'Library',
-      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+      pretitle: `Leiriacon`,
     },
   },
   {
@@ -98,7 +98,7 @@ const routes = [
     name: 'StoreHome',
     props: {
       title: 'Store',
-      pretitle: `Leiriacon ${new Date().getFullYear()}`,
+      pretitle: `Leiriacon`,
     },
     component: StoreHome,
     beforeEnter: guardAuthenticated,
@@ -137,7 +137,7 @@ const routes = [
   },
   {
     path: '/signup',
-    name: 'SignUp',
+    name: 'Signup',
     component: SignUp,
     beforeEnter: guardNotAuthenticated,
   },

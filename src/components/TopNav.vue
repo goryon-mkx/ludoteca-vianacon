@@ -2,7 +2,7 @@
     <b-container fluid class="px-0">
       <b-navbar sticky  toggleable="md" class="px-3 px-xl-5">
         <b-navbar-brand :to="{ name: 'LibraryHome' }" class="mr-3">
-          <img src="@/assets/leiriacon.png"/>
+          <img src="@/assets/leiriacon_new.png"/>
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -81,7 +81,6 @@ export default {
   },
   computed: {
     numberOfQuotasDue() {
-      console.log()
       return this.getNumberOfQuotasDue(this.$store.getters["users/current"].quotas)
     }
   }
