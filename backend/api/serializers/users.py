@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
+from backend.api.backends import UserModel
 from backend.api.models import Quota
 
 User: TypeAlias = get_user_model()
@@ -25,6 +26,7 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     group_permissions = serializers.SerializerMethodField(read_only=True)
     groups = serializers.SerializerMethodField(read_only=True)
+    add_group = serializers.CharField(write_only=True)
     quotas = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -47,13 +49,14 @@ class UserSerializer(serializers.ModelSerializer):
     def get_groups(self, obj: User):
         return [g.name for g in obj.groups.all()]
 
-    # def create(self, validated_data):
-    #     groups_data = validated_data.pop('groups')
-    #     user = User.objects.create(**validated_data)
-    #     for group_data in groups_data:
-    #         group = Group.objects.get(name=group_data)
-    #         user.groups.add(group)
-    #     return user
+    def create(self, validated_data):
+        group_data = validated_data.pop("add_group")
+        user = User.objects.create(**validated_data)
+
+        group = Group.objects.get(name=group_data)
+
+        user.groups.add(group)
+        return user
 
 
 # Deprecated

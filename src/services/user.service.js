@@ -24,4 +24,7 @@ export default {
 
     return unauthApi.post(URL, payload).then((response) => response.data)
   },
+  addToGroup(pk, group) {
+    return authApi.patch(URL + `${pk}/`, { add_group: group })
+  },
 }

@@ -39,8 +39,7 @@
               <b-dropdown-text v-if="isAssociate()" class="font-weight-normal" style="width: 240px;">
                 <div class="d-flex justify-content-between">
                   <span>Quotas</span>
-                  <span v-if="numberOfQuotasDue === 0" class="text-success small font-weight-normal">Paid</span>
-                  <span v-else class="text-warning small font-weight-normal">{{numberOfQuotasDue}} due</span>
+                  <Quotas :quotas="$store.getters['users/current'].quotas"/>
                 </div>
               </b-dropdown-text>
               <b-dropdown-divider v-if="isAssociate()"></b-dropdown-divider>
@@ -61,11 +60,13 @@
 import usersMixin from '@/mixins/users.mixin'
 import authorizationService from '@/services/authorization.service'
 import {GamePermissions, UserPermissions} from '@/enums/permissions.enum'
+import {max} from "@/utils/number.utils"
+import Quotas from "@/components/user/Quotas.vue"
 //import UserInfo from "@/partials/UserInfo";
 
 export default {
   name: 'TopNav',
-  components: {},
+  components: {Quotas},
   mixins: [usersMixin],
   data(){
     return {
@@ -82,6 +83,9 @@ export default {
   computed: {
     numberOfQuotasDue() {
       return this.getNumberOfQuotasDue(this.$store.getters["users/current"].quotas)
+    },
+    lastPaidQuota(){
+      return max(this.$store.getters["users/current"].quotas)
     }
   }
 }

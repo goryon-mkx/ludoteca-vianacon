@@ -58,30 +58,41 @@
                 </div>
                 <div class="col-auto">
                   <!-- Text -->
-                  <span class="text-success" v-if="getNumberOfQuotasDue(player.quotas)===0">Paid</span>
-                  <span class="text-danger" v-else>{{getNumberOfQuotasDue(player.quotas)}} due</span>
+                  <Quotas :quotas="player.quotas"/>
                 </div>
               </div> <!-- / .row -->
             </div>
           </div>
 
-          <b-button v-if="!player.groups.length" variant="outline-info" block>Promote to associate</b-button>
+          <b-button
+              v-if="!player.groups.length"
+              @click="addToGroup"
+              variant="outline-info"
+              block
+          >Promote to associate</b-button>
       </b-card>
 </template>
 
 <script>
 import usersMixin from "@/mixins/users.mixin"
 import quotaService from "@/services/quota.service"
+import Quotas from "@/components/user/Quotas.vue"
+import userService from "@/services/user.service"
 
 export default {
   name: "PlayerCard",
-  components: {},
+  components: {Quotas},
   mixins: [usersMixin],
   props: {'player': {
     required: true
     }
   },
   methods: {
+    addToGroup(){
+      userService.addToGroup(this.player.id, "Associate").then((response) => {
+        this.emitUpdatedPlayer(response)
+      })
+    },
     addQuota(){
       let year
       if(this.player.quotas.length){
@@ -90,8 +101,18 @@ export default {
         year = new Date().getFullYear()
       }
 
-      quotaService.create(this.player.id, year)
-
+      quotaService.create(this.player.id, year).then(() => {
+        this.emitUpdatedPlayer()
+      })
+    },
+    emitUpdatedPlayer(player){
+      if(player){
+        this.$emit("player-updated", player)
+      } else {
+        userService.fetchUser(this.player.id).then((response)=> {
+          this.$emit("player-updated", response)
+        })
+      }
     }
   }
 }

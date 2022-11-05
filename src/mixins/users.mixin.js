@@ -1,4 +1,5 @@
 import authorizationService from '@/services/authorization.service'
+import { max } from '@/utils/number.utils'
 
 export default {
   methods: {
@@ -33,9 +34,11 @@ export default {
       if (!quotas || !quotas.length) {
         return 1
       } else {
-        const lastPaidQuota = quotas.reduce((a, b) => Math.max(a, b), -Infinity)
-        return new Date().getFullYear() - lastPaidQuota
+        return new Date().getFullYear() - this.getLastPaidQuota(quotas)
       }
+    },
+    getLastPaidQuota(quotas) {
+      return max(quotas)
     },
   },
 }

@@ -2,6 +2,7 @@ import userService from '@/services/user.service'
 
 const state = {
   current: {
+    groups: [],
     email: '',
     username: '',
     is_staff: false,

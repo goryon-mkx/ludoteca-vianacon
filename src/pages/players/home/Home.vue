@@ -1,5 +1,5 @@
 <template>
-  <HomeScreenTemplate title="Players" pre-title="leiriacon">
+  <HomeScreenTemplate :title="title" :pre-title="pretitle">
 <!--    <b-card no-body class="mt-5">-->
 <!--      <b-card-header>-->
 <!--        <b-input-group class="input-group-flush">-->
@@ -45,7 +45,7 @@
     </b-row>
     <b-row>
       <b-col sm="6" md="4" v-for="(player, index) in players.results" v-bind:key="index" class="d-flex align-items-stretch">
-        <PlayerCard :player="player"/>
+        <PlayerCard :player="player" @player-updated="fetchPlayers"/>
       </b-col>
     </b-row>
     <Pagination :current-page="currentPage" :total-count="players.count" @page-changed="pageChanged"></Pagination>
@@ -65,6 +65,7 @@ export default {
   name: "PlayersHome",
   components: {PlayerCard, Pagination, HomeScreenTemplate, LSearch},
   mixins: [usersMixin],
+  props: ['title', 'pretitle'],
   data(){
     return {
       search: '',

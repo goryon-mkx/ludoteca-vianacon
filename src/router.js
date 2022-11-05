@@ -118,6 +118,7 @@ const routes = [
     name: 'PlayersHome',
     beforeEnter: guardAuthenticated,
     component: PlayersHome,
+    props: { title: 'Players', pretitle: 'leiriacon' },
     meta: {
       permission: UserPermissions.Add,
     },
