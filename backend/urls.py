@@ -18,7 +18,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from backend.api.views import games, statistics, users
+from backend.api.views import common, games, statistics, users
 
 router = routers.DefaultRouter()
 router.register(r"library/games", games.LibraryGameViewSet)
@@ -29,6 +29,10 @@ router.register(r"store/games", games.StoreGameViewSet)
 router.register(r"users", users.UserViewSet)
 router.register(r"players", users.PlayerViewSet)
 router.register(r"quotas", users.QuotaViewSet)
+router.register(r"events", common.EventViewSet)
+router.register(r"tickets", users.TicketViewSet)
+router.register(r"user-tickets", users.TicketUserViewSet)
+router.register(r"bulk-user-tickets", users.TicketUserBulkCreateView)
 
 schema_view = get_schema_view(
     openapi.Info(

@@ -25,6 +25,11 @@ Vue.use(VueProgressiveImage)
 // Vuelidate
 import { Vuelidate } from 'vuelidate'
 
+//
+import VueI18n from 'vue-i18n'
+
+Vue.use(VueI18n)
+
 Vue.use(Toast, {
   position: POSITION.TOP_CENTER,
   transition: 'Vue-Toastification__fade',

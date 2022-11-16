@@ -2,14 +2,44 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import Count
+from django.db.models import CASCADE, Count
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+class Event(models.Model):
+    name = models.TextField(null=False, blank=False)
+    start = models.DateTimeField(null=True, blank=True)
+    end = models.DateTimeField(null=True, blank=True)
+    ticketStart = models.DateTimeField(null=True, blank=True)
+    ticketEnd = models.DateTimeField(null=True, blank=True)
+    ticketLimit = models.IntegerField(null=True, blank=True)
+
+
+class Ticket(models.Model):
+    TYPE_STANDARD = "standard"
+    TYPE_MEMBERSHIP = "membership"
+    TYPES = [(TYPE_STANDARD, "Standard"), (TYPE_MEMBERSHIP, "Membership")]
+
+    name = models.TextField(blank=False, null=False)
+    validUntil = models.DateTimeField(blank=False, null=False)
+    validFrom = models.DateTimeField(blank=False, null=False)
+    type = models.CharField(max_length=32, choices=TYPES, null=False, blank=False)
+    price = models.IntegerField()
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+
 class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
+    tickets = models.ManyToManyField(
+        Ticket,
+        through="TicketUser",
+        through_fields=(
+            "buyer",
+            "ticket",
+        ),
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
@@ -19,6 +49,15 @@ class User(AbstractUser):
 
     def __unicode__(self):
         return self.get_full_name()
+
+
+class TicketUser(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    name = models.TextField(blank=False, null=False, default="")
+    buyer = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="ticket_buyer"
+    )
+    is_payed = models.BooleanField(default=False)
 
 
 class Quota(models.Model):

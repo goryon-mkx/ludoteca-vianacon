@@ -19,13 +19,13 @@ export default {
       return this.isUserInGroup(this.$store.getters['users/current'], group)
     },
     isUserInGroup(user, group) {
-      return user.groups.includes(group)
+      return user.groups?.includes(group)
     },
     hasPermission: function (permission) {
       return (
         this.isAdmin() ||
         this.isStaff() ||
-        this.$store.getters['users/current'].group_permissions.includes(
+        this.$store.getters['users/current']?.group_permissions?.includes(
           permission.description,
         )
       )

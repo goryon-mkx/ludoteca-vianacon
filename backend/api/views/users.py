@@ -11,14 +11,16 @@ from django_rest_passwordreset.views import (
     HTTP_IP_ADDRESS_HEADER,
     HTTP_USER_AGENT_HEADER,
 )
-from rest_framework import filters, permissions, viewsets
+from rest_framework import filters, generics, mixins, permissions, viewsets
 from rest_framework_simplejwt import authentication
 
 from backend.api import permissions as custom_permissions
-from backend.api.models import Quota
+from backend.api.models import Quota, Ticket, TicketUser
 from backend.api.serializers.users import (
     PlayerSerializer,
     QuotaSerializer,
+    TicketSerializer,
+    TicketUserSerializer,
     UserSerializer,
 )
 from backend.api.signals import user_created
@@ -106,3 +108,28 @@ class QuotaViewSet(viewsets.ModelViewSet):
     serializer_class = QuotaSerializer
     authentication_classes = [authentication.JWTAuthentication]
     permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)
+
+
+class TicketViewSet(viewsets.ModelViewSet):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketSerializer
+    authentication_classes = (authentication.JWTAuthentication,)
+    permission_classes = [
+        permissions.IsAdminUser | permissions.DjangoModelPermissionsOrAnonReadOnly
+    ]
+
+
+class TicketUserViewSet(viewsets.ModelViewSet):
+    queryset = TicketUser.objects.all()
+    serializer_class = TicketUserSerializer
+    authentication_classes = (authentication.JWTAuthentication,)
+    permission_classes = [
+        custom_permissions.IsCreate
+        | permissions.IsAdminUser
+        | permissions.DjangoModelPermissionsOrAnonReadOnly
+    ]
+
+
+class TicketUserBulkCreateView(viewsets.ViewSet, generics.CreateAPIView):
+    queryset = TicketUser.objects.all()
+    serializer_class = TicketUserSerializer

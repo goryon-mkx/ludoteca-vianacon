@@ -39,3 +39,11 @@ html, body {
 .modal-title{
   font-size: 1rem;
 }
+
+.navbar-brand {
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+}
+
+@import "~bootstrap-icons/font/bootstrap-icons.css";

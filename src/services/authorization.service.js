@@ -24,7 +24,7 @@ function doLogin(email, password) {
 }
 
 function logout() {
-  localStorageService.clearTokens()
+  localStorageService.clear()
 }
 
 /**

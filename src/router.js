@@ -20,8 +20,10 @@ import StoreAddGame from '@/pages/store/new/NewGame'
 import StoreHome from '@/pages/store/home/StoreHome'
 import NewPassword from '@/pages/auth/NewPassword'
 import SignUp from '@/pages/auth/SignUp'
+import Tickets from '@/pages/tickets/overview/Overview.vue'
 
 import { GamePermissions, UserPermissions } from '@/enums/permissions.enum'
+import Buy from "@/pages/tickets/buy/Buy.vue"
 
 Vue.use(VueRouter)
 
@@ -122,6 +124,16 @@ const routes = [
     meta: {
       permission: UserPermissions.Add,
     },
+  },
+  {
+    path: '/tickets',
+    name: 'Tickets',
+    component: Tickets,
+  },
+  {
+    path: '/tickets/buy',
+    name: 'BuyTickets',
+    component: Buy,
   },
   {
     path: '/configurations',

@@ -5,7 +5,8 @@ from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 from backend.api.backends import UserModel
-from backend.api.models import Quota
+from backend.api.models import Quota, Ticket, TicketUser
+from backend.api.serializers.common import BulkCreateListSerializer
 
 User: TypeAlias = get_user_model()
 
@@ -75,3 +76,25 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_name(self, obj: User):
         return obj.get_full_name()
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = "__all__"
+
+
+class TicketUserSerializer(serializers.ModelSerializer):
+    def create(self, validated_data):
+        instance = TicketUser(**validated_data)
+
+        if isinstance(self._kwargs["data"], dict):
+            instance.save()
+
+        return instance
+
+    class Meta:
+        model = TicketUser
+        fields = "__all__"
+
+        list_serializer_class = BulkCreateListSerializer

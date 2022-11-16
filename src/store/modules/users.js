@@ -1,4 +1,5 @@
 import userService from '@/services/user.service'
+import localStorageService from '@/services/localStorage.service'
 
 const state = {
   current: {
@@ -19,7 +20,14 @@ const getters = {
 
 const actions = {
   loadCurrent({ commit }) {
+    const user = localStorageService.getUser()
+    if (user) {
+      commit('setCurrent', user)
+      return
+    }
+
     userService.fetchUser('current').then((response) => {
+      localStorageService.setUser(response)
       commit('setCurrent', response)
     })
   },

@@ -3,11 +3,17 @@ export default {
   getRefreshToken,
   setAccessToken,
   setRefreshToken,
-  clearTokens,
+  clear,
+  setLocale,
+  getLocale,
+  setUser,
+  getUser,
 }
 
 const ACCESS_TOKEN = 'access_token'
 const REFRESH_TOKEN = 'refresh_token'
+const LOCALE = 'locale'
+const USER = 'user'
 
 /**
  * Returns access token
@@ -44,7 +50,29 @@ function setRefreshToken(refreshToken) {
 /**
  * Clear access and refresh tokens
  */
-function clearTokens() {
+function clear() {
   localStorage.removeItem(ACCESS_TOKEN)
   localStorage.removeItem(REFRESH_TOKEN)
+  localStorage.removeItem(USER)
+  localStorage.removeItem(LOCALE)
+}
+
+function setLocale(locale) {
+  localStorage.setItem(LOCALE, locale)
+}
+
+function getLocale() {
+  const locale = localStorage.getItem(LOCALE)
+  if (!locale) {
+    setLocale('en')
+  }
+  return localStorage.getItem(LOCALE)
+}
+
+function setUser(user) {
+  return localStorage.setItem(USER, JSON.stringify(user))
+}
+
+function getUser() {
+  return JSON.parse(localStorage.getItem(USER))
 }
