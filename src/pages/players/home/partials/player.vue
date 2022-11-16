@@ -89,9 +89,9 @@ export default {
   },
   methods: {
     addToGroup(){
-      userService.addToGroup(this.player.id, "Associate").then((response) => {
-        this.emitUpdatedPlayer(response)
-      })
+      //userService.addToGroup(this.player.id, "Associate").then((response) => {
+      //  this.emitUpdatedPlayer(response)
+      //})
     },
     addQuota(){
       let year
