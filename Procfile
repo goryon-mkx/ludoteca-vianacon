@@ -1,2 +1,2 @@
-release: python manage.py migrate api 0013
+release: python manage.py migrate
 web: gunicorn backend.wsgi --log-file -
