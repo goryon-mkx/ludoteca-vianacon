@@ -1,5 +1,3 @@
-import supplierService from '@/services/supplier.service'
-
 const state = {
   suppliers: [],
 }
