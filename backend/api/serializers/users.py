@@ -27,7 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     group_permissions = serializers.SerializerMethodField(read_only=True)
     groups = serializers.SerializerMethodField(read_only=True)
-    add_group = serializers.CharField(write_only=True)
+    # add_group = serializers.CharField(write_only=True)
     quotas = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -50,14 +50,14 @@ class UserSerializer(serializers.ModelSerializer):
     def get_groups(self, obj: User):
         return [g.name for g in obj.groups.all()]
 
-    def create(self, validated_data):
-        group_data = validated_data.pop("add_group")
-        user = User.objects.create(**validated_data)
+    # def create(self, validated_data):
+    # group_data = validated_data.pop("add_group")
+    # user = User.objects.create(**validated_data)
 
-        group = Group.objects.get(name=group_data)
+    # group = Group.objects.get(name=group_data)
 
-        user.groups.add(group)
-        return user
+    # user.groups.add(group)
+    # return user
 
 
 # Deprecated
