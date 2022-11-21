@@ -4,6 +4,7 @@ export default {
   setAccessToken,
   setRefreshToken,
   clear,
+  clearTokens,
   setLocale,
   getLocale,
   setUser,
@@ -51,10 +52,14 @@ function setRefreshToken(refreshToken) {
  * Clear access and refresh tokens
  */
 function clear() {
+  localStorage.removeItem(LOCALE)
+  localStorage.removeItem(USER)
+  clearTokens()
+}
+
+function clearTokens() {
   localStorage.removeItem(ACCESS_TOKEN)
   localStorage.removeItem(REFRESH_TOKEN)
-  localStorage.removeItem(USER)
-  localStorage.removeItem(LOCALE)
 }
 
 function setLocale(locale) {

@@ -23,7 +23,7 @@ import SignUp from '@/pages/auth/SignUp'
 import Tickets from '@/pages/tickets/overview/Overview.vue'
 
 import { GamePermissions, UserPermissions } from '@/enums/permissions.enum'
-import Buy from "@/pages/tickets/buy/Buy.vue"
+import Buy from '@/pages/tickets/buy/Buy.vue'
 
 Vue.use(VueRouter)
 
@@ -133,6 +133,7 @@ const routes = [
   {
     path: '/tickets/buy',
     name: 'BuyTickets',
+    beforeEnter: guardAuthenticated,
     component: Buy,
   },
   {

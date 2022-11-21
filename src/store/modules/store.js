@@ -1,27 +1,27 @@
 import supplierService from '@/services/supplier.service'
 
 const state = {
-  suppliers: []
+  suppliers: [],
 }
 
 const getters = {
-  suppliers: state => {
+  suppliers: (state) => {
     return state.suppliers
-  }
+  },
 }
 
 const actions = {
-  loadSuppliers({ commit }) {
-    supplierService.fetchAll().then(data => {
-      commit('setSuppliers', data)
-    })
-  }
+  loadSuppliers() {
+    //supplierService.fetchAll().then(data => {
+    //  commit('setSuppliers', data)
+    //})
+  },
 }
 
 const mutations = {
   setSuppliers(state, payload) {
     state.suppliers = payload
-  }
+  },
 }
 
 export default {

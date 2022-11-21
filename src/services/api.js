@@ -38,7 +38,7 @@ const authApi = axios.create({
 /**
  * Add access token to request
  */
-authApi.interceptors.request.use(config => {
+authApi.interceptors.request.use((config) => {
   const token = localStorageService.getAccessToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -52,10 +52,10 @@ authApi.interceptors.request.use(config => {
  * If any other error or if refresh request returns error, redirect to login
  */
 authApi.interceptors.response.use(
-  response => {
+  (response) => {
     return response
   },
-  function(error) {
+  function (error) {
     const originalRequest = error.config
 
     // catch 401 response when the token expired
@@ -68,7 +68,7 @@ authApi.interceptors.response.use(
       }
 
       // call API to get a new token
-      return authorizationService.refreshToken().then(token => {
+      return authorizationService.refreshToken().then((token) => {
         // update original request authorization header
         authApi.defaults.headers.common['Authorization'] = 'Bearer ' + token
 

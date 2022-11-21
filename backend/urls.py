@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.http import FileResponse
 from django.urls import include, path
 from django.views.decorators.cache import never_cache
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -18,7 +19,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from backend.api.views import common, games, statistics, users
+from backend.api.views import common, games, orders, statistics, users
 
 router = routers.DefaultRouter()
 router.register(r"library/games", games.LibraryGameViewSet)
@@ -31,8 +32,8 @@ router.register(r"players", users.PlayerViewSet)
 router.register(r"quotas", users.QuotaViewSet)
 router.register(r"events", common.EventViewSet)
 router.register(r"tickets", users.TicketViewSet)
-router.register(r"user-tickets", users.TicketUserViewSet)
-router.register(r"bulk-user-tickets", users.TicketUserBulkCreateView)
+router.register(r"orders", orders.OrderViewSet)
+router.register(r"products", orders.ProductViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(

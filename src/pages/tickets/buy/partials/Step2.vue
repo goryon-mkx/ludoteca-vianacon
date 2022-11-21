@@ -56,7 +56,6 @@ export default {
       }
     },
     onUpdate(index, value){
-      console.log('onUpdate')
       if(value && this.names.length === index +1) {
         this.addName()
       }

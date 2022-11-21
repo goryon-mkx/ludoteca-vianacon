@@ -69,8 +69,8 @@
         ]"
       />
       <div class="d-flex flex-row">
-        <FilterRange id="players" class="mr-2" label="Players" v-model="filters" @minimum-changed="log" @maximum-changed="log"/>
-        <FilterRange id="playtime" class="ml-2" label="Playtime" v-model="filters" @minimum-changed="log" @maximum-changed="log"/>
+        <FilterRange id="players" class="mr-2" label="Players" v-model="filters" />
+        <FilterRange id="playtime" class="ml-2" label="Playtime" v-model="filters"/>
       </div>
     </Filters>
 
@@ -264,9 +264,6 @@ export default {
     this.refreshGames()
   },
   methods: {
-    log(value) {
-      console.log(value)
-    },
     selectAll() {
       const availableGames = this.games.filter((game) =>
         this.isGameSelectable(game),

@@ -69,7 +69,7 @@
               @click="addToGroup"
               variant="outline-info"
               block
-          >Promote to associate</b-button>
+          >Promote to Member</b-button>
       </b-card>
 </template>
 

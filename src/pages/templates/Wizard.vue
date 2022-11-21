@@ -83,7 +83,7 @@
                         size="lg"
                         variant="primary"
                         data-toggle="wizard"
-                        @click="$emit('save')"
+                        @click="$emit('finish')"
                     >Finish</b-button>
 
                   </div>

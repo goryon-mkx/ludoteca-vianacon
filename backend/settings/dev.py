@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from datetime import timedelta
 
-from dotenv import load_dotenv, find_dotenv
+from dotenv import find_dotenv, load_dotenv
 
 # Load environment variables in .env if existing
 load_dotenv(find_dotenv())
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     "django_rest_passwordreset",
     "drf_yasg",
+    "polymorphic",
     "backend.api.apps.ApiConfig",
 ]
 
@@ -164,7 +166,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_REST_PASSWORDRESET_NO_INFORMATION_LEAKAGE = True
 
-#EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.environ.get("EMAIL_HOST")
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
@@ -172,5 +174,6 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT")
 EMAIL_USE_TLS = True
 
 SIMPLE_JWT = {
-    'UPDATE_LAST_LOGIN': True,
+    "UPDATE_LAST_LOGIN": True,
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
 }

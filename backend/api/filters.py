@@ -1,7 +1,7 @@
 from django.db.models import Count, Q
 from django_filters import rest_framework as filters
 
-from backend.api.models import LibraryGame
+from backend.api.models import LibraryGame, Order
 
 
 class LibraryGameFilter(filters.FilterSet):
@@ -59,3 +59,9 @@ class LibraryGameFilter(filters.FilterSet):
 
 class StoreGameFilter(filters.FilterSet):
     price = filters.RangeFilter(field_name="selling_price")
+
+
+class OrderFilter(filters.FilterSet):
+    class Meta:
+        model = Order
+        fields = ["user__id"]

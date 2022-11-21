@@ -15,15 +15,15 @@ from rest_framework import filters, generics, mixins, permissions, viewsets
 from rest_framework_simplejwt import authentication
 
 from backend.api import permissions as custom_permissions
-from backend.api.models import Quota, Ticket, TicketUser
+from backend.api.models import Product, Quota, Ticket
+from backend.api.serializers.order import ProductPolymorphicSerializer
 from backend.api.serializers.users import (
     PlayerSerializer,
     QuotaSerializer,
     TicketSerializer,
-    TicketUserSerializer,
     UserSerializer,
 )
-from backend.api.signals import user_created
+from backend.api.signals import new_order, user_created
 from backend.api.utils.utils import StandardResultsSetPagination
 from backend.api.views.games import User
 
@@ -50,7 +50,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
         custom_permissions.IsCreate
         | permissions.IsAdminUser
-        | permissions.DjangoModelPermissionsOrAnonReadOnly
+        | permissions.DjangoObjectPermissions
     ]
     pagination_class = StandardResultsSetPagination
 
@@ -65,7 +65,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
 
-        print(response.data)
         self.create_token(response.data, request.META)
         return response
 
@@ -117,19 +116,3 @@ class TicketViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAdminUser | permissions.DjangoModelPermissionsOrAnonReadOnly
     ]
-
-
-class TicketUserViewSet(viewsets.ModelViewSet):
-    queryset = TicketUser.objects.all()
-    serializer_class = TicketUserSerializer
-    authentication_classes = (authentication.JWTAuthentication,)
-    permission_classes = [
-        custom_permissions.IsCreate
-        | permissions.IsAdminUser
-        | permissions.DjangoModelPermissionsOrAnonReadOnly
-    ]
-
-
-class TicketUserBulkCreateView(viewsets.ViewSet, generics.CreateAPIView):
-    queryset = TicketUser.objects.all()
-    serializer_class = TicketUserSerializer

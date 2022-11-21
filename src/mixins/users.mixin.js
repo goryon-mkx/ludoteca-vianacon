@@ -1,10 +1,10 @@
-import authorizationService from '@/services/authorization.service'
+import authorizationUtils from '@/services/authorization.service'
 import { max } from '@/utils/number.utils'
 
 export default {
   methods: {
     isAuthenticated: function () {
-      return authorizationService.isAuthenticated()
+      return authorizationUtils.isAuthenticated()
     },
     isAdmin: function () {
       return this.$store.getters['users/current'].is_superuser

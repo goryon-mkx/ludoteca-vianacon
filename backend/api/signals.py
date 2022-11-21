@@ -15,37 +15,33 @@ load_dotenv(find_dotenv())  # loads the configs from .env
 
 user_created = Signal()
 
-
-def send_mail_html(subject, body, to):
-    msg = EmailMessage(
-        subject,
-        body=body,
-        from_email="info@leiriacon.pt",
-        to=to,
-        reply_to=["info@spielportugal.org"],
-    )
-    msg.content_subtype = "html"
-    msg.send()
+new_order = Signal()
 
 
-def send_mail_with_url(data, subject: str, template: str):
+def extract_reset_token_data(data):
+    return {
+        "current_user": serializers.serialize("json", [data.user]),
+        "user_first_name": data.user.first_name,
+        "username": data.user.username,
+        "email": data.user.email,
+        "reset_password_url": f"{environment.get_reset_password_url()}{data.key}",
+        "logo_url": environment.get_logo_url(),
+        "name": environment.get_app_name(),
+        "app_url": environment.get_app_url(),
+    }
+
+
+def send_mail(to: str, context, subject: str, template: str):
     try:
-        context = {
-            "current_user": serializers.serialize("json", [data.user]),
-            "user_first_name": data.user.first_name,
-            "username": data.user.username,
-            "email": data.user.email,
-            "reset_password_url": f"{environment.get_reset_password_url()}{data.key}",
-            "logo_url": environment.get_logo_url(),
-            "name": environment.get_app_name(),
-            "app_url": environment.get_app_url(),
-        }
-
-        send_mail_html(
-            subject=subject,
+        msg = EmailMessage(
+            subject,
             body=get_template(template).render(context),
-            to=[data.user.email],
+            from_email="info@leiriacon.pt",
+            to=[to],
+            reply_to=["info@spielportugal.org"],
         )
+        msg.content_subtype = "html"
+        msg.send()
 
     except Exception as err:
         logging.error(err)
@@ -66,8 +62,12 @@ def send_password_url_by_mail(sender, instance, reset_password_token, *args, **k
     """
     # send an e-mail to the user
     logging.info("Received reset_password_token_created signal")
-    send_mail_with_url(
-        reset_password_token,
+
+    context = extract_reset_token_data(reset_password_token)
+
+    send_mail(
+        reset_password_token.user.email,
+        context,
         subject=f"Reset your {environment.get_app_name()} password",
         template="email/password_reset.html",
     )
@@ -77,11 +77,42 @@ def send_password_url_by_mail(sender, instance, reset_password_token, *args, **k
 def send_password_url_by_mail_to_new_user(
     sender, instance, reset_password_token, *args, **kwargs
 ):
+    context = extract_reset_token_data(reset_password_token)
 
     # send an e-mail to the user
     logging.info("Received user_created signal")
-    send_mail_with_url(
-        reset_password_token,
+    send_mail(
+        reset_password_token.user.email,
+        context,
         subject=f"Welcome to {environment.get_app_name()}'s portal",
         template="email/welcome.html",
+    )
+
+
+@receiver(new_order)
+def send_new_order_email(sender, instance, order, *args, **kwargs):
+
+    # send an e-mail to the user
+    logging.info("Received user_created signal")
+
+    context = {
+        "logo_url": environment.get_logo_url(),
+        "name": environment.get_app_name(),
+        "user": serializers.serialize("json", [order.user]),
+        "order_number": order.id,
+        "products": [
+            {
+                "name": product.name,
+                "type": product.ticket.name,
+                "value": product.value / 100,
+            }
+            for product in order.products.all()
+        ],
+    }
+
+    send_mail(
+        order.user.email,
+        context=context,
+        subject=f"{environment.get_app_name()} tickets",
+        template="email/order-summary.html",
     )

@@ -6,9 +6,9 @@ import users from '@/store/modules/users'
 import router from '@/router'
 import authorizationService from '@/services/authorization.service'
 import localStorageService from '@/services/localStorage.service'
-import configurations from "@/store/modules/configurations"
-import pagination from "@/store/modules/pagination"
-import store from "@/store/modules/store"
+import configurations from '@/store/modules/configurations'
+import pagination from '@/store/modules/pagination'
+import store from '@/store/modules/store'
 
 Vue.use(Vuex)
 
@@ -19,7 +19,7 @@ export default new Vuex.Store({
     users,
     configurations,
     store,
-    pagination
+    pagination,
   },
   actions: {
     /**
@@ -31,17 +31,21 @@ export default new Vuex.Store({
      * @returns {Promise<AxiosResponse<any>>}
      */
     login({ commit, dispatch }, { username, password }) {
-      return authorizationService.doLogin(username, password).then(response => {
-        commit('AUTH_SUCCESS', response.data)
-        dispatch('users/loadCurrent').then(() => router.push({ name: 'Home' }))
-      })
+      return authorizationService
+        .doLogin(username, password)
+        .then((response) => {
+          commit('AUTH_SUCCESS', response.data)
+          dispatch('users/loadCurrent').then(() =>
+            router.push({ name: 'Home' }),
+          )
+        })
     },
-    init({dispatch}){
+    init({ dispatch }) {
       dispatch('users/loadCurrent')
       dispatch('library/loadLocations')
       dispatch('library/loadPlayers')
       dispatch('store/loadSuppliers')
-    }
+    },
   },
 
   mutations: {

@@ -18,6 +18,9 @@
             <b-nav-item v-if="hasPermission(user_permissions.Add)" :to="{ name: 'PlayersHome' }" active-class="active">
               Players
             </b-nav-item>
+            <b-nav-item :to="{ name: 'Tickets' }" active-class="active">
+              Tickets
+            </b-nav-item>
           </b-navbar-nav>
 
           <!-- Right aligned nav items -->

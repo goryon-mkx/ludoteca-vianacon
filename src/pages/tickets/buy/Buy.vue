@@ -6,6 +6,7 @@
     :number-of-steps="3"
     @next="nextStep"
     @previous="previousStep"
+    @finish="finish"
 >
   <template #content>
     <div v-if="currentStepNumber === 1">
@@ -27,6 +28,7 @@ import Step1 from "@/pages/tickets/buy/partials/Step1.vue"
 import Step2 from "@/pages/tickets/buy/partials/Step2.vue"
 import Step3 from "@/pages/tickets/buy/partials/Step3.vue"
 import ticketService from "@/services/ticket.service"
+import orderService from "@/services/order.service"
 
 let steps = {
   1: {title: "Let's start", description: "Your ticket is already here for you"},
@@ -65,7 +67,6 @@ export default {
           name: name,
           ticket: ticket_info,
         }))
-        console.log(this.additional_tickets)
       }
 
       this.currentStep = steps[++this.currentStepNumber]
@@ -73,6 +74,17 @@ export default {
     },
     previousStep(){
       this.currentStep = steps[--this.currentStepNumber]
+    },
+    finish(){
+      const products = [this.buyer_ticket].concat(this.additional_tickets)
+
+      orderService.createOrder(
+          this.$store.getters["users/current"],
+          products,
+      ).then(() => {
+        this.$toast.success("Done. Check your inbox for payment details")
+        this.$router.push({name: "Home"})
+      })
     },
     onStep2Input(names){
       this.names = names

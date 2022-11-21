@@ -1,12 +1,11 @@
+from abc import ABC
 from typing import Type, TypeAlias
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 
-from backend.api.backends import UserModel
-from backend.api.models import Quota, Ticket, TicketUser
-from backend.api.serializers.common import BulkCreateListSerializer
+from backend.api.models import Quota, Ticket
 
 User: TypeAlias = get_user_model()
 
@@ -82,19 +81,3 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = "__all__"
-
-
-class TicketUserSerializer(serializers.ModelSerializer):
-    def create(self, validated_data):
-        instance = TicketUser(**validated_data)
-
-        if isinstance(self._kwargs["data"], dict):
-            instance.save()
-
-        return instance
-
-    class Meta:
-        model = TicketUser
-        fields = "__all__"
-
-        list_serializer_class = BulkCreateListSerializer

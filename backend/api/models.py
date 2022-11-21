@@ -2,10 +2,11 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import CASCADE, Count
+from django.db.models import Count
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
+from polymorphic.models import PolymorphicModel
 
 
 class Event(models.Model):
@@ -32,14 +33,6 @@ class Ticket(models.Model):
 
 class User(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
-    tickets = models.ManyToManyField(
-        Ticket,
-        through="TicketUser",
-        through_fields=(
-            "buyer",
-            "ticket",
-        ),
-    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
@@ -51,12 +44,19 @@ class User(AbstractUser):
         return self.get_full_name()
 
 
-class TicketUser(models.Model):
+class Product(PolymorphicModel):
+    value = models.IntegerField(default=0)
+
+
+class ProductTicket(Product):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     name = models.TextField(blank=False, null=False, default="")
-    buyer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="ticket_buyer"
-    )
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product)
+    total = models.IntegerField(default=0, null=False, blank=False)
     is_payed = models.BooleanField(default=False)
 
 

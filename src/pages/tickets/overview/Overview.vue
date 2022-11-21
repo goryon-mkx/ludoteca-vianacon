@@ -2,22 +2,21 @@
 <div class="main-content">
 
   <!-- HEADER -->
-  <div class="pt-7 pb-8 bg-dark bg-ellipses">
+  <div class="pt-5 pb-8 bg-dark bg-ellipses">
     <div class="container-fluid">
+      <div class="mb-5 ml-5">
+        <b-button variant="outline-white" :to="{name: 'Home'}"><b-icon-house-door-fill/> Home</b-button>
+      </div>
       <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-6">
 
           <div class="mb-5 d-flex row justify-content-center">
-
-            <img width="300px" src="@/assets/whitelogo.png"/>
-
+            <img width="300rem" src="@/assets/whitelogo.png"/>
           </div>
-
           <!-- Text -->
           <p class="lead text-center text-muted">
-            Be part of leiriacon. Buy you ticket now to have guaranteed entry.
+            Be part of LeiriaCON. Get your ticket, get all the fun.
           </p>
-
         </div>
       </div> <!-- / .row -->
     </div>
@@ -34,7 +33,7 @@
 
             <!-- Title -->
             <h6 class="text-uppercase text-center text-muted my-4">
-              Associate
+              Member
             </h6>
 
             <!-- Price -->
@@ -78,10 +77,16 @@
             </div>
 
             <!-- Button -->
-            <b-button v-b-modal.buy-tickets-modal variant="primary" block>
+
+
+            <b-button v-if="!isAuthenticated()" :to="{name: 'Login'}" variant="primary" block>
+              Login
+            </b-button>
+            <b-alert v-else-if="!isAssociate()" show variant="light"><b-icon-award-fill/> Member exclusive. See how to become one <b-link href="https://www.spielportugal.org/membership">here</b-link></b-alert>
+            <b-alert v-else-if="this.hasPreviousOrders" show variant="warning"><b-icon-exclamation-circle-fill/> Ones purchase per Memeber</b-alert>
+            <b-button v-else :to="{name: 'BuyTickets'}" variant="primary" block>
               Buy
             </b-button>
-
           </div>
         </div>
 
@@ -132,7 +137,7 @@
 
             <!-- Button -->
             <b-button variant="light" block disabled>
-              Coming December 1st
+              Coming December 4th
             </b-button>
 
           </div>
@@ -145,18 +150,24 @@
 
         <!-- Card -->
         <div class="card card-inactive">
+
           <div class="card-body">
 
             <!-- Title -->
             <h3 class="text-center">
-              4-day ticket
+              Need some help deciding?
             </h3>
 
             <!-- Text -->
             <p class="text-muted text-center">
-              All tickets gives you access to the convention during all days.
+              We can help you if you have any questions about our tickets or about the event.
             </p>
-
+                <!-- Button -->
+                <div class="text-center">
+                  <a href="#!" class="btn btn-outline-secondary">
+                    Contact us
+                  </a>
+                </div>
           </div>
         </div>
 
@@ -169,12 +180,12 @@
 
             <!-- Title -->
             <h3 class="text-center">
-              Want to become an Associate?
+              Want to become a Member?
             </h3>
 
             <!-- Text -->
             <p class="text-muted text-center">
-              You can become an Associate at any time, we have great benefits for you.
+              You can become an Member now, check all the benefits using the link below.
             </p>
 
             <!-- Button -->
@@ -184,7 +195,6 @@
                 See more
               </b-button>
             </div>
-
           </div>
         </div>
 
@@ -200,10 +210,25 @@
 
 <script>
 import Modal from "./partials/Modal.vue"
+import usersMixin from "@/mixins/users.mixin"
+import orderService from "@/services/order.service"
 
 export default {
   name: "Buy",
-  components: {Modal}
+  components: {Modal},
+  mixins: [usersMixin],
+  data(){
+    return {
+      hasPreviousOrders: false
+    }
+  },
+  mounted() {
+    if(this.isAuthenticated()){
+      orderService.getOrders({'user__id': this.$store.getters["users/current"].id}).then((response) => {
+        if (response.length > 0) this.hasPreviousOrders = true
+      })
+    }
+  },
 }
 </script>
 

@@ -7,7 +7,7 @@
         <b-col class="col-12 col-md-6 offset-xl-2 offset-md-1 order-md-2 mb-5 mb-md-0">
 
           <!-- Image -->
-          <div class="text-center">
+          <div class="text-center d-none d-md-block">
             <b-img :src="require(`@/assets/${illustration}`)" alt="..." class="img-fluid"/>
           </div>
 
