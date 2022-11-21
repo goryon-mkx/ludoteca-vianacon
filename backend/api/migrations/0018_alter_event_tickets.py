@@ -15,7 +15,10 @@ class Migration(migrations.Migration):
             model_name="event",
             name="tickets",
             field=models.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE, to="api.eventticket"
+                on_delete=django.db.models.deletion.CASCADE,
+                blank=True,
+                null=True,
+                to="api.eventticket",
             ),
         ),
     ]

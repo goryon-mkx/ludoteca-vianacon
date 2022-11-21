@@ -32,6 +32,8 @@ class Migration(migrations.Migration):
             model_name="event",
             name="tickets",
             field=models.OneToOneField(
+                blank=True,
+                null=True,
                 default=None,
                 on_delete=django.db.models.deletion.CASCADE,
                 to="api.eventticket",

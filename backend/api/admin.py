@@ -4,7 +4,15 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-from backend.api.models import Badge, BggGame, LibraryGame, Location, Quota, Withdraw
+from backend.api.models import (
+    Badge,
+    BggGame,
+    LibraryGame,
+    Location,
+    Order,
+    Quota,
+    Withdraw,
+)
 
 User = get_user_model()
 
@@ -51,3 +59,10 @@ class QuotaAdmin(admin.ModelAdmin):
     list_display = ("user", "year")
     ordering = ("-year", "user")
     search_fields = ["user__first_name", "user__last_name"]
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ("user", "total", "is_payed")
+    ordering = ("user",)
+    search_fields = ["user__first_name", "user__last_name", "user__email"]
