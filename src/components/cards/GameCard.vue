@@ -1,5 +1,16 @@
 <template>
   <div class="mb-6 w-100">
+
+    <b-skeleton-wrapper :loading="loading">
+      <template #loading>
+        <b-skeleton-img width="100%" style="aspect-ratio: 1"/>
+          <div class="d-flex flex-column">
+            <span class="mt-3">
+              <b-skeleton width="50%" />
+            </span>
+            <slot name="loading"></slot>
+          </div>
+      </template>
       <div
         class="
           image-zoom
@@ -16,7 +27,7 @@
               class="rounded"
               :src="game.image"
               :src-fallback="game.thumbnail"
-            :aspect-ratio="1"
+              :aspect-ratio="1"
           />
           <div
             class="
@@ -35,15 +46,6 @@
           </div>
         </b-link>
       </div>
-    <b-skeleton-wrapper :loading="loading">
-      <template #loading>
-          <div class="d-flex flex-column">
-            <span class="mt-3">
-              <b-skeleton width="50%" />
-            </span>
-            <slot name="loading"></slot>
-          </div>
-      </template>
 
       <div class="d-flex flex-column">
         <span
