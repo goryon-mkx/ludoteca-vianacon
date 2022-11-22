@@ -32,9 +32,9 @@
   </div>
 
   <!-- CONTENT -->
-  <div class="container-fluid">
+  <div class="container">
     <div class="row mt-n7 justify-content-center">
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-6 ">
 
         <!-- Card -->
         <div class="card">
@@ -101,7 +101,7 @@
         </div>
 
       </div>
-      <div class="col-12 col-lg-4">
+      <div class="col-12 col-lg-6">
 
         <!-- Card -->
         <div class="card">
