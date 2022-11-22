@@ -1,9 +1,12 @@
 import django.core.exceptions
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_polymorphic.serializers import PolymorphicSerializer
 
-from backend.api.models import Order, Product, ProductTicket
+from backend.api.models import Order, Product, ProductTicket, Ticket
 from backend.api.signals import new_order
+
+User = get_user_model()
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -38,8 +41,27 @@ class OrderSerializer(serializers.ModelSerializer):
             raise django.core.exceptions.PermissionDenied
 
         products = validated_data.pop("products")
-        order = Order.objects.create(**validated_data)
+
+        has_membership_ticket = False
         for product in products:
+            if product.get("ticket", Ticket()).type == Ticket.TYPE_MEMBERSHIP:
+                if has_membership_ticket:
+                    raise django.core.exceptions.BadRequest(
+                        "Only one membership ticket per account is allowed"
+                    )
+                else:
+                    user: User = validated_data.get("user", User())
+                    if not user or not user.groups.filter(name="Associate").exists():
+                        raise django.core.exceptions.BadRequest(
+                            "Only members can buy membership tickets"
+                        )
+                    else:
+                        has_membership_ticket = True
+
+        order = Order.objects.create(**validated_data)
+
+        for product in products:
+            print(product.get("ticket").type)
             resource_type = product.pop("resourcetype")
             if resource_type == "ProductTicket":
                 order.total += product.get("ticket").price

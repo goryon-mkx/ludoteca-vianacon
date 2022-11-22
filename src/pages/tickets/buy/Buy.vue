@@ -4,6 +4,7 @@
     :description="currentStep.description"
     :current-step="currentStepNumber"
     :number-of-steps="3"
+    :loading="loading"
     @next="nextStep"
     @previous="previousStep"
     @finish="finish"
@@ -47,7 +48,8 @@ export default {
       buyer_ticket: {},
       additional_tickets: [],
       tickets: [],
-      names: [""]
+      names: [""],
+      loading: false
     }
   },
   mounted() {
@@ -76,6 +78,7 @@ export default {
       this.currentStep = steps[--this.currentStepNumber]
     },
     finish(){
+      this.loading = true
       const products = [this.buyer_ticket].concat(this.additional_tickets)
 
       orderService.createOrder(
@@ -84,6 +87,8 @@ export default {
       ).then(() => {
         this.$toast.success("Done. Check your inbox for payment details")
         this.$router.push({name: "Home"})
+      }).finally(()=> {
+        this.loading = false
       })
     },
     onStep2Input(names){

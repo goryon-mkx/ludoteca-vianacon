@@ -5,13 +5,15 @@
   <div class="pt-5 pb-8 bg-dark bg-ellipses">
     <div class="container-fluid">
       <div class="mb-5 ml-5">
-        <b-button variant="outline-white" :to="{name: 'Home'}"><b-icon-house-door-fill/> Home</b-button>
+
       </div>
       <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-6">
 
           <div class="mb-5 d-flex row justify-content-center">
-            <img width="300rem" src="@/assets/whitelogo.png"/>
+            <b-link :to="{'name': 'Home'}">
+              <img width="300rem" src="@/assets/whitelogo.png"/>
+            </b-link>
           </div>
           <!-- Text -->
           <p class="lead text-center text-muted">
@@ -84,7 +86,7 @@
               Login
             </b-button>
             <b-alert v-else-if="!isAssociate()" show variant="light"><b-icon-award-fill/> Member exclusive. See how to become one <b-link href="https://www.spielportugal.org/membership">here</b-link></b-alert>
-            <b-alert v-else-if="this.hasPreviousOrders" show variant="warning"><b-icon-exclamation-circle-fill/> Ones purchase per Memeber</b-alert>
+            <b-alert v-else-if="this.hasPreviousOrders" show variant="warning"><b-icon-exclamation-circle-fill/> One purchase per Member</b-alert>
             <b-button v-else :to="{name: 'BuyTickets'}" variant="primary" block>
               Buy
             </b-button>
@@ -226,7 +228,8 @@ export default {
     }
   },
   mounted() {
-    ticketService.fetchValidTickets((response)=> this.tickets = response)
+    ticketService.fetchValidTickets()
+        .then((response)=> this.tickets = response)
     if(this.isAuthenticated()){
       orderService.getOrders({'user__id': this.$store.getters["users/current"].id}).then((response) => {
         if (response.length > 0) this.hasPreviousOrders = true

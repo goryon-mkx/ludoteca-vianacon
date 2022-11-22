@@ -6,8 +6,9 @@
           <div class="d-flex justify-content-between">
             <div class="d-flex align-content-center align-items-center " style="flex-basis: 0; flex-grow: 1">
             </div>
-
+            <b-link :to="{'name': 'Home'}">
             <img src="@/assets/whitelogo.png" style="width: 6rem"/>
+            </b-link>
             <div style="flex-basis: 0; flex-grow: 1" class="d-flex justify-content-end">
             </div>
 
@@ -84,7 +85,8 @@
                         variant="primary"
                         data-toggle="wizard"
                         @click="$emit('finish')"
-                    >Finish</b-button>
+                        :disabled="loading"
+                    ><b-spinner v-show="loading" small/><span v-show="!loading">Finish</span></b-button>
 
                   </div>
                 </div>
@@ -102,9 +104,19 @@
 </template>
 
 <script>
+
 export default {
   name: "Wizard",
-  props: ['title', 'description', 'currentStep', 'numberOfSteps'],
+  props: {
+    title: String,
+    description: String,
+    currentStep: Object,
+    numberOfSteps: Number,
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  }
 }
 </script>
 
