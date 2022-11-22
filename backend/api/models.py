@@ -64,12 +64,24 @@ class ProductTicket(Product):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
     name = models.TextField(blank=False, null=False, default="")
 
+    def __unicode__(self):
+        return f"{self.ticket.name} ({self.name})"
+
+    def __str__(self):
+        return f"{self.ticket.name} ({self.name})"
+
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product)
     total = models.IntegerField(default=0, null=False, blank=False)
     is_payed = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return f"#{self.id}"
+
+    def __str__(self):
+        return f"#{self.id}"
 
 
 class Quota(models.Model):
