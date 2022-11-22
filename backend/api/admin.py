@@ -7,10 +7,12 @@ from django.contrib.auth.admin import UserAdmin
 from backend.api.models import (
     Badge,
     BggGame,
+    Event,
     LibraryGame,
     Location,
     Order,
     Quota,
+    Ticket,
     Withdraw,
 )
 
@@ -66,3 +68,13 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ("user", "total", "is_payed")
     ordering = ("user",)
     search_fields = ["user__first_name", "user__last_name", "user__email"]
+
+
+@admin.register(Ticket)
+class TicketAdmin(admin.ModelAdmin):
+    ordering = ("type",)
+
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    ordering = ("name",)

@@ -17,6 +17,12 @@ class Event(models.Model):
     ticketEnd = models.DateTimeField(null=True, blank=True)
     ticketLimit = models.IntegerField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
 
 class Ticket(models.Model):
     TYPE_STANDARD = "standard"
@@ -29,6 +35,12 @@ class Ticket(models.Model):
     type = models.CharField(max_length=32, choices=TYPES, null=False, blank=False)
     price = models.IntegerField()
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
 
 
 class User(AbstractUser):
