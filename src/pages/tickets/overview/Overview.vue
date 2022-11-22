@@ -77,9 +77,10 @@
             </div>
 
             <!-- Button -->
-
-
-            <b-button v-if="!isAuthenticated()" :to="{name: 'Login'}" variant="primary" block>
+            <b-button v-if="tickets.length===0" variant="light" block disabled>
+              Coming soon
+            </b-button>
+            <b-button v-else-if="!isAuthenticated()" :to="{name: 'Login'}" variant="primary" block>
               Login
             </b-button>
             <b-alert v-else-if="!isAssociate()" show variant="light"><b-icon-award-fill/> Member exclusive. See how to become one <b-link href="https://www.spielportugal.org/membership">here</b-link></b-alert>
@@ -212,6 +213,7 @@
 import Modal from "./partials/Modal.vue"
 import usersMixin from "@/mixins/users.mixin"
 import orderService from "@/services/order.service"
+import ticketService from "@/services/ticket.service"
 
 export default {
   name: "Buy",
@@ -219,10 +221,12 @@ export default {
   mixins: [usersMixin],
   data(){
     return {
-      hasPreviousOrders: false
+      hasPreviousOrders: false,
+      tickets: []
     }
   },
   mounted() {
+    ticketService.fetchValidTickets((response)=> this.tickets = response)
     if(this.isAuthenticated()){
       orderService.getOrders({'user__id': this.$store.getters["users/current"].id}).then((response) => {
         if (response.length > 0) this.hasPreviousOrders = true

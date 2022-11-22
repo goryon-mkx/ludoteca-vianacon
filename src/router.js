@@ -10,6 +10,7 @@ import Configurations from '@/pages/admin/Configurations'
 
 import authorizationService from '@/services/authorization.service'
 import passwordService from '@/services/password.service'
+import ticketService from '@/services/ticket.service'
 
 //import PageNotFound from '@/pages/PageNotFound'
 import NotFound from '@/pages/error/NotFound'
@@ -28,6 +29,14 @@ import Buy from '@/pages/tickets/buy/Buy.vue'
 Vue.use(VueRouter)
 
 //Guardians
+function guardTickets(to, from, next) {
+  ticketService.fetchValidTickets().then((response) => {
+    if (response.length === 0) {
+      next({ name: 'NotFound' })
+    } else guardAuthenticated(to, from, next)
+  })
+}
+
 function guardAuthenticated(to, from, next) {
   //const is_authenticated = authorizationService.isAuthenticated()
   //const has_permissions = passwordService.isAuthenticated()
@@ -133,7 +142,7 @@ const routes = [
   {
     path: '/tickets/buy',
     name: 'BuyTickets',
-    beforeEnter: guardAuthenticated,
+    beforeEnter: guardTickets,
     component: Buy,
   },
   {
