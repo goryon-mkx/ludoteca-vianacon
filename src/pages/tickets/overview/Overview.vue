@@ -167,7 +167,7 @@
             </p>
                 <!-- Button -->
                 <div class="text-center">
-                  <a href="#!" class="btn btn-outline-secondary">
+                  <a href="mailto:info@spielportugal.org" class="btn btn-outline-secondary">
                     Contact us
                   </a>
                 </div>
