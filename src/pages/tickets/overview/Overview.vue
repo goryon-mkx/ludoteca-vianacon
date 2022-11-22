@@ -156,7 +156,7 @@
       </div>
     </div> <!-- / .row -->
     <div class="row justify-content-center">
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-lg-6">
 
         <!-- Card -->
         <div class="card card-inactive">
@@ -182,7 +182,7 @@
         </div>
 
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-lg-6">
 
         <!-- Card -->
         <div class="card card-inactive">
