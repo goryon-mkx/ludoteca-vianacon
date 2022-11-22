@@ -2,7 +2,7 @@
 <div class="main-content">
 
   <!-- HEADER -->
-  <div class="pt-5 pb-8 bg-dark bg-ellipses">
+  <div class="pt-3 pb-8 bg-dark bg-ellipses">
     <div class="container-fluid">
       <div class="mb-5 ml-5">
 
@@ -11,6 +11,13 @@
         <div class="col-md-10 col-lg-8 col-xl-6">
 
           <div class="mb-5 d-flex row justify-content-center">
+
+            <b-link :to="{'name': 'Home'}">
+              <b-icon-house-fill/> Home
+            </b-link>
+          </div>
+          <div class="mb-5 d-flex row justify-content-center">
+
             <b-link :to="{'name': 'Home'}">
               <img width="300rem" src="@/assets/whitelogo.png"/>
             </b-link>
