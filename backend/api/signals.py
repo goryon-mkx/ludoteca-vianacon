@@ -100,6 +100,7 @@ def send_new_order_email(sender, instance, order, *args, **kwargs):
         "name": environment.get_app_name(),
         "user": serializers.serialize("json", [order.user]),
         "order_number": order.id,
+        "order_total": order.total / 100,
         "products": [
             {
                 "name": product.name,

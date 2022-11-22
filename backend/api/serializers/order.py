@@ -64,8 +64,11 @@ class OrderSerializer(serializers.ModelSerializer):
             print(product.get("ticket").type)
             resource_type = product.pop("resourcetype")
             if resource_type == "ProductTicket":
-                order.total += product.get("ticket").price
-                p = ProductTicket.objects.create(**product)
+                value = product.get("ticket").price
+                order.total += value
+                p: ProductTicket = ProductTicket.objects.create(**product)
+                p.value = value
+                p.save()
                 order.products.add(p)
                 order.save()
 

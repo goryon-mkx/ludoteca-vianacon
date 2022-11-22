@@ -17,26 +17,22 @@
     </p>
     <table style="margin-bottom: 32px; width: 100%;" cellpadding="0" cellspacing="0" role="presentation">
 
-      <thead>
-        <th>Item</th>
-        <th>Price</th>
-      </thead>
+<!--      <thead>-->
+<!--        <th>Item</th>-->
+<!--        <th>Price</th>-->
+<!--      </thead>-->
       <tbody>
       {% for product in products %}
         <tr>
           <td>{{product.type}}</td>
-          <td>{{product.value}}€</td>
+          <td>{{product.value | floatformat}}€</td>
         </tr>
         {% endfor %}
-      <tr>
-          <td>
-              <b>Total</b>
-          </td>
-          <td>
-              <b>{{total}}</b>
-          </td>
-      </tr>
       </tbody>
+        <tfoot style="padding-top: 10px">
+        <tr><td><b>Total</b></td><td><b>{{order_total|floatformat}}€</b></td></tr>
+        </tfoot>
+
     </table>
     <table style="width: 100%;" cellpadding="0" cellspacing="0" role="presentation">
       <tr>
