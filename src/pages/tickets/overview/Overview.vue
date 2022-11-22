@@ -93,7 +93,7 @@
               Login
             </b-button>
             <b-alert v-else-if="!isAssociate() && !isStaff()" show variant="light"><b-icon-award-fill/> Member exclusive. See how to become one <b-link target="_blank" href="https://www.spielportugal.org/membership">here</b-link></b-alert>
-            <b-alert v-else-if="this.hasPreviousOrders" show variant="warning"><b-icon-exclamation-circle-fill/> One purchase per Member</b-alert>
+            <b-alert v-else-if="this.hasPreviousOrders && !isStaff()" show variant="warning"><b-icon-exclamation-circle-fill/> One purchase per Member</b-alert>
             <b-button v-else :to="{name: 'BuyTickets'}" variant="primary" block>
               Buy
             </b-button>
