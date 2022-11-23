@@ -201,7 +201,7 @@
             <!-- Button -->
             <div class="text-center">
 
-              <b-button href="https://www.spielportugal.org/membership" class="btn" variant="outline-secondary">
+              <b-button href="https://www.spielportugal.org/membership" target="_blank" class="btn" variant="outline-secondary">
                 See more
               </b-button>
             </div>
