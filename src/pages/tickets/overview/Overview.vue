@@ -60,7 +60,7 @@
 
             <!-- Period -->
             <div class="h6 text-uppercase text-center text-muted mb-5">
-              / person
+              / person 12+ years old
             </div>
 
             <!-- Features -->
@@ -127,7 +127,7 @@
 
             <!-- Period -->
             <div class="h6 text-uppercase text-center text-muted mb-5">
-              / person
+              / person 12+ years old
             </div>
 
             <!-- Features -->
