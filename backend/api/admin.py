@@ -3,6 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
+from polymorphic.admin import PolymorphicChildModelAdmin, PolymorphicParentModelAdmin
 
 from backend.api.models import (
     Badge,
@@ -11,6 +12,8 @@ from backend.api.models import (
     LibraryGame,
     Location,
     Order,
+    Product,
+    ProductTicket,
     Quota,
     Ticket,
     Withdraw,
@@ -67,7 +70,7 @@ class QuotaAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "total", "is_payed")
     readonly_fields = ("user", "products", "total")
-    ordering = ("user",)
+    ordering = ("id",)
     search_fields = ["user__first_name", "user__last_name", "user__email"]
 
 
@@ -79,3 +82,24 @@ class TicketAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     ordering = ("name",)
+
+
+@admin.register(Product)
+class ProductAdmin(PolymorphicParentModelAdmin):
+    child_models = (ProductTicket,)
+    ordering = ("id",)
+
+
+@admin.register(ProductTicket)
+class ProductTicketAdmin(PolymorphicChildModelAdmin):
+    list_display = ("name", "get_ticket_type", "get_ticket_price")
+    ordering = ("name",)
+    show_in_index = True
+
+    @admin.display(description="Ticket")
+    def get_ticket_type(self, obj: ProductTicket):
+        return obj.ticket.type
+
+    @admin.display(description="Price")
+    def get_ticket_price(self, obj: ProductTicket):
+        return obj.ticket.price
