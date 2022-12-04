@@ -12,6 +12,7 @@ from backend.api.models import (
     LibraryGame,
     Location,
     Order,
+    Perk,
     Product,
     ProductTicket,
     Quota,
@@ -79,6 +80,11 @@ class TicketAdmin(admin.ModelAdmin):
     ordering = ("type",)
 
 
+@admin.register(Perk)
+class PerkAdmin(admin.ModelAdmin):
+    ordering = ("ticket__type",)
+
+
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     ordering = ("name",)
@@ -92,7 +98,7 @@ class ProductAdmin(PolymorphicParentModelAdmin):
 
 @admin.register(ProductTicket)
 class ProductTicketAdmin(PolymorphicChildModelAdmin):
-    list_display = ("name", "get_ticket_type", "get_ticket_price")
+    list_display = ("name", "get_ticket_type", "get_ticket_price", "get_orders")
     ordering = ("name",)
     show_in_index = True
 
@@ -103,3 +109,7 @@ class ProductTicketAdmin(PolymorphicChildModelAdmin):
     @admin.display(description="Price")
     def get_ticket_price(self, obj: ProductTicket):
         return obj.ticket.price
+
+    @admin.display(description="Order")
+    def get_orders(self, obj: ProductTicket):
+        return [order.id for order in obj.order_set.all()]

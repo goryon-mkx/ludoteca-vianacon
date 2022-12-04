@@ -24,6 +24,18 @@ class Event(models.Model):
         return self.name
 
 
+class Perk(models.Model):
+    text = models.CharField(max_length=50)
+    value = models.CharField(max_length=50)
+    tooltip = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.text
+
+    def __unicode__(self):
+        return self.text
+
+
 class Ticket(models.Model):
     TYPE_STANDARD = "standard"
     TYPE_MEMBERSHIP = "membership"
@@ -35,6 +47,7 @@ class Ticket(models.Model):
     type = models.CharField(max_length=32, choices=TYPES, null=False, blank=False)
     price = models.IntegerField()
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    perks = models.ManyToManyField(Perk)
 
     def __str__(self):
         return self.name
