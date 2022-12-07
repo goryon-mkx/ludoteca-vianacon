@@ -2,7 +2,7 @@
 <div class="main-content">
 
   <!-- HEADER -->
-  <div class="pt-3 pb-8 bg-dark bg-ellipses">
+  <div class="pt-3 pb-8 bg-hero bg-ellipses">
     <div class="container-fluid">
       <div class="mb-5 ml-5">
 
