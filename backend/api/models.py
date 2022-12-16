@@ -9,6 +9,11 @@ from phonenumber_field.modelfields import PhoneNumberField
 from polymorphic.models import PolymorphicModel
 
 
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=100)
+    value = models.CharField(max_length=200)
+
+
 class Event(models.Model):
     name = models.TextField(null=False, blank=False)
     start = models.DateTimeField(null=True, blank=True)

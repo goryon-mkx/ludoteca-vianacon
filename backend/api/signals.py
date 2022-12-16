@@ -7,6 +7,7 @@ from django.template.loader import get_template
 from django_rest_passwordreset.signals import reset_password_token_created
 from dotenv import find_dotenv, load_dotenv
 
+from backend.api.models import PaymentMethod
 from backend.api.utils import environment
 
 load_dotenv(find_dotenv())  # loads the configs from .env
@@ -103,6 +104,10 @@ def send_new_order_email(sender, instance, order, *args, **kwargs):
         "user": serializers.serialize("json", [order.user]),
         "order_number": order.id,
         "order_total": order.total / 100,
+        "payment_methods": [
+            {"name": method.name, "value": method.value}
+            for method in PaymentMethod.objects.all()
+        ],
         "products": [
             {
                 "name": product.name,

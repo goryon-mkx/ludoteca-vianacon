@@ -36,17 +36,9 @@
     </table>
     <hr style="margin-top: 16px; margin-bottom: 32px; border-bottom-width: 0px; border-color: #f3f4f6;">
 
-    <p style="margin: 0; margin-bottom: 16px;">
-      MBWAY: 966764645
-    </p>
-    <p style="margin: 0; margin-bottom: 16px;">
-      Bank transfer: PT50 0023 0000 45463202862 94 - José Carlos A. Santos
-    </p>
-    <p style="margin: 0; margin-bottom: 16px;">
-      Paypal: jcsrola@gmail.com
-    </p>
-    <hr style="margin-top: 32px; margin-bottom: 32px; border-bottom-width: 0px; border-color: #f3f4f6;"/>
-    <p style="margin: 0; margin-bottom: 16px;">
-        <b>After payment, please send us the payment confirmation by replying to this email.</b>
-    </p>
+    {% for method in payment_methods %}
+        <p style="margin: 0; margin-bottom: 16px;">
+            {{ method.name }}: {{ method.value }}
+        </p>
+    {% endfor %}
 {% endblock %}

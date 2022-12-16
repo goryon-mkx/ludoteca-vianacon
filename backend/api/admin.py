@@ -12,6 +12,7 @@ from backend.api.models import (
     LibraryGame,
     Location,
     Order,
+    PaymentMethod,
     Perk,
     Product,
     ProductTicket,
@@ -24,6 +25,15 @@ from backend.api.signals import payment_confirmed
 User = get_user_model()
 
 admin.site.register(User, UserAdmin)
+
+
+@admin.register(PaymentMethod)
+class LibraryGameAdmin(admin.ModelAdmin):
+    search_fields = ["name", "value"]
+    list_display = (
+        "name",
+        "value",
+    )
 
 
 @admin.register(BggGame)
