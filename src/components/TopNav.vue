@@ -50,9 +50,6 @@
             <b-nav-item v-if="hasPermission(user_permissions.Add)" :to="{ 'name': 'PlayersHome' }" active-class="active">
               Players
             </b-nav-item>
-            <b-nav-item :to="{ name: 'Tickets' }" active-class="active">
-              Tickets
-            </b-nav-item>
             <b-nav-item-dropdown toggle-class="nav-link dropdown-toggle" v-show="$store.getters['externalLinks/all'].length" text="Useful links">
               <b-dropdown-item
                   v-for="(link, index) in $store.getters['externalLinks/all']"
