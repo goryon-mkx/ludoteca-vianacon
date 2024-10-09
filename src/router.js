@@ -63,7 +63,7 @@ const routes = [
     component: LibraryHome,
     props: {
       title: 'Library',
-      pretitle: `Leiriacon`,
+      pretitle: `VianaCon`,
     },
   },
   {
@@ -72,7 +72,7 @@ const routes = [
     component: Dashboard,
     props: {
       title: 'Dashboard',
-      pretitle: `Leiriacon`,
+      pretitle: `VianaCon`,
     },
   },
   {
@@ -81,7 +81,7 @@ const routes = [
     component: LibraryHome,
     props: {
       title: 'Library',
-      pretitle: `Leiriacon`,
+      pretitle: `VianaCon`,
     },
   },
   {
@@ -109,7 +109,7 @@ const routes = [
     name: 'StoreHome',
     props: {
       title: 'Store',
-      pretitle: `Leiriacon`,
+      pretitle: `VianaCon`,
     },
     component: StoreHome,
     beforeEnter: guardAuthenticated,
@@ -129,7 +129,7 @@ const routes = [
     name: 'PlayersHome',
     beforeEnter: guardAuthenticated,
     component: PlayersHome,
-    props: { title: 'Players', pretitle: 'leiriacon' },
+    props: { title: 'Players', pretitle: 'VianaCon' },
     meta: {
       permission: UserPermissions.Add,
     },

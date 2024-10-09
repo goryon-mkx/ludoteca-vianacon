@@ -7,7 +7,7 @@
 
         <!-- Brand -->
         <b-link :to="{'name': 'Home'}" class="navbar-brand me-auto">
-          <img src="@/assets/leiriacon_new.png" alt="..." class="navbar-brand-img">
+          <img src="@/assets/VianaCon.jpg" alt="..." class="navbar-brand-img">
         </b-link>
 
 
