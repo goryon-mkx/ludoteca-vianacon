@@ -136,9 +136,8 @@ def send_mail(to: str, context, subject: str, template: str):
         msg = EmailMessage(
             subject,
             body=get_template(template).render(context),
-            from_email="info@leiriacon.pt",
+            from_email="no-reply@congrem.io",
             to=[to],
-            reply_to=["info@spielportugal.org"],
         )
         msg.content_subtype = "html"
         msg.send()
