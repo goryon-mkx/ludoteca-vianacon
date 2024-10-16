@@ -2,17 +2,20 @@ import axios from 'axios'
 
 export { bggApi }
 
-const parser = require('xml2json-light')
+//const API_URL = 'https://www.boardgamegeek.com/xmlapi2'
 
-const API_URL = 'https://www.boardgamegeek.com/xmlapi2'
+const TIMEOUT = 9000
 
-const TIMEOUT = 7000
+//const bggApi = axios.create({
+//  baseURL: API_URL,
+//  timeout: TIMEOUT,
+//})
 
 const bggApi = axios.create({
-  baseURL: API_URL,
+  baseURL: "https://v1.nocodeapi.com/fabiogasparferreira/xml_to_json/iPPYHrARXkRVcBYv",
   timeout: TIMEOUT,
 })
 
 bggApi.interceptors.response.use(response => {
-  return parser.xml2json(response.data)
+  return response.data
 })
