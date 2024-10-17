@@ -38,7 +38,7 @@ class Command(BaseCommand):
         for _, row in table.iterrows():
             owners = row["owners"].split(",")
             bggid = row["bggid"]
-            print(f"{row}; {bggid}; {owners}")
+
             if bggid:
                 try:
                     self.add_game(bggid, owners)
