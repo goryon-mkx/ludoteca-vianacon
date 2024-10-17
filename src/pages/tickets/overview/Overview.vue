@@ -24,7 +24,7 @@
           </div>
           <!-- Text -->
           <p class="lead text-center text-muted">
-            Be part of LeiriaCON. Get your ticket, get all the fun.
+            Be part of VianaCON. Get your ticket, get all the fun.
           </p>
         </div>
       </div> <!-- / .row -->

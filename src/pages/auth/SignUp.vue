@@ -1,5 +1,5 @@
 <template>
-  <AuthTemplate title="Sign up" subtitle="Free access to leiriacon platform" illustration="img/illustrations/happiness.svg">
+  <AuthTemplate title="Sign up" subtitle="Free access to VianaCON platform" illustration="img/illustrations/happiness.svg">
     <template #content>
       <!-- Form -->
       <b-alert :show="emailAlreadyRegistered" variant="warning"><b-icon-exclamation-circle-fill/> E-mail already registered</b-alert>

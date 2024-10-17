@@ -1,5 +1,5 @@
 <template>
-  <HomeScreenTemplate pre-title="LEIRIACON 2022" title="Dashboard">
+  <HomeScreenTemplate pre-title="VianaCON 2022" title="Dashboard">
 
     <b-row>
       <b-col sm="6" xl="4">
