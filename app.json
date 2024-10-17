@@ -1,5 +1,5 @@
 {
-  "name": "Leiriacon",
+  "name": "VianaCon",
   "description": "",
   "repository": "https://github.com/fabiogasparferreira/ludoteca",
   "stack": "heroku-20",
@@ -20,8 +20,8 @@
     }
   },
   "engines": {
-    "npm": "15.x",
-    "node": "20.x.x"
+    "yarn": "1.x",
+    "npm": "15.x"
   },
   "addons": [
   ],
