@@ -20,8 +20,8 @@
     }
   },
   "engines": {
-    "npm": "15.x",
-    "node": "20.x.x"
+    "yarn": "1.x",
+    "npm": "15.x"
   },
   "addons": [
   ],
